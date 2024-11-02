@@ -21,3 +21,8 @@ the `decomp.py` file will decompress a directory of subdirectories of `.bz2` fil
 ```sh
 python decomp.py /path/to/topdir
 ```
+
+## Populating with the yelp dataset
+```sh
+python populate_yelp.py --environment "name-of-env" --tester "name-of-tester"
+```
