@@ -26,3 +26,8 @@ python decomp.py /path/to/topdir
 ```sh
 python populate_yelp.py --environment "name-of-env" --tester "name-of-tester"
 ```
+
+## Running the yelp tests
+```sh
+python test_yelp.py
+```

@@ -49,12 +49,34 @@ def create_results_db(con: duckdb.DuckDBPyConnection):
     print("Created or confirmed existence of insert_test_results table.")
 
 
-def create_data_db(con: duckdb.DuckDBPyConnection):
+def create_raw_data_db(con: duckdb.DuckDBPyConnection):
 
     # Ensure the users table only has a single JSON column for raw inserts
     con.execute("DROP TABLE IF EXISTS users")
-    con.execute("CREATE TABLE users (full_json JSON)")
+    con.execute("CREATE TABLE users (data JSON)")
     print("Created fresh users table for raw JSON data.")
+
+
+def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
+    # Drop the users table if it exists to ensure a fresh start
+    con.execute("DROP TABLE IF EXISTS users")
+
+    # Create the users table with individual columns for the materialized fields
+    create_users_table_query = '''
+    CREATE TABLE users (
+        user_id VARCHAR,
+        business_id VARCHAR,
+        review_id VARCHAR,
+        name VARCHAR,
+        average_stars FLOAT,
+        city VARCHAR,
+        date DATE,
+        stars FLOAT,
+        data VARCHAR
+    );
+    '''
+    con.execute(create_users_table_query)
+    print("Created fresh users table with materialized fields for efficient querying.")
 
 
 def parse_raw_json_to_parquet() -> int:
@@ -66,7 +88,7 @@ def parse_raw_json_to_parquet() -> int:
             try:
                 # Parse the JSON document and store as a single string
                 json_obj = json.loads(line)
-                data_raw.append({'full_json': json.dumps(json_obj)})
+                data_raw.append({'data': json.dumps(json_obj)})
 
                 # Print progress every 100,000 lines
                 if line_number % 500000 == 0:
@@ -106,7 +128,7 @@ def parse_materialized_json_to_parquet() -> int:
                     'date': json_obj.get('date'),
                     'stars': json_obj.get('stars'),
                     # Store the entire JSON document as a string
-                    'full_json': json.dumps(json_obj)
+                    'data': json.dumps(json_obj)
                 })
 
                 # Print progress every 100,000 lines for tracking
@@ -128,7 +150,7 @@ def parse_materialized_json_to_parquet() -> int:
     return len(df_materialized)
 
 
-def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, no_lines: int) -> float:
+def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, no_lines: int, file_path=str) -> float:
 
     # Step 2: Insert Raw JSON Parquet File into DuckDB
     print("Starting to insert raw JSON Parquet data into DuckDB...")
@@ -137,7 +159,7 @@ def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, no_lines: int) -> flo
     # Insert Parquet data into DuckDB
     con.execute("BEGIN TRANSACTION")
     con.execute(
-        f"INSERT INTO users SELECT * FROM read_parquet('{RAW_PARQUET_FILE_PATH}')")
+        f"INSERT INTO users SELECT * FROM read_parquet('{file_path}')")
     con.execute("COMMIT")
 
     end_time = time.perf_counter()  # End timing
@@ -178,8 +200,8 @@ materialized_connection = duckdb.connect(MATERIALIZED_DB_PATH)
 results_connection = duckdb.connect(RESULTS_DB_PATH)
 
 # Clear and create required tables
-create_data_db(con=raw_connection)
-create_data_db(con=materialized_connection)
+create_raw_data_db(con=raw_connection)
+create_materialized_data_db(con=materialized_connection)
 create_results_db(con=results_connection)
 
 # Parse the json into parquet
@@ -188,9 +210,9 @@ materialized_lines = parse_materialized_json_to_parquet()
 
 # Insert parquet into db
 raw_insert_time = insert_parquet_into_db(
-    con=raw_connection, no_lines=raw_lines)
+    con=raw_connection, no_lines=raw_lines, file_path=RAW_PARQUET_FILE_PATH)
 materialized_insert_time = insert_parquet_into_db(
-    con=materialized_connection, no_lines=materialized_lines)
+    con=materialized_connection, no_lines=materialized_lines, file_path=MATERIALIZED_PARQUET_FILE_PATH)
 
 # Log the results
 env = args.environment
