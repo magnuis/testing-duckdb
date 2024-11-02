@@ -193,9 +193,9 @@ def log_results(con: duckdb.DuckDBPyConnection, times: list, comment: str):
 def write_results_to_file(test_type: str, times: list):
     with open(RESULT_FILE_PATH, 'a') as file:
         file.write(f"______________ {test_type} ______________\n")
-        for i, time in enumerate(times, start=1):
-            file.write(f"Query {i} Average Execution Time (last 4 runs): {
-                       time:.4f} seconds\n")
+        for i, t in enumerate(times, start=1):
+            file.write(f"""Query {i} Average Execution Time (last 4 runs): {
+                       t:.4f} seconds\n""")
         file.write("\n")
 
 

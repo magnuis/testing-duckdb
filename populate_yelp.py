@@ -8,7 +8,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-# Specify file paths
+# Initialize file paths
 JSON_FILE_PATH = './data/yelp/yelp_academic_dataset_user.json'
 
 RAW_DB_PATH = 'raw_yelp.db'
@@ -19,7 +19,7 @@ RAW_PARQUET_FILE_PATH = './data/yelp_raw_json.parquet'
 MATERIALIZED_PARQUET_FILE_PATH = './data/yelp_materialized_json.parquet'
 
 
-# Parse command-line arguments for metadata
+# Parse command-line arguments for metadata logging
 def add_cmd_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Track JSON data insert times.")
@@ -31,7 +31,6 @@ def add_cmd_args() -> argparse.Namespace:
 
 
 def create_results_db(con: duckdb.DuckDBPyConnection):
-    # Create table for storing test results if it doesn't exist
     create_results_table_query = '''
     CREATE TABLE IF NOT EXISTS insert_test_results (
         run_id UUID DEFAULT uuid(),
@@ -50,15 +49,16 @@ def create_results_db(con: duckdb.DuckDBPyConnection):
 
 
 def create_raw_data_db(con: duckdb.DuckDBPyConnection):
-
-    # Ensure the users table only has a single JSON column for raw inserts
+    # Drop the users table if it exists, to ensure a fresh start
     con.execute("DROP TABLE IF EXISTS users")
+
+    # Create tje users table with one data column
     con.execute("CREATE TABLE users (data JSON)")
     print("Created fresh users table for raw JSON data.")
 
 
 def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
-    # Drop the users table if it exists to ensure a fresh start
+    # Drop the users table if it exists, to ensure a fresh start
     con.execute("DROP TABLE IF EXISTS users")
 
     # Create the users table with individual columns for the materialized fields
@@ -76,83 +76,137 @@ def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
     );
     '''
     con.execute(create_users_table_query)
-    print("Created fresh users table with materialized fields for efficient querying.")
+    print("Created fresh users table materialized JSON data.")
 
 
-def parse_raw_json_to_parquet() -> int:
+def parse_raw_json_to_parquet(batch_size=50000) -> int:
     print("Starting to parse raw JSON file and prepare for Parquet conversion...")
-    data_raw = []
 
-    with open(JSON_FILE_PATH, 'r') as file:
-        for line_number, line in enumerate(file, start=1):
-            try:
-                # Parse the JSON document and store as a single string
-                json_obj = json.loads(line)
-                data_raw.append({'data': json.dumps(json_obj)})
+    # Initialize counters and batch storage
+    data_batch = []
+    total_rows = 0
 
-                # Print progress every 100,000 lines
-                if line_number % 500000 == 0:
-                    print(f"Processed {line_number} lines...")
+    # Open a ParquetWriter for the first batch and use it for subsequent batches
+    writer = None
 
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON on line {line_number}: {e}")
+    try:
+        with open(JSON_FILE_PATH, 'r') as file:
+            for line_number, line in enumerate(file, start=1):
+                try:
+                    # Parse the JSON document and store as a single string
+                    json_obj = json.loads(line)
+                    data_batch.append({'data': json.dumps(json_obj)})
 
-    print("Finished parsing JSON file for raw Parquet conversion.")
+                    # Once the batch reaches batch_size, write to Parquet
+                    if len(data_batch) >= batch_size:
+                        df_batch = pd.DataFrame(data_batch)
+                        table_batch = pa.Table.from_pandas(df_batch)
 
-    # Convert to Parquet and save
-    df_raw = pd.DataFrame(data_raw)
-    table_raw = pa.Table.from_pandas(df_raw)
-    pq.write_table(table_raw, RAW_PARQUET_FILE_PATH)
-    print(f"Parquet file with raw JSON saved to {RAW_PARQUET_FILE_PATH}")
+                        # Initialize writer if it's the first batch
+                        if writer is None:
+                            writer = pq.ParquetWriter(
+                                RAW_PARQUET_FILE_PATH, table_batch.schema)
 
-    return len(df_raw)
+                        # Write the current batch to Parquet
+                        writer.write_table(table_batch)
+                        total_rows += len(data_batch)
+                        data_batch = []  # Clear batch memory
+                        print(
+                            f"Written {total_rows} rows to raw Parquet so far...")
+
+                except json.JSONDecodeError as e:
+                    print(f"Error decoding JSON on line {line_number}: {e}")
+
+        # Write any remaining rows in the last batch
+        if data_batch:
+            df_batch = pd.DataFrame(data_batch)
+            table_batch = pa.Table.from_pandas(df_batch)
+            if writer is None:
+                writer = pq.ParquetWriter(
+                    RAW_PARQUET_FILE_PATH, table_batch.schema)
+            writer.write_table(table_batch)
+            total_rows += len(data_batch)
+            print(f"""Final batch written. Total rows written to raw Parquet: {
+                  total_rows}""")
+
+    finally:
+        # Close the writer if it was initialized
+        if writer:
+            writer.close()
+
+    return total_rows
 
 
-def parse_materialized_json_to_parquet() -> int:
+def parse_materialized_json_to_parquet(batch_size=50000) -> int:
     print("Starting to parse materialized JSON file and prepare for Parquet conversion...")
 
-    data_materialized = []
-    with open(JSON_FILE_PATH, 'r') as file:
-        for line_number, line in enumerate(file, start=1):
-            try:
-                # Parse the JSON document
-                json_obj = json.loads(line)
-                # Add relevant fields along with the entire JSON document as a string
-                data_materialized.append({
-                    'user_id': json_obj.get('user_id'),
-                    'business_id': json_obj.get('business_id'),
-                    'review_id': json_obj.get('review_id'),
-                    'name': json_obj.get('name'),
-                    'average_stars': json_obj.get('average_stars'),
-                    'city': json_obj.get('city'),
-                    'date': json_obj.get('date'),
-                    'stars': json_obj.get('stars'),
-                    # Store the entire JSON document as a string
-                    'data': json.dumps(json_obj)
-                })
+    data_batch = []
+    total_rows = 0
+    writer = None
 
-                # Print progress every 100,000 lines for tracking
-                if line_number % 500000 == 0:
-                    print(f"Processed {line_number} lines...")
+    try:
+        with open(JSON_FILE_PATH, 'r') as file:
+            for line_number, line in enumerate(file, start=1):
+                try:
+                    # Parse the JSON document
+                    json_obj = json.loads(line)
+                    # Extract relevant fields, along with the entire JSON document as a string
+                    data_batch.append({
+                        'user_id': json_obj.get('user_id'),
+                        'business_id': json_obj.get('business_id'),
+                        'review_id': json_obj.get('review_id'),
+                        'name': json_obj.get('name'),
+                        'average_stars': json_obj.get('average_stars'),
+                        'city': json_obj.get('city'),
+                        'date': json_obj.get('date'),
+                        'stars': json_obj.get('stars'),
+                        'data': json.dumps(json_obj)
+                    })
 
-            except json.JSONDecodeError as e:
-                print(f"Error decoding JSON on line {line_number}: {e}")
+                    # Once the batch reaches the specified batch size, write to Parquet
+                    if len(data_batch) >= batch_size:
+                        df_batch = pd.DataFrame(data_batch)
+                        table_batch = pa.Table.from_pandas(df_batch)
 
-    print("Finished parsing JSON file for raw Parquet conversion.")
+                        # Initialize ParquetWriter if it's the first batch
+                        if writer is None:
+                            writer = pq.ParquetWriter(
+                                MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
 
-    # Convert to Parquet and save
-    df_materialized = pd.DataFrame(data_materialized)
-    table_materialized = pa.Table.from_pandas(df_materialized)
-    pq.write_table(table_materialized, MATERIALIZED_PARQUET_FILE_PATH)
+                        # Write the current batch to Parquet
+                        writer.write_table(table_batch)
+                        total_rows += len(data_batch)
+                        data_batch = []  # Clear batch memory
+                        print(
+                            f"Written {total_rows} rows to Parquet so far...")
+
+                except json.JSONDecodeError as e:
+                    print(f"Error decoding JSON on line {line_number}: {e}")
+
+        # Write any remaining rows in the last batch
+        if data_batch:
+            df_batch = pd.DataFrame(data_batch)
+            table_batch = pa.Table.from_pandas(df_batch)
+            if writer is None:
+                writer = pq.ParquetWriter(
+                    MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
+            writer.write_table(table_batch)
+            total_rows += len(data_batch)
+            print(f"Final batch written. Total rows written to materialized Parquet: {
+                  total_rows}")
+
+    finally:
+        # Close the writer if it was initialized
+        if writer:
+            writer.close()
+
     print(f"""Parquet file with materialized JSON saved to {
           MATERIALIZED_PARQUET_FILE_PATH}""")
-
-    return len(df_materialized)
+    return total_rows
 
 
 def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, no_lines: int, file_path=str) -> float:
 
-    # Step 2: Insert Raw JSON Parquet File into DuckDB
     print("Starting to insert raw JSON Parquet data into DuckDB...")
     start_time = time.perf_counter()  # Start timing
 
