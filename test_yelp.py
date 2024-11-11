@@ -161,6 +161,7 @@ def create_results_db(con: duckdb.DuckDBPyConnection):
 
 
 def perform_tests(con: duckdb.DuckDBPyConnection, queries: list) -> list:
+    '''Perform the Yelp tests'''
     # Initialize a list to store average execution times
     avg_times = []
 
@@ -184,6 +185,7 @@ def perform_tests(con: duckdb.DuckDBPyConnection, queries: list) -> list:
 
 
 def log_results(con: duckdb.DuckDBPyConnection, times: list, comment: str):
+    '''Log results to db'''
     con.execute('''
       INSERT INTO yelp_query_performance (timestamp, q1_avg_time, q2_avg_time, q3_avg_time, q4_avg_time, q5_avg_time, comment)
       VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -191,7 +193,8 @@ def log_results(con: duckdb.DuckDBPyConnection, times: list, comment: str):
 
 
 def write_results_to_file(test_type: str, times: list):
-    with open(RESULT_FILE_PATH, 'a') as file:
+    '''Write results to temp file'''
+    with open(RESULT_FILE_PATH, 'a', encoding=str) as file:
         file.write(f"______________ {test_type} ______________\n")
         for i, t in enumerate(times, start=1):
             file.write(f"""Query {i} Average Execution Time (last 4 runs): {
@@ -200,7 +203,8 @@ def write_results_to_file(test_type: str, times: list):
 
 
 def write_queries_to_file():
-    with open(RESULT_FILE_PATH, 'a') as file:
+    '''Write queries to temp file'''
+    with open(RESULT_FILE_PATH, 'a', encoding=str) as file:
         file.write("______________QUERIES______________\n")
         file.write("RAW_QUERIES:\n")
         for query in RAW_QUERIES:
