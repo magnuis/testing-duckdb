@@ -1,11 +1,24 @@
-import duckdb
 import time
 from datetime import datetime
+import pandas as pd
+import duckdb
 
 RAW_DB_PATH = 'raw_yelp.db'
 MATERIALIZED_DB_PATH = 'materialized_yelp.db'
-RESULTS_DB_PATH = 'test_results.db'
-RESULT_FILE_PATH = 'last_yelp_performance_test.txt'
+RAW_RESULTS_DF_PATH = 'yelp_raw_results.csv'
+MATERIALIZED_RESULTS_DF_PATH = 'yelp_materialized_results.csv'
+
+DF_COL_NAMES = [
+    'Query',
+    'Avg (last 4 runs)',
+    'Iteration 0',
+    'Iteration 1',
+    'Iteration 2',
+    'Iteration 3',
+    'Iteration 4',
+    'Created At',
+    'Test run no.',
+]
 
 
 RAW_QUERIES = [
@@ -142,104 +155,96 @@ MATERIALIZED_QUERIES = [
 ]
 
 
-def create_results_db(con: duckdb.DuckDBPyConnection):
-    create_performance_table_query = '''
-    CREATE TABLE IF NOT EXISTS yelp_query_performance (
-        run_id UUID DEFAULT uuid(),
-        timestamp TIMESTAMP,
-        q1_avg_time FLOAT,
-        q2_avg_time FLOAT,
-        q3_avg_time FLOAT,
-        q4_avg_time FLOAT,
-        q5_avg_time FLOAT,
-        comment VARCHAR
-    );
-    '''
+def _results_dfs():
+    try:
+        raw_results = pd.read_csv(RAW_RESULTS_DF_PATH)
+        raw_run_no = raw_results['Test run no.'].max() + 1
 
-    con.execute(create_performance_table_query)
-    print("Created or confirmed existence of yelp_query_performance table.")
+    except Exception as e:
+        raw_results = pd.DataFrame(columns=DF_COL_NAMES)
+        raw_run_no = 1
+
+    try:
+        materialized_results = pd.read_csv(MATERIALIZED_RESULTS_DF_PATH)
+        materialized_run_no = materialized_results['Test run no.'].max() + 1
+
+    except Exception as e:
+        materialized_results = pd.DataFrame(columns=DF_COL_NAMES)
+        materialized_run_no = 1
+
+    test_run_no = max(raw_run_no, materialized_run_no)
+
+    return raw_results, materialized_results, test_run_no
 
 
-def perform_tests(con: duckdb.DuckDBPyConnection, queries: list) -> list:
+def perform_tests(
+        con: duckdb.DuckDBPyConnection,
+        queries: list,
+        run_no: int,
+        test_time: datetime,
+) -> pd.DataFrame:
     '''Perform the Yelp tests'''
-    # Initialize a list to store average execution times
-    avg_times = []
-
     # Execute each query 5 times and calculate average time of last 4 runs
-    for i, query in enumerate(queries, start=1):
-        times = []  # Store individual execution times for the current query
 
-        for _ in range(5):  # Execute the query 5 times
+    results_df = pd.DataFrame(columns=DF_COL_NAMES)
+
+    for i, query in enumerate(queries, start=1):
+        df_row = {
+            "Query": i,
+            'Created At': test_time,
+            'Test run no.': run_no,
+        }
+        execution_times = []
+
+        for j in range(5):  # Execute the query 5 times
             start_time = time.perf_counter()
             con.execute(query)  # Execute the query
             end_time = time.perf_counter()
             execution_time = end_time - start_time
-            times.append(execution_time)
+            execution_times.append(execution_time)
+            df_row[f"Iteration {j}"] = round(execution_time, 3)
 
         # Calculate the average time of the last 4 runs and store it
-        avg_time = sum(times[1:]) / 4
-        avg_times.append(avg_time)
+        avg_time = round(sum(execution_times[1:]) / 4, 3)
+        df_row['Avg (last 4 runs)'] = avg_time
+
+        temp_df = pd.DataFrame([df_row])
+
+        results_df = pd.concat([results_df, temp_df], ignore_index=True)
         print(f"""Query {i} Average Execution Time (last 4 runs): {
               avg_time:.4f} seconds""")
-    return avg_times
-
-
-def log_results(con: duckdb.DuckDBPyConnection, times: list, comment: str):
-    '''Log results to db'''
-    con.execute('''
-      INSERT INTO yelp_query_performance (timestamp, q1_avg_time, q2_avg_time, q3_avg_time, q4_avg_time, q5_avg_time, comment)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-  ''', (datetime.now(), *times, comment))
-
-
-def write_results_to_file(test_type: str, times: list):
-    '''Write results to temp file'''
-    with open(RESULT_FILE_PATH, 'a', encoding=str) as file:
-        file.write(f"______________ {test_type} ______________\n")
-        for i, t in enumerate(times, start=1):
-            file.write(f"""Query {i} Average Execution Time (last 4 runs): {
-                       t:.4f} seconds\n""")
-        file.write("\n")
-
-
-def write_queries_to_file():
-    '''Write queries to temp file'''
-    with open(RESULT_FILE_PATH, 'a', encoding=str) as file:
-        file.write("______________QUERIES______________\n")
-        file.write("RAW_QUERIES:\n")
-        for query in RAW_QUERIES:
-            file.write(query + "\n\n")
-        file.write("MATERIALIZED_QUERIES:\n")
-        for query in MATERIALIZED_QUERIES:
-            file.write(query + "\n\n")
+    return results_df
 
 
 # Connect to the DuckDB instances
 raw_connection = duckdb.connect(RAW_DB_PATH)
 materialized_connection = duckdb.connect(MATERIALIZED_DB_PATH)
-results_connection = duckdb.connect(RESULTS_DB_PATH)
 
 # Create results table if not exists
-create_results_db(con=results_connection)
+raw_df, materialized_df, run_no = _results_dfs()
+
+test_time = datetime.now()
 
 # Perform tests
-raw_avg_times = perform_tests(
-    con=raw_connection, queries=RAW_QUERIES)
-materialized_avg_times = perform_tests(
-    con=materialized_connection, queries=MATERIALIZED_QUERIES)
+raw_results = perform_tests(
+    con=raw_connection,
+    queries=RAW_QUERIES,
+    run_no=run_no,
+    test_time=test_time,
+)
+materialized_results = perform_tests(
+    con=materialized_connection,
+    queries=MATERIALIZED_QUERIES,
+    run_no=run_no,
+    test_time=test_time,
+)
 
 # Log the results
-log_results(con=results_connection, times=raw_avg_times,
-            comment='Insert of raw json data')
-log_results(con=results_connection, times=materialized_avg_times,
-            comment='Insert of materialized json data')
+raw_df = pd.concat([raw_df, raw_results], ignore_index=True)
+raw_df.to_csv(RAW_RESULTS_DF_PATH)
+raw_results.to_csv('last_' + RAW_RESULTS_DF_PATH)
 
-# Write results to text file
-with open(RESULT_FILE_PATH, 'w') as f:
-    f.write("")  # Clear previous content
-
-write_results_to_file("RAW", raw_avg_times)
-write_results_to_file("MATERIALIZED", materialized_avg_times)
-
-# Append the queries to the results file
-write_queries_to_file()
+materialized_df = pd.concat(
+    [materialized_df, materialized_results], ignore_index=True)
+materialized_df.to_csv(MATERIALIZED_RESULTS_DF_PATH)
+materialized_results.to_csv('last_' + MATERIALIZED_RESULTS_DF_PATH)
