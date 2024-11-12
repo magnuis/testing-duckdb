@@ -13,7 +13,6 @@ JSON_FILE_PATH = './data/tpch_json.json'
 
 RAW_DB_PATH = 'raw_tpch.db'
 MATERIALIZED_DB_PATH = 'materialized_tpch.db'
-RESULTS_DB_PATH = 'test_results.db'
 
 RAW_PARQUET_FILE_PATH = './data/tpch_raw_json.parquet'
 MATERIALIZED_PARQUET_FILE_PATH = './data/tpch_materialized_json.parquet'
@@ -75,11 +74,6 @@ def create_raw_data_db(con: duckdb.DuckDBPyConnection):
 def create_materialized_data_db(con: duckdb.DuckDBPyConnection, all_columns, column_types):
     # Drop the tpch_data table if it exists, to ensure a fresh start
     con.execute("DROP TABLE IF EXISTS tpch_data")
-    
-    # Print column types
-    print("Column types:")
-    for col, col_type in column_types.items():
-        print(f"{col}: {col_type}")
     
 
     # Construct the CREATE TABLE query
@@ -203,9 +197,6 @@ def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, table_name: str, file
     print(f"Starting to insert data from {file_path} into DuckDB table {table_name}...")
     start_time = time.perf_counter()  # Start timing
 
-    con.execute(f"DESCRIBE SELECT * FROM read_parquet('{file_path}')")
-    print(con.fetchall())
-
     # Insert Parquet data into DuckDB
     con.execute("BEGIN TRANSACTION")
     con.execute(
@@ -234,7 +225,6 @@ if __name__ == '__main__':
     # Connect to or create the DuckDB instances
     raw_connection = duckdb.connect(RAW_DB_PATH)
     materialized_connection = duckdb.connect(MATERIALIZED_DB_PATH)
-    results_connection = duckdb.connect(RESULTS_DB_PATH)
 
     # Clear and create required tables
     create_raw_data_db(con=raw_connection)
