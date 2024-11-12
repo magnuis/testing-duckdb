@@ -162,7 +162,7 @@ cython_debug/
 #.idea/
 
 # The data folder
-/data*
+data/
 
 # Databases
 *.db*
