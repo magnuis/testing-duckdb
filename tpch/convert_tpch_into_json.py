@@ -1,6 +1,6 @@
 
 
-TPCH_ORIGINAL_DATA_PATH = './data/tpc-h'
+TPCH_ORIGINAL_DATA_PATH = './data'
 
 import json
 import os
@@ -204,9 +204,6 @@ def main(limit_rows):
 
                     # Map column names to their respective converted values
                     row = dict(zip(columns, converted_values))
-
-                    # Optional: Include the table name in the JSON document
-                    row['table'] = table
 
                     # Write the JSON document to the output file
                     json.dump(row, outfile)
