@@ -7,7 +7,7 @@ import argparse
 # from queries.twitter_queries import
 from queries.yelp_queries import RAW_YELP_QUERIES, MATERIALIZED_YELP_QUERIES
 from queries.twitter_queries import RAW_TWITTER_QUERIES, MATERIALIZED_TWITTER_QUERIES
-from queries.tpch_queries import RAW_TPCH_QUERIES, MATERIALIZED_TPCH_QUERIES
+from tpch.tpch_queries import RAW_TPCH_QUERIES, MATERIALIZED_TPCH_QUERIES
 
 # Paths and queries for different datasets
 DATASETS = {
@@ -15,7 +15,9 @@ DATASETS = {
         "raw_db_path": "raw_twitter.db",
         "materialized_db_path": "materialized_twitter.db",
         "raw_results_path": "twitter_raw_results.csv",
+        "last_raw_results_path": "last_twitter_raw_results.csv",
         "materialized_results_path": "twitter_materialized_results.csv",
+        "last_materialized_results_path": "last_twitter_materialized_results.csv",
         "raw_queries": RAW_TWITTER_QUERIES,
         "materialized_queries": MATERIALIZED_TWITTER_QUERIES,
     },
@@ -23,15 +25,19 @@ DATASETS = {
         "raw_db_path": "raw_yelp.db",
         "materialized_db_path": "materialized_yelp.db",
         "raw_results_path": "yelp_raw_results.csv",
+        "last_raw_results_path": "last_yelp_raw_results.csv",
         "materialized_results_path": "yelp_materialized_results.csv",
+        "last_materialized_results_path": "last_yelp_materialized_results.csv",
         "raw_queries": RAW_YELP_QUERIES,
         "materialized_queries": RAW_YELP_QUERIES,
     },
     "tpc-h": {
-        "raw_db_path": "raw_tpch.db",
-        "materialized_db_path": "materialized_tpch.db",
-        "raw_results_path": "tpch_raw_results.csv",
-        "materialized_results_path": "tpch_materialized_results.csv",
+        "raw_db_path": "./tpch/db/raw_tpch.db",
+        "materialized_db_path": "./tpch/db/materialized_tpch.db",
+        "raw_results_path": "./tpch/test_output/tpch_raw_results.csv",
+        "last_raw_results_path": "./tpch/test_output/last_tpch_raw_results.csv",
+        "materialized_results_path": "./tpch/test_output/tpch_materialized_results.csv",
+        "last_materialized_results_path": "./tpch/test_output/last_tpch_materialized_results.csv",
         "raw_queries": RAW_TPCH_QUERIES,
         "materialized_queries": MATERIALIZED_TPCH_QUERIES,
     }
@@ -91,6 +97,7 @@ def perform_tests(
         }
         execution_times = []
 
+
         for j in range(5):  # Execute the query 5 times
             start_time = time.perf_counter()
             con.execute(query)  # Execute the query
@@ -126,8 +133,10 @@ def main():
         config = DATASETS[dataset]
 
         raw_results_path = config["raw_results_path"]
+        last_raw_results_path = config["last_raw_results_path"]
         raw_db_path = config["raw_db_path"]
         materialized_results_path = config["materialized_results_path"]
+        last_materialized_results_path = config["last_materialized_results_path"]
         materialized_db_path = config["materialized_db_path"]
         raw_queries = config["raw_queries"]
         materialized_queries = config["materialized_queries"]
@@ -146,7 +155,7 @@ def main():
             con=raw_connection, queries=raw_queries, run_no=run_no, test_time=test_time)
         raw_df = pd.concat([raw_df, raw_results], ignore_index=True)
         raw_df.to_csv(raw_results_path)
-        raw_results.to_csv('last_' + raw_results_path)
+        raw_results.to_csv(last_raw_results_path)
 
         # Perform and log tests for materialized data
         materialized_results = perform_tests(
@@ -154,8 +163,7 @@ def main():
         materialized_df = pd.concat(
             [materialized_df, materialized_results], ignore_index=True)
         materialized_df.to_csv(materialized_results_path)
-        materialized_results.to_csv(
-            'last_' + materialized_results_path)
+        materialized_results.to_csv(last_materialized_results_path)
 
 
 if __name__ == "__main__":
