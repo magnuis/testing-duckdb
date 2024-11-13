@@ -1,5 +1,3 @@
-
-
 TPCH_ORIGINAL_DATA_PATH = './data'
 
 import json
@@ -12,128 +10,128 @@ from decimal import Decimal
 table_definitions = {
     'customer': {
         'columns': [
-            'C_CUSTKEY', 'C_NAME', 'C_ADDRESS', 'C_NATIONKEY',
-            'C_PHONE', 'C_ACCTBAL', 'C_MKTSEGMENT', 'C_COMMENT'
+            'c_custkey', 'c_name', 'c_address', 'c_nationkey',
+            'c_phone', 'c_acctbal', 'c_mktsegment', 'c_comment'
         ],
         'types': [
-            int,       # C_CUSTKEY
-            str,       # C_NAME
-            str,       # C_ADDRESS
-            int,       # C_NATIONKEY
-            str,       # C_PHONE
-            float,     # C_ACCTBAL
-            str,       # C_MKTSEGMENT
-            str        # C_COMMENT
+            int,       # c_custkey
+            str,       # c_name
+            str,       # c_address
+            int,       # c_nationkey
+            str,       # c_phone
+            float,     # c_acctbal
+            str,       # c_mktsegment
+            str        # c_comment
         ]
     },
     'lineitem': {
         'columns': [
-            'L_ORDERKEY', 'L_PARTKEY', 'L_SUPPKEY', 'L_LINENUMBER',
-            'L_QUANTITY', 'L_EXTENDEDPRICE', 'L_DISCOUNT', 'L_TAX',
-            'L_RETURNFLAG', 'L_LINESTATUS', 'L_SHIPDATE', 'L_COMMITDATE',
-            'L_RECEIPTDATE', 'L_SHIPINSTRUCT', 'L_SHIPMODE', 'L_COMMENT'
+            'l_orderkey', 'l_partkey', 'l_suppkey', 'l_linenumber',
+            'l_quantity', 'l_extendedprice', 'l_discount', 'l_tax',
+            'l_returnflag', 'l_linestatus', 'l_shipdate', 'l_commitdate',
+            'l_receiptdate', 'l_shipinstruct', 'l_shipmode', 'l_comment'
         ],
         'types': [
-            int,       # L_ORDERKEY
-            int,       # L_PARTKEY
-            int,       # L_SUPPKEY
-            int,       # L_LINENUMBER
-            float,     # L_QUANTITY
-            float,     # L_EXTENDEDPRICE
-            float,     # L_DISCOUNT
-            float,     # L_TAX
-            str,       # L_RETURNFLAG
-            str,       # L_LINESTATUS
-            'date',    # L_SHIPDATE
-            'date',    # L_COMMITDATE
-            'date',    # L_RECEIPTDATE
-            str,       # L_SHIPINSTRUCT
-            str,       # L_SHIPMODE
-            str        # L_COMMENT
+            int,       # l_orderkey
+            int,       # l_partkey
+            int,       # l_suppkey
+            int,       # l_linenumber
+            float,     # l_quantity
+            float,     # l_extendedprice
+            float,     # l_discount
+            float,     # l_tax
+            str,       # l_returnflag
+            str,       # l_linestatus
+            'date',    # l_shipdate
+            'date',    # l_commitdate
+            'date',    # l_receiptdate
+            str,       # l_shipinstruct
+            str,       # l_shipmode
+            str        # l_comment
         ]
     },
     'nation': {
         'columns': [
-            'N_NATIONKEY', 'N_NAME', 'N_REGIONKEY', 'N_COMMENT'
+            'n_nationkey', 'n_name', 'n_regionkey', 'n_comment'
         ],
         'types': [
-            int,       # N_NATIONKEY
-            str,       # N_NAME
-            int,       # N_REGIONKEY
-            str        # N_COMMENT
+            int,       # n_nationkey
+            str,       # n_name
+            int,       # n_regionkey
+            str        # n_comment
         ]
     },
     'orders': {
         'columns': [
-            'O_ORDERKEY', 'O_CUSTKEY', 'O_ORDERSTATUS', 'O_TOTALPRICE',
-            'O_ORDERDATE', 'O_ORDERPRIORITY', 'O_CLERK', 'O_SHIPPRIORITY',
-            'O_COMMENT'
+            'o_orderkey', 'o_custkey', 'o_orderstatus', 'o_totalprice',
+            'o_orderdate', 'o_orderpriority', 'o_clerk', 'o_shippriority',
+            'o_comment'
         ],
         'types': [
-            int,       # O_ORDERKEY
-            int,       # O_CUSTKEY
-            str,       # O_ORDERSTATUS
-            float,     # O_TOTALPRICE
-            'date',    # O_ORDERDATE
-            str,       # O_ORDERPRIORITY
-            str,       # O_CLERK
-            int,       # O_SHIPPRIORITY
-            str        # O_COMMENT
+            int,       # o_orderkey
+            int,       # o_custkey
+            str,       # o_orderstatus
+            float,     # o_totalprice
+            'date',    # o_orderdate
+            str,       # o_orderpriority
+            str,       # o_clerk
+            int,       # o_shippriority
+            str        # o_comment
         ]
     },
     'part': {
         'columns': [
-            'P_PARTKEY', 'P_NAME', 'P_MFGR', 'P_BRAND', 'P_TYPE',
-            'P_SIZE', 'P_CONTAINER', 'P_RETAILPRICE', 'P_COMMENT'
+            'p_partkey', 'p_name', 'p_mfgr', 'p_brand', 'p_type',
+            'p_size', 'p_container', 'p_retailprice', 'p_comment'
         ],
         'types': [
-            int,       # P_PARTKEY
-            str,       # P_NAME
-            str,       # P_MFGR
-            str,       # P_BRAND
-            str,       # P_TYPE
-            int,       # P_SIZE
-            str,       # P_CONTAINER
-            float,     # P_RETAILPRICE
-            str        # P_COMMENT
+            int,       # p_partkey
+            str,       # p_name
+            str,       # p_mfgr
+            str,       # p_brand
+            str,       # p_type
+            int,       # p_size
+            str,       # p_container
+            float,     # p_retailprice
+            str        # p_comment
         ]
     },
     'partsupp': {
         'columns': [
-            'PS_PARTKEY', 'PS_SUPPKEY', 'PS_AVAILQTY', 'PS_SUPPLYCOST',
-            'PS_COMMENT'
+            'ps_partkey', 'ps_suppkey', 'ps_availqty', 'ps_supplycost',
+            'ps_comment'
         ],
         'types': [
-            int,       # PS_PARTKEY
-            int,       # PS_SUPPKEY
-            int,       # PS_AVAILQTY
-            float,     # PS_SUPPLYCOST
-            str        # PS_COMMENT
+            int,       # ps_partkey
+            int,       # ps_suppkey
+            int,       # ps_availqty
+            float,     # ps_supplycost
+            str        # ps_comment
         ]
     },
     'region': {
         'columns': [
-            'R_REGIONKEY', 'R_NAME', 'R_COMMENT'
+            'r_regionkey', 'r_name', 'r_comment'
         ],
         'types': [
-            int,       # R_REGIONKEY
-            str,       # R_NAME
-            str        # R_COMMENT
+            int,       # r_regionkey
+            str,       # r_name
+            str        # r_comment
         ]
     },
     'supplier': {
         'columns': [
-            'S_SUPPKEY', 'S_NAME', 'S_ADDRESS', 'S_NATIONKEY',
-            'S_PHONE', 'S_ACCTBAL', 'S_COMMENT'
+            's_suppkey', 's_name', 's_address', 's_nationkey',
+            's_phone', 's_acctbal', 's_comment'
         ],
         'types': [
-            int,       # S_SUPPKEY
-            str,       # S_NAME
-            str,       # S_ADDRESS
-            int,       # S_NATIONKEY
-            str,       # S_PHONE
-            float,     # S_ACCTBAL
-            str        # S_COMMENT
+            int,       # s_suppkey
+            str,       # s_name
+            str,       # s_address
+            int,       # s_nationkey
+            str,       # s_phone
+            float,     # s_acctbal
+            str        # s_comment
         ]
     }
 }
