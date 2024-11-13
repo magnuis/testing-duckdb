@@ -11,44 +11,58 @@ import pyarrow.parquet as pq
 # Initialize file paths
 JSON_FILE_PATH = './data/tpch_json.json'
 
-RAW_DB_PATH = 'raw_tpch.db'
-MATERIALIZED_DB_PATH = 'materialized_tpch.db'
+RAW_DB_PATH = './db/raw_tpch.db'
+MATERIALIZED_DB_PATH = './db/materialized_tpch.db'
 
-RAW_PARQUET_FILE_PATH = './data/tpch_raw_json.parquet'
-MATERIALIZED_PARQUET_FILE_PATH = './data/tpch_materialized_json.parquet'
+RAW_PARQUET_FILE_PATH = './db/tpch_raw_json.parquet'
+MATERIALIZED_PARQUET_FILE_PATH = './db/tpch_materialized_json.parquet'
 
 # Table definitions with explicit types
 table_column_types = {
-    'C_CUSTKEY': 'BIGINT', 'C_NAME': 'VARCHAR', 'C_ADDRESS': 'VARCHAR', 
-    'C_NATIONKEY': 'BIGINT', 'C_PHONE': 'VARCHAR', 'C_ACCTBAL': 'DOUBLE',
-    'C_MKTSEGMENT': 'VARCHAR', 'C_COMMENT': 'VARCHAR',
+    'c_custkey': 'BIGINT', 'c_name': 'VARCHAR', 'c_address': 'VARCHAR', 
+    'c_nationkey': 'BIGINT', 'c_phone': 'VARCHAR', 'c_acctbal': 'DOUBLE',
+    'c_mktsegment': 'VARCHAR', 'c_comment': 'VARCHAR',
     
-    'L_ORDERKEY': 'BIGINT', 'L_PARTKEY': 'BIGINT', 'L_SUPPKEY': 'BIGINT',
-    'L_LINENUMBER': 'BIGINT', 'L_QUANTITY': 'DOUBLE', 'L_EXTENDEDPRICE': 'DOUBLE',
-    'L_DISCOUNT': 'DOUBLE', 'L_TAX': 'DOUBLE', 'L_RETURNFLAG': 'VARCHAR',
-    'L_LINESTATUS': 'VARCHAR', 'L_SHIPDATE': 'DATE', 'L_COMMITDATE': 'DATE',
-    'L_RECEIPTDATE': 'DATE', 'L_SHIPINSTRUCT': 'VARCHAR', 'L_SHIPMODE': 'VARCHAR', 'L_COMMENT': 'VARCHAR',
+    'l_orderkey': 'BIGINT', 'l_partkey': 'BIGINT', 'l_suppkey': 'BIGINT',
+    'l_linenumber': 'BIGINT', 'l_quantity': 'DOUBLE', 'l_extendedprice': 'DOUBLE',
+    'l_discount': 'DOUBLE', 'l_tax': 'DOUBLE', 'l_returnflag': 'VARCHAR',
+    'l_linestatus': 'VARCHAR', 'l_shipdate': 'DATE', 'l_commitdate': 'DATE',
+    'l_receiptdate': 'DATE', 'l_shipinstruct': 'VARCHAR', 'l_shipmode': 'VARCHAR', 'l_comment': 'VARCHAR',
     
-    'N_NATIONKEY': 'BIGINT', 'N_NAME': 'VARCHAR', 'N_REGIONKEY': 'BIGINT', 'N_COMMENT': 'VARCHAR',
+    'n_nationkey': 'BIGINT', 'n_name': 'VARCHAR', 'n_regionkey': 'BIGINT', 'n_comment': 'VARCHAR',
     
-    'O_ORDERKEY': 'BIGINT', 'O_CUSTKEY': 'BIGINT', 'O_ORDERSTATUS': 'VARCHAR', 
-    'O_TOTALPRICE': 'DOUBLE', 'O_ORDERDATE': 'DATE', 'O_ORDERPRIORITY': 'VARCHAR',
-    'O_CLERK': 'VARCHAR', 'O_SHIPPRIORITY': 'BIGINT', 'O_COMMENT': 'VARCHAR',
+    'o_orderkey': 'BIGINT', 'o_custkey': 'BIGINT', 'o_orderstatus': 'VARCHAR', 
+    'o_totalprice': 'DOUBLE', 'o_orderdate': 'DATE', 'o_orderpriority': 'VARCHAR',
+    'o_clerk': 'VARCHAR', 'o_shippriority': 'BIGINT', 'o_comment': 'VARCHAR',
     
-    'P_PARTKEY': 'BIGINT', 'P_NAME': 'VARCHAR', 'P_MFGR': 'VARCHAR', 'P_BRAND': 'VARCHAR',
-    'P_TYPE': 'VARCHAR', 'P_SIZE': 'BIGINT', 'P_CONTAINER': 'VARCHAR',
-    'P_RETAILPRICE': 'DOUBLE', 'P_COMMENT': 'VARCHAR',
+    'p_partkey': 'BIGINT', 'p_name': 'VARCHAR', 'p_mfgr': 'VARCHAR', 'p_brand': 'VARCHAR',
+    'p_type': 'VARCHAR', 'p_size': 'BIGINT', 'p_container': 'VARCHAR',
+    'p_retailprice': 'DOUBLE', 'p_comment': 'VARCHAR',
     
-    'PS_PARTKEY': 'BIGINT', 'PS_SUPPKEY': 'BIGINT', 'PS_AVAILQTY': 'BIGINT',
-    'PS_SUPPLYCOST': 'DOUBLE', 'PS_COMMENT': 'VARCHAR',
+    'ps_partkey': 'BIGINT', 'ps_suppkey': 'BIGINT', 'ps_availqty': 'BIGINT',
+    'ps_supplycost': 'DOUBLE', 'ps_comment': 'VARCHAR',
     
-    'R_REGIONKEY': 'BIGINT', 'R_NAME': 'VARCHAR', 'R_COMMENT': 'VARCHAR',
+    'r_regionkey': 'BIGINT', 'r_name': 'VARCHAR', 'r_comment': 'VARCHAR',
     
-    'S_SUPPKEY': 'BIGINT', 'S_NAME': 'VARCHAR', 'S_ADDRESS': 'VARCHAR',
-    'S_NATIONKEY': 'BIGINT', 'S_PHONE': 'VARCHAR', 'S_ACCTBAL': 'DOUBLE', 'S_COMMENT': 'VARCHAR',
+    's_suppkey': 'BIGINT', 's_name': 'VARCHAR', 's_address': 'VARCHAR',
+    's_nationkey': 'BIGINT', 's_phone': 'VARCHAR', 's_acctbal': 'DOUBLE', 's_comment': 'VARCHAR',
     
     'data': 'VARCHAR'  # Added as the JSON string data column
 }
+
+# List of columns to materialize
+materialized_columns = [
+    'c_acctbal', 'c_address', 'c_comment', 'c_custkey', 'c_mktsegment', 'c_name', 
+    'c_nationkey', 'c_phone', 'l_commitdate', 'l_discount', 'l_extendedprice', 
+    'l_linestatus', 'l_orderkey', 'l_partkey', 'l_quantity', 'l_receiptdate', 
+    'l_returnflag', 'l_shipdate', 'l_shipinstruct', 'l_shipmode', 'l_suppkey', 
+    'l_tax', 'n_name', 'n_nationkey', 'n_regionkey', 'o_comment', 'o_custkey', 
+    'o_orderdate', 'o_orderkey', 'o_orderpriority', 'o_orderstatus', 
+    'o_shippriority', 'o_totalprice', 'p_brand', 'p_container', 'p_mfgr', 
+    'p_name', 'p_partkey', 'p_size', 'p_type', 'ps_availqty', 'ps_partkey', 
+    'ps_suppkey', 'ps_supplycost', 'r_name', 'r_regionkey', 's_acctbal', 
+    's_address', 's_comment', 's_name', 's_nationkey', 's_phone', 's_suppkey', 'data'
+]
 
 # Parse command-line arguments for metadata logging
 def add_cmd_args() -> argparse.Namespace:
@@ -63,28 +77,28 @@ def add_cmd_args() -> argparse.Namespace:
 
 
 def create_raw_data_db(con: duckdb.DuckDBPyConnection):
-    # Drop the tpch_data table if it exists, to ensure a fresh start
-    con.execute("DROP TABLE IF EXISTS tpch_data")
+    # Drop the tpch table if it exists, to ensure a fresh start
+    con.execute("DROP TABLE IF EXISTS tpch")
 
-    # Create the tpch_data table with one data column
-    con.execute("CREATE TABLE tpch_data (data JSON)")
-    print("Created fresh tpch_data table for raw JSON data.")
+    # Create the tpch table with one data column
+    con.execute("CREATE TABLE tpch (data JSON)")
+    print("Created fresh tpch table for raw JSON data.")
 
 
-def create_materialized_data_db(con: duckdb.DuckDBPyConnection, all_columns, column_types):
-    # Drop the tpch_data table if it exists, to ensure a fresh start
-    con.execute("DROP TABLE IF EXISTS tpch_data")
-    
+def create_materialized_data_db(con: duckdb.DuckDBPyConnection, column_types):
+    # Drop the tpch table if it exists, to ensure a fresh start
+    con.execute("DROP TABLE IF EXISTS tpch")
 
-    # Construct the CREATE TABLE query
-    create_table_query = "CREATE TABLE tpch_data ("
+    # Construct the CREATE TABLE query with only materialized columns
+    create_table_query = "CREATE TABLE tpch ("
     create_table_query += ", ".join([
-        f"{col} {column_types[col]}" for col in all_columns
+        f"{col} {column_types[col]}" for col in materialized_columns
     ])
     create_table_query += ");"
 
     con.execute(create_table_query)
-    print("Created fresh tpch_data table for materialized JSON data.")
+    print("Created fresh tpch table for materialized JSON data with selected columns.")
+
 
 
 def parse_raw_json_to_parquet(batch_size=50000) -> int:
@@ -135,7 +149,6 @@ def parse_raw_json_to_parquet(batch_size=50000) -> int:
 
     return total_rows
 
-
 def parse_materialized_json_to_parquet(batch_size=50000) -> int:
     print("Starting to parse materialized JSON file and prepare for Parquet conversion...")
 
@@ -150,22 +163,20 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
                     json_obj = json.loads(line)
                     json_obj['data'] = line.strip()  # Add the JSON string
 
-                    # Add the JSON document as a string
-                    data_batch.append(json_obj)
+                    # Filter only materialized columns
+                    filtered_obj = {col: json_obj.get(col) for col in materialized_columns}
+                    data_batch.append(filtered_obj)
 
                     # Once the batch reaches batch_size, write to Parquet
                     if len(data_batch) >= batch_size:
                         df_batch = pd.DataFrame(data_batch)
-                        # Ensure all columns are included and in the correct order
-                        df_batch = df_batch.reindex(columns=table_column_types.keys(), fill_value=None)
+                        df_batch = df_batch.reindex(columns=materialized_columns, fill_value=None)
                         table_batch = pa.Table.from_pandas(df_batch)
 
-                        # Initialize writer if it's the first batch
                         if writer is None:
                             writer = pq.ParquetWriter(
                                 MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
 
-                        # Write the current batch to Parquet
                         writer.write_table(table_batch)
                         total_rows += len(data_batch)
                         data_batch = []  # Clear batch memory
@@ -177,7 +188,7 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
         # Write any remaining rows in the last batch
         if data_batch:
             df_batch = pd.DataFrame(data_batch)
-            df_batch = df_batch.reindex(columns=table_column_types.keys(), fill_value=None)
+            df_batch = df_batch.reindex(columns=materialized_columns, fill_value=None)
             table_batch = pa.Table.from_pandas(df_batch)
             if writer is None:
                 writer = pq.ParquetWriter(
@@ -190,8 +201,7 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
         if writer:
             writer.close()
 
-    return total_rows, list(table_column_types.keys()), table_column_types
-
+    return total_rows, materialized_columns, table_column_types
 
 def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, table_name: str, file_path: str, no_lines: int) -> float:
     print(f"Starting to insert data from {file_path} into DuckDB table {table_name}...")
@@ -234,20 +244,20 @@ if __name__ == '__main__':
     materialized_total_rows, all_columns, column_types = parse_materialized_json_to_parquet()
 
     # Create materialized data db after parsing to get all columns and types
-    create_materialized_data_db(con=materialized_connection, all_columns=all_columns, column_types=column_types)
+    create_materialized_data_db(con=materialized_connection, column_types=column_types)
 
     env = args.environment
     tester = args.tester
 
     # Insert parquet into db and log results for raw data
     insert_time_raw = insert_parquet_into_db(
-        con=raw_connection, table_name='tpch_data', file_path=RAW_PARQUET_FILE_PATH, no_lines=raw_total_rows)
+        con=raw_connection, table_name='tpch', file_path=RAW_PARQUET_FILE_PATH, no_lines=raw_total_rows)
     db_size_raw = os.path.getsize(RAW_DB_PATH)
 
 
     # Insert parquet into db and log results for materialized data
     insert_time_materialized = insert_parquet_into_db(
-        con=materialized_connection, table_name='tpch_data', file_path=MATERIALIZED_PARQUET_FILE_PATH, no_lines=materialized_total_rows)
+        con=materialized_connection, table_name='tpch', file_path=MATERIALIZED_PARQUET_FILE_PATH, no_lines=materialized_total_rows)
     db_size_materialized = os.path.getsize(MATERIALIZED_DB_PATH)
 
 
