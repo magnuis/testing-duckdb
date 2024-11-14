@@ -80,7 +80,7 @@ from
         tpch o,
         tpch l
 where
-        c.data->>'c_mktsegment' = 'BUILDING'
+        COALESCE(c.data->>'c_mktsegment', '') = 'BUILDING'
         and cast(c.data->>'c_custkey' as int) = cast(o.data->>'o_custkey' as int)
         and cast(l.data->>'l_orderkey' as int) = cast(o.data->>'o_orderkey' as int)
         and cast(o.data->>'o_orderdate' as date) < date '1995-03-15'
@@ -182,8 +182,8 @@ from
                         and cast(s.data->>'s_nationkey' as int) = cast(n1.data->>'n_nationkey' as int)
                         and cast(c.data->>'c_nationkey' as int) = cast(n2.data->>'n_nationkey' as int)
                         and (
-                                (n1.data->>'n_name' = 'FRANCE' and n2.data->>'n_name' = 'GERMANY')
-                                or (n1.data->>'n_name' = 'GERMANY' and n2.data->>'n_name' = 'FRANCE')
+                                (COALESCE(n1.data->>'n_name', '') = 'FRANCE' and COALESCE(n2.data->>'n_name', '') = 'GERMANY')
+                                or (COALESCE(n1.data->>'n_name', '') = 'GERMANY' and COALESCE(n2.data->>'n_name', '') = 'FRANCE')
                         )
                         and cast(l.data->>'l_shipdate' as date) between date '1995-01-01' and date '1996-12-31'
         ) as shipping
@@ -225,7 +225,7 @@ from
                         and cast(o.data->>'o_custkey' as int) = cast(c.data->>'c_custkey' as int)
                         and cast(r.data->>'r_regionkey' as int) = cast(n1.data->>'n_regionkey' as int)
                         and cast(c.data->>'c_nationkey' as int) = cast(n1.data->>'n_nationkey' as int)
-                        and r.data->>'r_name' = 'AMERICA'
+                        and COALESCE(r.data->>'r_name', '') = 'AMERICA'
                         and cast(s.data->>'s_nationkey' as int) = cast(n2.data->>'n_nationkey' as int)
                         and cast(o.data->>'o_orderdate' as date) between date '1995-01-01' and date '1996-12-31'
                         and COALESCE(p.data->>'p_type', '') = 'ECONOMY ANODIZED STEEL'
@@ -338,13 +338,13 @@ order by
         l.data->>'l_shipmode',
         sum(case
                 when o.data->>'o_orderpriority' = '1-URGENT'
-                        or o.data->>'o_orderpriority' = '2-HIGH'
+                        or COALESCE(o.data->>'o_orderpriority', '') = '2-HIGH'
                         then 1
                 else 0
         end) as high_line_count,
         sum(case
                 when o.data->>'o_orderpriority' <> '1-URGENT'
-                        and o.data->>'o_orderpriority' <> '2-HIGH'
+                        and COALESCE(o.data->>'o_orderpriority', '') <> '2-HIGH'
                         then 1
                 else 0
         end) as low_line_count
@@ -353,7 +353,7 @@ from
         tpch l
 where
         cast(o.data->>'o_orderkey' as int) = cast(l.data->>'l_orderkey' as int)
-        and l.data->>'l_shipmode' in ('MAIL', 'SHIP')
+        and COALESCE(l.data->>'l_shipmode', '') in ('MAIL', 'SHIP')
         and cast(l.data->>'l_commitdate' as date) < cast(l.data->>'l_receiptdate' as date)
         and cast(l.data->>'l_shipdate' as date) < cast(l.data->>'l_commitdate' as date)
         and cast(l.data->>'l_receiptdate' as date) >= date '1994-01-01'
@@ -472,7 +472,7 @@ from
         tpch p
 where
         cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-        and p.data->>'p_brand' = 'Brand#23'
+        and COALESCE(p.data->>'p_brand', '') = 'Brand#23'
         and COALESCE(p.data->>'p_container', '') = 'MED BOX'
         and cast(l.data->>'l_quantity' as int) < (
                 select
@@ -528,8 +528,8 @@ from
 where
         (
                 cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                and p.data->>'p_brand' = 'Brand#12'
-                and p.data->>'p_container' in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+                and COALESCE(p.data->>'p_brand', '') = 'Brand#12'
+                and COALESCE(p.data->>'p_container', '') in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
                 and cast(l.data->>'l_quantity' as int) >= 1 and cast(l.data->>'l_quantity' as int) <= 1 + 10
                 and cast(p.data->>'p_size' as int) between 1 and 5
                 and COALESCE(l.data->>'l_shipmode', '') in ('AIR', 'AIR REG')
@@ -538,8 +538,8 @@ where
         or
         (
                 cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                and p.data->>'p_brand' = 'Brand#23'
-                and p.data->>'p_container' in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+                and COALESCE(p.data->>'p_brand', '') = 'Brand#23'
+                and COALESCE(p.data->>'p_container', '') in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
                 and cast(l.data->>'l_quantity' as int) >= 10 and cast(l.data->>'l_quantity' as int) <= 10 + 10
                 and cast(p.data->>'p_size' as int) between 1 and 10
                 and COALESCE(l.data->>'l_shipmode', '') in ('AIR', 'AIR REG')
@@ -548,8 +548,8 @@ where
         or
         (
                 cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                and p.data->>'p_brand' = 'Brand#34'
-                and p.data->>'p_container' in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+                and COALESCE(p.data->>'p_brand', '') = 'Brand#34'
+                and COALESCE(p.data->>'p_container', '') in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
                 and cast(l.data->>'l_quantity' as int) >= 20 and cast(l.data->>'l_quantity' as int) <= 20 + 10
                 and cast(p.data->>'p_size' as int) between 1 and 15
                 and COALESCE(l.data->>'l_shipmode', '') in ('AIR', 'AIR REG')
