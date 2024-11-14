@@ -594,8 +594,48 @@ where
 order by
         s.data->>'s_name';""",
 
-# Query 21: (IGNORE THIS FOR NOW)
-
+# Query 21: Groups data based on specified columns
+"""select
+        s.data->>'s_name',
+        count(*) as numwait
+from
+        tpch s,
+        tpch l1,
+        tpch o,
+        tpch n
+where
+        cast(s.data->>'s_suppkey' as int) = cast(l1.data->>'l_suppkey' as int)
+        and cast(o.data->>'o_orderkey' as int) = cast(l1.data->>'l_orderkey' as int)
+        and cast(o.data->>'o_orderstatus' as char(1)) = 'F'
+        and cast(l1.data->>'l_receiptdate' as date) > cast(l1.data->>'l_commitdate' as date)
+        and exists (
+                select
+                        *
+                from
+                        tpch l2
+                where
+                        cast(l2.data->>'l_orderkey' as int) = cast(l1.data->>'l_orderkey' as int)
+                        and cast(l2.data->>'l_suppkey' as int) <> cast(l1.data->>'l_suppkey' as int)
+        )
+        and not exists (
+                select
+                        *
+                from
+                        tpch l3
+                where
+                        cast(l3.data->>'l_orderkey' as int) = cast(l1.data->>'l_orderkey' as int)
+                        and cast(l3.data->>'l_suppkey' as int) <> cast(l1.data->>'l_suppkey' as int)
+                        and cast(l3.data->>'l_receiptdate' as date) > cast(l3.data->>'l_commitdate' as date)
+        )
+        and cast(s.data->>'s_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
+        and COALESCE(n.data->>'n_name', '') = 'SAUDI ARABIA'
+group by
+        s.data->>'s_name'
+order by
+        numwait desc,
+        s.data->>'s_name'
+limit
+        100;""",
 # Query 22: Summarizes data with aggregates like sum or avg
 """select
         cntrycode,
@@ -1235,41 +1275,46 @@ ORDER BY
     # Materialized Query 21
 """SELECT
     s.s_name,
-    s.s_address
+    COUNT(*) AS numwait
 FROM
     tpch s,
+    tpch l1,
+    tpch o,
     tpch n
 WHERE
-    s.s_suppkey IN (
+    s.s_suppkey = l1.l_suppkey
+    AND o.o_orderkey = l1.l_orderkey
+    AND o.o_orderstatus = 'F'
+    AND l1.l_receiptdate > l1.l_commitdate
+    AND EXISTS (
         SELECT
-            ps.ps_suppkey
+            *
         FROM
-            tpch ps
+            tpch l2
         WHERE
-            ps.ps_partkey IN (
-                SELECT
-                    p.p_partkey
-                FROM
-                    tpch p
-                WHERE
-                    p.p_name LIKE 'forest%'
-            )
-            AND ps.ps_availqty > (
-                SELECT
-                    0.5 * SUM(l.l_quantity)
-                FROM
-                    tpch l
-                WHERE
-                    l.l_partkey = ps.ps_partkey
-                    AND l.l_suppkey = ps.ps_suppkey
-                    AND l.l_shipdate >= DATE '1994-01-01'
-                    AND l.l_shipdate < DATE '1995-01-01'
-            )
+            l2.l_orderkey = l1.l_orderkey
+            AND l2.l_suppkey <> l1.l_suppkey
+    )
+    AND NOT EXISTS (
+        SELECT
+            *
+        FROM
+            tpch l3
+        WHERE
+            l3.l_orderkey = l1.l_orderkey
+            AND l3.l_suppkey <> l1.l_suppkey
+            AND l3.l_receiptdate > l3.l_commitdate
     )
     AND s.s_nationkey = n.n_nationkey
-    AND COALESCE(n.n_name, '') = 'CANADA'
+    AND COALESCE(n.n_name, '') = 'SAUDI ARABIA'
+GROUP BY
+    s.s_name
 ORDER BY
-    s.s_name;
+    numwait DESC,
+    s.s_name
+LIMIT
+    100;
+
 """,
     # Materialized Query 22
     """SELECT
