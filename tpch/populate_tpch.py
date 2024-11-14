@@ -156,6 +156,30 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
     total_rows = 0
     writer = None
 
+    # Build the pyarrow schema and pandas dtype mapping
+    fields = []
+    pandas_dtypes = {}
+    for col in materialized_columns:
+        duckdb_type = table_column_types[col]
+        if duckdb_type == 'BIGINT':
+            pa_type = pa.int64()
+            pandas_dtypes[col] = 'Int64'  # Pandas nullable integer
+        elif duckdb_type == 'DOUBLE':
+            pa_type = pa.float64()
+            pandas_dtypes[col] = 'float64'
+        elif duckdb_type == 'VARCHAR':
+            pa_type = pa.string()
+            pandas_dtypes[col] = 'string'  # Use 'string' dtype for better performance
+        elif duckdb_type == 'DATE':
+            pa_type = pa.date32()
+            pandas_dtypes[col] = 'datetime64[ns]'
+        else:
+            pa_type = pa.string()
+            pandas_dtypes[col] = 'string'
+        fields.append(pa.field(col, pa_type))
+
+    schema = pa.schema(fields)
+
     try:
         with open(JSON_FILE_PATH, 'r') as file:
             for line_number, line in enumerate(file, start=1):
@@ -171,11 +195,25 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
                     if len(data_batch) >= batch_size:
                         df_batch = pd.DataFrame(data_batch)
                         df_batch = df_batch.reindex(columns=materialized_columns, fill_value=None)
-                        table_batch = pa.Table.from_pandas(df_batch)
+
+                        # Enforce data types in pandas DataFrame
+                        for col, dtype in pandas_dtypes.items():
+                            if dtype == 'Int64':
+                                df_batch[col] = pd.to_numeric(df_batch[col], errors='coerce').astype('Int64')
+                            elif dtype == 'float64':
+                                df_batch[col] = pd.to_numeric(df_batch[col], errors='coerce')
+                            elif dtype == 'datetime64[ns]':
+                                df_batch[col] = pd.to_datetime(df_batch[col], errors='coerce')
+                            elif dtype == 'string':
+                                df_batch[col] = df_batch[col].astype('string')
+                            else:
+                                df_batch[col] = df_batch[col].astype('object')
+
+                        table_batch = pa.Table.from_pandas(df_batch, schema=schema, safe=False)
 
                         if writer is None:
                             writer = pq.ParquetWriter(
-                                MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
+                                MATERIALIZED_PARQUET_FILE_PATH, schema)
 
                         writer.write_table(table_batch)
                         total_rows += len(data_batch)
@@ -189,10 +227,24 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
         if data_batch:
             df_batch = pd.DataFrame(data_batch)
             df_batch = df_batch.reindex(columns=materialized_columns, fill_value=None)
-            table_batch = pa.Table.from_pandas(df_batch)
+
+            # Enforce data types in pandas DataFrame
+            for col, dtype in pandas_dtypes.items():
+                if dtype == 'Int64':
+                    df_batch[col] = pd.to_numeric(df_batch[col], errors='coerce').astype('Int64')
+                elif dtype == 'float64':
+                    df_batch[col] = pd.to_numeric(df_batch[col], errors='coerce')
+                elif dtype == 'datetime64[ns]':
+                    df_batch[col] = pd.to_datetime(df_batch[col], errors='coerce')
+                elif dtype == 'string':
+                    df_batch[col] = df_batch[col].astype('string')
+                else:
+                    df_batch[col] = df_batch[col].astype('object')
+
+            table_batch = pa.Table.from_pandas(df_batch, schema=schema, safe=False)
             if writer is None:
                 writer = pq.ParquetWriter(
-                    MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
+                    MATERIALIZED_PARQUET_FILE_PATH, schema)
             writer.write_table(table_batch)
             total_rows += len(data_batch)
             print(f"Final batch written. Total rows written to materialized Parquet: {total_rows}")
@@ -202,6 +254,7 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
             writer.close()
 
     return total_rows, materialized_columns, table_column_types
+
 
 def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, table_name: str, file_path: str, no_lines: int) -> float:
     print(f"Starting to insert data from {file_path} into DuckDB table {table_name}...")

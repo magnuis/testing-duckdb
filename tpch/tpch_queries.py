@@ -58,7 +58,8 @@ where
                         and cast(s.data->>'s_suppkey' as int) = cast(ps.data->>'ps_suppkey' as int)
                         and cast(s.data->>'s_nationkey' as int)= cast(n.data->>'n_nationkey' as int)
                         and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
-                        and r.data->>'r_name'= 'EUROPE'
+                        and COALESCE(r.data->>'r_name', '') = 'EUROPE'
+
         )
 order by
         cast(s.data->>'s_acctbal' as decimal(12,2)) desc,
