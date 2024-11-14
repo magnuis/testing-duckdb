@@ -192,8 +192,8 @@ def parse_materialized_json_to_parquet(batch_size=50000) -> int:
                     MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
             writer.write_table(table_batch)
             total_rows += len(data_batch)
-            print(f"Final batch written. Total rows written to materialized Parquet: {
-                  total_rows}")
+            print(f"""Final batch written. Total rows written to materialized Parquet: {
+                  total_rows}""")
 
     finally:
         # Close the writer if it was initialized

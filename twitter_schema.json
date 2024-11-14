@@ -1,0 +1,4178 @@
+{
+    "created_at": {
+        "str": 5220246
+    },
+    "id": {
+        "int": 5220246
+    },
+    "id_str": {
+        "str": 5220246
+    },
+    "text": {
+        "str": 5220246
+    },
+    "source": {
+        "str": 5220246
+    },
+    "truncated": {
+        "bool": 5220246
+    },
+    "in_reply_to_status_id": {
+        "NoneType": 3988585,
+        "int": 1231661
+    },
+    "in_reply_to_status_id_str": {
+        "NoneType": 3988585,
+        "str": 1231661
+    },
+    "in_reply_to_user_id": {
+        "NoneType": 3960363,
+        "int": 1259883
+    },
+    "in_reply_to_user_id_str": {
+        "NoneType": 3960363,
+        "str": 1259883
+    },
+    "in_reply_to_screen_name": {
+        "NoneType": 3960363,
+        "str": 1259883
+    },
+    "user": {
+        "dict": 5220246,
+        "children": {
+            "id": {
+                "int": 5220246
+            },
+            "id_str": {
+                "str": 5220246
+            },
+            "name": {
+                "str": 5220246
+            },
+            "screen_name": {
+                "str": 5220246
+            },
+            "location": {
+                "NoneType": 2085130,
+                "str": 3135116
+            },
+            "url": {
+                "NoneType": 3943336,
+                "str": 1276910
+            },
+            "description": {
+                "NoneType": 777639,
+                "str": 4442607
+            },
+            "translator_type": {
+                "str": 5220246
+            },
+            "protected": {
+                "bool": 5220246
+            },
+            "verified": {
+                "bool": 5220246
+            },
+            "followers_count": {
+                "int": 5220246
+            },
+            "friends_count": {
+                "int": 5220246
+            },
+            "listed_count": {
+                "int": 5220246
+            },
+            "favourites_count": {
+                "int": 5220246
+            },
+            "statuses_count": {
+                "int": 5220246
+            },
+            "created_at": {
+                "str": 5220246
+            },
+            "utc_offset": {
+                "NoneType": 5220246
+            },
+            "time_zone": {
+                "NoneType": 5220246
+            },
+            "geo_enabled": {
+                "bool": 5220246
+            },
+            "lang": {
+                "NoneType": 5220246
+            },
+            "contributors_enabled": {
+                "bool": 5220246
+            },
+            "is_translator": {
+                "bool": 5220246
+            },
+            "profile_background_color": {
+                "str": 5220246
+            },
+            "profile_background_image_url": {
+                "str": 5220246
+            },
+            "profile_background_image_url_https": {
+                "str": 5220246
+            },
+            "profile_background_tile": {
+                "bool": 5220246
+            },
+            "profile_link_color": {
+                "str": 5220246
+            },
+            "profile_sidebar_border_color": {
+                "str": 5220246
+            },
+            "profile_sidebar_fill_color": {
+                "str": 5220246
+            },
+            "profile_text_color": {
+                "str": 5220246
+            },
+            "profile_use_background_image": {
+                "bool": 5220246
+            },
+            "profile_image_url": {
+                "str": 5220246
+            },
+            "profile_image_url_https": {
+                "str": 5220246
+            },
+            "default_profile": {
+                "bool": 5220246
+            },
+            "default_profile_image": {
+                "bool": 5220246
+            },
+            "following": {
+                "NoneType": 5220246
+            },
+            "follow_request_sent": {
+                "NoneType": 5220246
+            },
+            "notifications": {
+                "NoneType": 5220246
+            },
+            "profile_banner_url": {
+                "str": 4437397
+            }
+        }
+    },
+    "geo": {
+        "NoneType": 5218338,
+        "dict": 1908,
+        "children": {
+            "type": {
+                "str": 1908
+            },
+            "coordinates": {
+                "list": 1908,
+                "children": {}
+            }
+        }
+    },
+    "coordinates": {
+        "NoneType": 5218338,
+        "dict": 1908,
+        "children": {
+            "type": {
+                "str": 1908
+            },
+            "coordinates": {
+                "list": 1908,
+                "children": {}
+            }
+        }
+    },
+    "place": {
+        "NoneType": 5182323,
+        "dict": 37923,
+        "children": {
+            "id": {
+                "str": 37923
+            },
+            "url": {
+                "str": 37923
+            },
+            "place_type": {
+                "str": 37923
+            },
+            "name": {
+                "str": 37923
+            },
+            "full_name": {
+                "str": 37923
+            },
+            "country_code": {
+                "str": 37923
+            },
+            "country": {
+                "str": 37923
+            },
+            "bounding_box": {
+                "dict": 37922,
+                "children": {
+                    "type": {
+                        "str": 37922
+                    },
+                    "coordinates": {
+                        "list": 37922,
+                        "children": {}
+                    }
+                },
+                "NoneType": 1
+            },
+            "attributes": {
+                "dict": 37923,
+                "children": {}
+            }
+        }
+    },
+    "contributors": {
+        "NoneType": 5220246
+    },
+    "retweeted_status": {
+        "dict": 2910905,
+        "children": {
+            "created_at": {
+                "str": 2910905
+            },
+            "id": {
+                "int": 2910905
+            },
+            "id_str": {
+                "str": 2910905
+            },
+            "text": {
+                "str": 2910905
+            },
+            "source": {
+                "str": 2910905
+            },
+            "truncated": {
+                "bool": 2910905
+            },
+            "in_reply_to_status_id": {
+                "NoneType": 2700172,
+                "int": 210733
+            },
+            "in_reply_to_status_id_str": {
+                "NoneType": 2700172,
+                "str": 210733
+            },
+            "in_reply_to_user_id": {
+                "NoneType": 2693208,
+                "int": 217697
+            },
+            "in_reply_to_user_id_str": {
+                "NoneType": 2693208,
+                "str": 217697
+            },
+            "in_reply_to_screen_name": {
+                "NoneType": 2693251,
+                "str": 217654
+            },
+            "user": {
+                "dict": 2910905,
+                "children": {
+                    "id": {
+                        "int": 2910905
+                    },
+                    "id_str": {
+                        "str": 2910905
+                    },
+                    "name": {
+                        "str": 2910905
+                    },
+                    "screen_name": {
+                        "str": 2910905
+                    },
+                    "location": {
+                        "NoneType": 934490,
+                        "str": 1976415
+                    },
+                    "url": {
+                        "NoneType": 1403489,
+                        "str": 1507416
+                    },
+                    "description": {
+                        "str": 2740340,
+                        "NoneType": 170565
+                    },
+                    "translator_type": {
+                        "str": 2910905
+                    },
+                    "protected": {
+                        "bool": 2910905
+                    },
+                    "verified": {
+                        "bool": 2910905
+                    },
+                    "followers_count": {
+                        "int": 2910905
+                    },
+                    "friends_count": {
+                        "int": 2910905
+                    },
+                    "listed_count": {
+                        "int": 2910905
+                    },
+                    "favourites_count": {
+                        "int": 2910905
+                    },
+                    "statuses_count": {
+                        "int": 2910905
+                    },
+                    "created_at": {
+                        "str": 2910905
+                    },
+                    "utc_offset": {
+                        "NoneType": 2910905
+                    },
+                    "time_zone": {
+                        "NoneType": 2910905
+                    },
+                    "geo_enabled": {
+                        "bool": 2910905
+                    },
+                    "lang": {
+                        "NoneType": 2910905
+                    },
+                    "contributors_enabled": {
+                        "bool": 2910905
+                    },
+                    "is_translator": {
+                        "bool": 2910905
+                    },
+                    "profile_background_color": {
+                        "str": 2910905
+                    },
+                    "profile_background_image_url": {
+                        "str": 2910905
+                    },
+                    "profile_background_image_url_https": {
+                        "str": 2910905
+                    },
+                    "profile_background_tile": {
+                        "bool": 2910905
+                    },
+                    "profile_link_color": {
+                        "str": 2910905
+                    },
+                    "profile_sidebar_border_color": {
+                        "str": 2910905
+                    },
+                    "profile_sidebar_fill_color": {
+                        "str": 2910905
+                    },
+                    "profile_text_color": {
+                        "str": 2910905
+                    },
+                    "profile_use_background_image": {
+                        "bool": 2910905
+                    },
+                    "profile_image_url": {
+                        "str": 2910905
+                    },
+                    "profile_image_url_https": {
+                        "str": 2910905
+                    },
+                    "profile_banner_url": {
+                        "str": 2746772
+                    },
+                    "default_profile": {
+                        "bool": 2910905
+                    },
+                    "default_profile_image": {
+                        "bool": 2910905
+                    },
+                    "following": {
+                        "NoneType": 2910905
+                    },
+                    "follow_request_sent": {
+                        "NoneType": 2910905
+                    },
+                    "notifications": {
+                        "NoneType": 2910905
+                    }
+                }
+            },
+            "geo": {
+                "NoneType": 2910655,
+                "dict": 250,
+                "children": {
+                    "type": {
+                        "str": 250
+                    },
+                    "coordinates": {
+                        "list": 250,
+                        "children": {}
+                    }
+                }
+            },
+            "coordinates": {
+                "NoneType": 2910655,
+                "dict": 250,
+                "children": {
+                    "type": {
+                        "str": 250
+                    },
+                    "coordinates": {
+                        "list": 250,
+                        "children": {}
+                    }
+                }
+            },
+            "place": {
+                "NoneType": 2853039,
+                "dict": 57866,
+                "children": {
+                    "id": {
+                        "str": 57866
+                    },
+                    "url": {
+                        "str": 57866
+                    },
+                    "place_type": {
+                        "str": 57866
+                    },
+                    "name": {
+                        "str": 57866
+                    },
+                    "full_name": {
+                        "str": 57866
+                    },
+                    "country_code": {
+                        "str": 57866
+                    },
+                    "country": {
+                        "str": 57866
+                    },
+                    "bounding_box": {
+                        "dict": 57866,
+                        "children": {
+                            "type": {
+                                "str": 57866
+                            },
+                            "coordinates": {
+                                "list": 57866,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "attributes": {
+                        "dict": 57866,
+                        "children": {}
+                    }
+                }
+            },
+            "contributors": {
+                "NoneType": 2910905
+            },
+            "is_quote_status": {
+                "bool": 2910905
+            },
+            "extended_tweet": {
+                "dict": 1123792,
+                "children": {
+                    "full_text": {
+                        "str": 1123792
+                    },
+                    "display_text_range": {
+                        "list": 1123792,
+                        "children": {}
+                    },
+                    "entities": {
+                        "dict": 1123792,
+                        "children": {
+                            "hashtags": {
+                                "list": 1123792,
+                                "children": {
+                                    "text": {
+                                        "str": 908180
+                                    },
+                                    "indices": {
+                                        "list": 908180,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "urls": {
+                                "list": 1123792,
+                                "children": {
+                                    "url": {
+                                        "str": 197041
+                                    },
+                                    "expanded_url": {
+                                        "str": 197041
+                                    },
+                                    "display_url": {
+                                        "str": 197041
+                                    },
+                                    "indices": {
+                                        "list": 197041,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "user_mentions": {
+                                "list": 1123792,
+                                "children": {
+                                    "screen_name": {
+                                        "str": 618434
+                                    },
+                                    "name": {
+                                        "str": 618434
+                                    },
+                                    "id": {
+                                        "int": 618434
+                                    },
+                                    "id_str": {
+                                        "str": 618434
+                                    },
+                                    "indices": {
+                                        "list": 618434,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "symbols": {
+                                "list": 1123792,
+                                "children": {
+                                    "text": {
+                                        "str": 1541
+                                    },
+                                    "indices": {
+                                        "list": 1541,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "media": {
+                                "list": 484336,
+                                "children": {
+                                    "id": {
+                                        "int": 718754
+                                    },
+                                    "id_str": {
+                                        "str": 718754
+                                    },
+                                    "indices": {
+                                        "list": 718754,
+                                        "children": {}
+                                    },
+                                    "media_url": {
+                                        "str": 718754
+                                    },
+                                    "media_url_https": {
+                                        "str": 718754
+                                    },
+                                    "url": {
+                                        "str": 718754
+                                    },
+                                    "display_url": {
+                                        "str": 718754
+                                    },
+                                    "expanded_url": {
+                                        "str": 718754
+                                    },
+                                    "type": {
+                                        "str": 718754
+                                    },
+                                    "sizes": {
+                                        "dict": 718754,
+                                        "children": {
+                                            "medium": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "thumb": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 144962,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 144962
+                                            },
+                                            "title": {
+                                                "str": 13604
+                                            },
+                                            "description": {
+                                                "str": 13521
+                                            },
+                                            "embeddable": {
+                                                "bool": 13639
+                                            }
+                                        }
+                                    },
+                                    "video_info": {
+                                        "dict": 152725,
+                                        "children": {
+                                            "aspect_ratio": {
+                                                "list": 152725,
+                                                "children": {}
+                                            },
+                                            "duration_millis": {
+                                                "int": 144900
+                                            },
+                                            "variants": {
+                                                "list": 152725,
+                                                "children": {
+                                                    "content_type": {
+                                                        "str": 547947
+                                                    },
+                                                    "url": {
+                                                        "str": 547947
+                                                    },
+                                                    "bitrate": {
+                                                        "int": 403047
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 41935
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 41935
+                                    },
+                                    "source_user_id": {
+                                        "int": 42442
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 42442
+                                    },
+                                    "description": {
+                                        "str": 4216
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "extended_entities": {
+                        "dict": 484336,
+                        "children": {
+                            "media": {
+                                "list": 484336,
+                                "children": {
+                                    "id": {
+                                        "int": 718754
+                                    },
+                                    "id_str": {
+                                        "str": 718754
+                                    },
+                                    "indices": {
+                                        "list": 718754,
+                                        "children": {}
+                                    },
+                                    "media_url": {
+                                        "str": 718754
+                                    },
+                                    "media_url_https": {
+                                        "str": 718754
+                                    },
+                                    "url": {
+                                        "str": 718754
+                                    },
+                                    "display_url": {
+                                        "str": 718754
+                                    },
+                                    "expanded_url": {
+                                        "str": 718754
+                                    },
+                                    "type": {
+                                        "str": 718754
+                                    },
+                                    "sizes": {
+                                        "dict": 718754,
+                                        "children": {
+                                            "medium": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "thumb": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 718754,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 718754
+                                                    },
+                                                    "h": {
+                                                        "int": 718754
+                                                    },
+                                                    "resize": {
+                                                        "str": 718754
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 144962,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 144962
+                                            },
+                                            "title": {
+                                                "str": 13604
+                                            },
+                                            "description": {
+                                                "str": 13521
+                                            },
+                                            "embeddable": {
+                                                "bool": 13639
+                                            }
+                                        }
+                                    },
+                                    "video_info": {
+                                        "dict": 152725,
+                                        "children": {
+                                            "aspect_ratio": {
+                                                "list": 152725,
+                                                "children": {}
+                                            },
+                                            "duration_millis": {
+                                                "int": 144900
+                                            },
+                                            "variants": {
+                                                "list": 152725,
+                                                "children": {
+                                                    "content_type": {
+                                                        "str": 547947
+                                                    },
+                                                    "url": {
+                                                        "str": 547947
+                                                    },
+                                                    "bitrate": {
+                                                        "int": 403047
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 41935
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 41935
+                                    },
+                                    "source_user_id": {
+                                        "int": 42442
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 42442
+                                    },
+                                    "description": {
+                                        "str": 4216
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "quote_count": {
+                "int": 2910905
+            },
+            "reply_count": {
+                "int": 2910905
+            },
+            "retweet_count": {
+                "int": 2910905
+            },
+            "favorite_count": {
+                "int": 2910905
+            },
+            "entities": {
+                "dict": 2910905,
+                "children": {
+                    "hashtags": {
+                        "list": 2910905,
+                        "children": {
+                            "text": {
+                                "str": 882333
+                            },
+                            "indices": {
+                                "list": 882333,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "urls": {
+                        "list": 2910905,
+                        "children": {
+                            "url": {
+                                "str": 1300441
+                            },
+                            "expanded_url": {
+                                "str": 1300441
+                            },
+                            "display_url": {
+                                "str": 1300441
+                            },
+                            "indices": {
+                                "list": 1300441,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "user_mentions": {
+                        "list": 2910905,
+                        "children": {
+                            "screen_name": {
+                                "str": 513400
+                            },
+                            "name": {
+                                "str": 513400
+                            },
+                            "id": {
+                                "int": 513400
+                            },
+                            "id_str": {
+                                "str": 513400
+                            },
+                            "indices": {
+                                "list": 513400,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "symbols": {
+                        "list": 2910905,
+                        "children": {
+                            "text": {
+                                "str": 1158
+                            },
+                            "indices": {
+                                "list": 1158,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "media": {
+                        "list": 892224,
+                        "children": {
+                            "id": {
+                                "int": 892299
+                            },
+                            "id_str": {
+                                "str": 892299
+                            },
+                            "indices": {
+                                "list": 892299,
+                                "children": {}
+                            },
+                            "media_url": {
+                                "str": 892299
+                            },
+                            "media_url_https": {
+                                "str": 892299
+                            },
+                            "url": {
+                                "str": 892299
+                            },
+                            "display_url": {
+                                "str": 892299
+                            },
+                            "expanded_url": {
+                                "str": 892299
+                            },
+                            "type": {
+                                "str": 892299
+                            },
+                            "sizes": {
+                                "dict": 892299,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 892299,
+                                        "children": {
+                                            "w": {
+                                                "int": 892299
+                                            },
+                                            "h": {
+                                                "int": 892299
+                                            },
+                                            "resize": {
+                                                "str": 892299
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 892299,
+                                        "children": {
+                                            "w": {
+                                                "int": 892299
+                                            },
+                                            "h": {
+                                                "int": 892299
+                                            },
+                                            "resize": {
+                                                "str": 892299
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 892299,
+                                        "children": {
+                                            "w": {
+                                                "int": 892299
+                                            },
+                                            "h": {
+                                                "int": 892299
+                                            },
+                                            "resize": {
+                                                "str": 892299
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 892299,
+                                        "children": {
+                                            "w": {
+                                                "int": 892299
+                                            },
+                                            "h": {
+                                                "int": 892299
+                                            },
+                                            "resize": {
+                                                "str": 892299
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "additional_media_info": {
+                                "dict": 268379,
+                                "children": {
+                                    "monetizable": {
+                                        "bool": 268379
+                                    },
+                                    "title": {
+                                        "str": 13442
+                                    },
+                                    "description": {
+                                        "str": 13373
+                                    },
+                                    "embeddable": {
+                                        "bool": 13139
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 86941
+                            },
+                            "source_status_id_str": {
+                                "str": 86941
+                            },
+                            "source_user_id": {
+                                "int": 87034
+                            },
+                            "source_user_id_str": {
+                                "str": 87034
+                            },
+                            "description": {
+                                "str": 4658
+                            }
+                        }
+                    }
+                }
+            },
+            "favorited": {
+                "bool": 2910905
+            },
+            "retweeted": {
+                "bool": 2910905
+            },
+            "filter_level": {
+                "str": 2910905
+            },
+            "lang": {
+                "str": 2910905
+            },
+            "display_text_range": {
+                "list": 1384472,
+                "children": {}
+            },
+            "extended_entities": {
+                "dict": 892224,
+                "children": {
+                    "media": {
+                        "list": 892224,
+                        "children": {
+                            "id": {
+                                "int": 1325405
+                            },
+                            "id_str": {
+                                "str": 1325405
+                            },
+                            "indices": {
+                                "list": 1325405,
+                                "children": {}
+                            },
+                            "media_url": {
+                                "str": 1325405
+                            },
+                            "media_url_https": {
+                                "str": 1325405
+                            },
+                            "url": {
+                                "str": 1325405
+                            },
+                            "display_url": {
+                                "str": 1325405
+                            },
+                            "expanded_url": {
+                                "str": 1325405
+                            },
+                            "type": {
+                                "str": 1325405
+                            },
+                            "sizes": {
+                                "dict": 1325405,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 1325405,
+                                        "children": {
+                                            "w": {
+                                                "int": 1325405
+                                            },
+                                            "h": {
+                                                "int": 1325405
+                                            },
+                                            "resize": {
+                                                "str": 1325405
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 1325405,
+                                        "children": {
+                                            "w": {
+                                                "int": 1325405
+                                            },
+                                            "h": {
+                                                "int": 1325405
+                                            },
+                                            "resize": {
+                                                "str": 1325405
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 1325405,
+                                        "children": {
+                                            "w": {
+                                                "int": 1325405
+                                            },
+                                            "h": {
+                                                "int": 1325405
+                                            },
+                                            "resize": {
+                                                "str": 1325405
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 1325405,
+                                        "children": {
+                                            "w": {
+                                                "int": 1325405
+                                            },
+                                            "h": {
+                                                "int": 1325405
+                                            },
+                                            "resize": {
+                                                "str": 1325405
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "additional_media_info": {
+                                "dict": 268379,
+                                "children": {
+                                    "monetizable": {
+                                        "bool": 268379
+                                    },
+                                    "title": {
+                                        "str": 13442
+                                    },
+                                    "description": {
+                                        "str": 13373
+                                    },
+                                    "embeddable": {
+                                        "bool": 13139
+                                    }
+                                }
+                            },
+                            "video_info": {
+                                "dict": 284345,
+                                "children": {
+                                    "aspect_ratio": {
+                                        "list": 284345,
+                                        "children": {}
+                                    },
+                                    "duration_millis": {
+                                        "int": 268337
+                                    },
+                                    "variants": {
+                                        "list": 284345,
+                                        "children": {
+                                            "bitrate": {
+                                                "int": 749210
+                                            },
+                                            "content_type": {
+                                                "str": 1017547
+                                            },
+                                            "url": {
+                                                "str": 1017547
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 90540
+                            },
+                            "source_status_id_str": {
+                                "str": 90540
+                            },
+                            "source_user_id": {
+                                "int": 90633
+                            },
+                            "source_user_id_str": {
+                                "str": 90633
+                            },
+                            "description": {
+                                "str": 4928
+                            }
+                        }
+                    }
+                }
+            },
+            "possibly_sensitive": {
+                "bool": 1583792
+            },
+            "quoted_status_id": {
+                "int": 373692
+            },
+            "quoted_status_id_str": {
+                "str": 373692
+            },
+            "quoted_status": {
+                "dict": 371968,
+                "children": {
+                    "created_at": {
+                        "str": 371968
+                    },
+                    "id": {
+                        "int": 371968
+                    },
+                    "id_str": {
+                        "str": 371968
+                    },
+                    "text": {
+                        "str": 371968
+                    },
+                    "display_text_range": {
+                        "list": 238233,
+                        "children": {}
+                    },
+                    "source": {
+                        "str": 371968
+                    },
+                    "truncated": {
+                        "bool": 371968
+                    },
+                    "in_reply_to_status_id": {
+                        "NoneType": 342988,
+                        "int": 28980
+                    },
+                    "in_reply_to_status_id_str": {
+                        "NoneType": 342988,
+                        "str": 28980
+                    },
+                    "in_reply_to_user_id": {
+                        "NoneType": 341220,
+                        "int": 30748
+                    },
+                    "in_reply_to_user_id_str": {
+                        "NoneType": 341220,
+                        "str": 30748
+                    },
+                    "in_reply_to_screen_name": {
+                        "NoneType": 341221,
+                        "str": 30747
+                    },
+                    "user": {
+                        "dict": 371968,
+                        "children": {
+                            "id": {
+                                "int": 371968
+                            },
+                            "id_str": {
+                                "str": 371968
+                            },
+                            "name": {
+                                "str": 371968
+                            },
+                            "screen_name": {
+                                "str": 371968
+                            },
+                            "location": {
+                                "NoneType": 87708,
+                                "str": 284260
+                            },
+                            "url": {
+                                "NoneType": 131598,
+                                "str": 240370
+                            },
+                            "description": {
+                                "str": 353073,
+                                "NoneType": 18895
+                            },
+                            "translator_type": {
+                                "str": 371968
+                            },
+                            "protected": {
+                                "bool": 371968
+                            },
+                            "verified": {
+                                "bool": 371968
+                            },
+                            "followers_count": {
+                                "int": 371968
+                            },
+                            "friends_count": {
+                                "int": 371968
+                            },
+                            "listed_count": {
+                                "int": 371968
+                            },
+                            "favourites_count": {
+                                "int": 371968
+                            },
+                            "statuses_count": {
+                                "int": 371968
+                            },
+                            "created_at": {
+                                "str": 371968
+                            },
+                            "utc_offset": {
+                                "NoneType": 371968
+                            },
+                            "time_zone": {
+                                "NoneType": 371968
+                            },
+                            "geo_enabled": {
+                                "bool": 371968
+                            },
+                            "lang": {
+                                "NoneType": 371968
+                            },
+                            "contributors_enabled": {
+                                "bool": 371968
+                            },
+                            "is_translator": {
+                                "bool": 371968
+                            },
+                            "profile_background_color": {
+                                "str": 371968
+                            },
+                            "profile_background_image_url": {
+                                "str": 371968
+                            },
+                            "profile_background_image_url_https": {
+                                "str": 371968
+                            },
+                            "profile_background_tile": {
+                                "bool": 371968
+                            },
+                            "profile_link_color": {
+                                "str": 371968
+                            },
+                            "profile_sidebar_border_color": {
+                                "str": 371968
+                            },
+                            "profile_sidebar_fill_color": {
+                                "str": 371968
+                            },
+                            "profile_text_color": {
+                                "str": 371968
+                            },
+                            "profile_use_background_image": {
+                                "bool": 371968
+                            },
+                            "profile_image_url": {
+                                "str": 371968
+                            },
+                            "profile_image_url_https": {
+                                "str": 371968
+                            },
+                            "profile_banner_url": {
+                                "str": 355827
+                            },
+                            "default_profile": {
+                                "bool": 371968
+                            },
+                            "default_profile_image": {
+                                "bool": 371968
+                            },
+                            "following": {
+                                "NoneType": 371968
+                            },
+                            "follow_request_sent": {
+                                "NoneType": 371968
+                            },
+                            "notifications": {
+                                "NoneType": 371968
+                            }
+                        }
+                    },
+                    "geo": {
+                        "NoneType": 371915,
+                        "dict": 53,
+                        "children": {
+                            "type": {
+                                "str": 53
+                            },
+                            "coordinates": {
+                                "list": 53,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "coordinates": {
+                        "NoneType": 371915,
+                        "dict": 53,
+                        "children": {
+                            "type": {
+                                "str": 53
+                            },
+                            "coordinates": {
+                                "list": 53,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "place": {
+                        "NoneType": 362293,
+                        "dict": 9675,
+                        "children": {
+                            "id": {
+                                "str": 9675
+                            },
+                            "url": {
+                                "str": 9675
+                            },
+                            "place_type": {
+                                "str": 9675
+                            },
+                            "name": {
+                                "str": 9675
+                            },
+                            "full_name": {
+                                "str": 9675
+                            },
+                            "country_code": {
+                                "str": 9675
+                            },
+                            "country": {
+                                "str": 9675
+                            },
+                            "bounding_box": {
+                                "dict": 9675,
+                                "children": {
+                                    "type": {
+                                        "str": 9675
+                                    },
+                                    "coordinates": {
+                                        "list": 9675,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "attributes": {
+                                "dict": 9675,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "contributors": {
+                        "NoneType": 371968
+                    },
+                    "is_quote_status": {
+                        "bool": 371968
+                    },
+                    "quote_count": {
+                        "int": 371968
+                    },
+                    "reply_count": {
+                        "int": 371968
+                    },
+                    "retweet_count": {
+                        "int": 371968
+                    },
+                    "favorite_count": {
+                        "int": 371968
+                    },
+                    "entities": {
+                        "dict": 371968,
+                        "children": {
+                            "hashtags": {
+                                "list": 371968,
+                                "children": {
+                                    "text": {
+                                        "str": 72314
+                                    },
+                                    "indices": {
+                                        "list": 72314,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "urls": {
+                                "list": 371968,
+                                "children": {
+                                    "url": {
+                                        "str": 167998
+                                    },
+                                    "expanded_url": {
+                                        "str": 167998
+                                    },
+                                    "display_url": {
+                                        "str": 167998
+                                    },
+                                    "indices": {
+                                        "list": 167998,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "user_mentions": {
+                                "list": 371968,
+                                "children": {
+                                    "screen_name": {
+                                        "str": 59822
+                                    },
+                                    "name": {
+                                        "str": 59822
+                                    },
+                                    "id": {
+                                        "int": 59822
+                                    },
+                                    "id_str": {
+                                        "str": 59822
+                                    },
+                                    "indices": {
+                                        "list": 59822,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "symbols": {
+                                "list": 371968,
+                                "children": {
+                                    "text": {
+                                        "str": 136
+                                    },
+                                    "indices": {
+                                        "list": 136,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "media": {
+                                "list": 167911,
+                                "children": {
+                                    "id": {
+                                        "int": 167912
+                                    },
+                                    "id_str": {
+                                        "str": 167912
+                                    },
+                                    "indices": {
+                                        "list": 167912,
+                                        "children": {}
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 82847,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 82847
+                                            },
+                                            "title": {
+                                                "str": 4122
+                                            },
+                                            "description": {
+                                                "str": 4112
+                                            },
+                                            "embeddable": {
+                                                "bool": 3281
+                                            }
+                                        }
+                                    },
+                                    "media_url": {
+                                        "str": 167912
+                                    },
+                                    "media_url_https": {
+                                        "str": 167912
+                                    },
+                                    "url": {
+                                        "str": 167912
+                                    },
+                                    "display_url": {
+                                        "str": 167912
+                                    },
+                                    "expanded_url": {
+                                        "str": 167912
+                                    },
+                                    "type": {
+                                        "str": 167912
+                                    },
+                                    "sizes": {
+                                        "dict": 167912,
+                                        "children": {
+                                            "thumb": {
+                                                "dict": 167912,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 167912
+                                                    },
+                                                    "h": {
+                                                        "int": 167912
+                                                    },
+                                                    "resize": {
+                                                        "str": 167912
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 167912,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 167912
+                                                    },
+                                                    "h": {
+                                                        "int": 167912
+                                                    },
+                                                    "resize": {
+                                                        "str": 167912
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 167912,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 167912
+                                                    },
+                                                    "h": {
+                                                        "int": 167912
+                                                    },
+                                                    "resize": {
+                                                        "str": 167912
+                                                    }
+                                                }
+                                            },
+                                            "medium": {
+                                                "dict": 167912,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 167912
+                                                    },
+                                                    "h": {
+                                                        "int": 167912
+                                                    },
+                                                    "resize": {
+                                                        "str": 167912
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 30888
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 30888
+                                    },
+                                    "source_user_id": {
+                                        "int": 30921
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 30921
+                                    },
+                                    "description": {
+                                        "str": 336
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "extended_entities": {
+                        "dict": 167911,
+                        "children": {
+                            "media": {
+                                "list": 167911,
+                                "children": {
+                                    "id": {
+                                        "int": 207616
+                                    },
+                                    "id_str": {
+                                        "str": 207616
+                                    },
+                                    "indices": {
+                                        "list": 207616,
+                                        "children": {}
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 82847,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 82847
+                                            },
+                                            "title": {
+                                                "str": 4122
+                                            },
+                                            "description": {
+                                                "str": 4112
+                                            },
+                                            "embeddable": {
+                                                "bool": 3281
+                                            }
+                                        }
+                                    },
+                                    "media_url": {
+                                        "str": 207616
+                                    },
+                                    "media_url_https": {
+                                        "str": 207616
+                                    },
+                                    "url": {
+                                        "str": 207616
+                                    },
+                                    "display_url": {
+                                        "str": 207616
+                                    },
+                                    "expanded_url": {
+                                        "str": 207616
+                                    },
+                                    "type": {
+                                        "str": 207616
+                                    },
+                                    "video_info": {
+                                        "dict": 83836,
+                                        "children": {
+                                            "aspect_ratio": {
+                                                "list": 83836,
+                                                "children": {}
+                                            },
+                                            "duration_millis": {
+                                                "int": 82847
+                                            },
+                                            "variants": {
+                                                "list": 83836,
+                                                "children": {
+                                                    "content_type": {
+                                                        "str": 317480
+                                                    },
+                                                    "url": {
+                                                        "str": 317480
+                                                    },
+                                                    "bitrate": {
+                                                        "int": 234633
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "sizes": {
+                                        "dict": 207616,
+                                        "children": {
+                                            "thumb": {
+                                                "dict": 207616,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 207616
+                                                    },
+                                                    "h": {
+                                                        "int": 207616
+                                                    },
+                                                    "resize": {
+                                                        "str": 207616
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 207616,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 207616
+                                                    },
+                                                    "h": {
+                                                        "int": 207616
+                                                    },
+                                                    "resize": {
+                                                        "str": 207616
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 207616,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 207616
+                                                    },
+                                                    "h": {
+                                                        "int": 207616
+                                                    },
+                                                    "resize": {
+                                                        "str": 207616
+                                                    }
+                                                }
+                                            },
+                                            "medium": {
+                                                "dict": 207616,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 207616
+                                                    },
+                                                    "h": {
+                                                        "int": 207616
+                                                    },
+                                                    "resize": {
+                                                        "str": 207616
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 31263
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 31263
+                                    },
+                                    "source_user_id": {
+                                        "int": 31296
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 31296
+                                    },
+                                    "description": {
+                                        "str": 382
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "favorited": {
+                        "bool": 371968
+                    },
+                    "retweeted": {
+                        "bool": 371968
+                    },
+                    "possibly_sensitive": {
+                        "bool": 288324
+                    },
+                    "filter_level": {
+                        "str": 371968
+                    },
+                    "lang": {
+                        "str": 371968
+                    },
+                    "extended_tweet": {
+                        "dict": 147181,
+                        "children": {
+                            "full_text": {
+                                "str": 147181
+                            },
+                            "display_text_range": {
+                                "list": 147181,
+                                "children": {}
+                            },
+                            "entities": {
+                                "dict": 147181,
+                                "children": {
+                                    "hashtags": {
+                                        "list": 147181,
+                                        "children": {
+                                            "text": {
+                                                "str": 95799
+                                            },
+                                            "indices": {
+                                                "list": 95799,
+                                                "children": {}
+                                            }
+                                        }
+                                    },
+                                    "urls": {
+                                        "list": 147181,
+                                        "children": {
+                                            "url": {
+                                                "str": 31789
+                                            },
+                                            "expanded_url": {
+                                                "str": 31789
+                                            },
+                                            "display_url": {
+                                                "str": 31789
+                                            },
+                                            "indices": {
+                                                "list": 31789,
+                                                "children": {}
+                                            }
+                                        }
+                                    },
+                                    "user_mentions": {
+                                        "list": 147181,
+                                        "children": {
+                                            "screen_name": {
+                                                "str": 68675
+                                            },
+                                            "name": {
+                                                "str": 68675
+                                            },
+                                            "id": {
+                                                "int": 68675
+                                            },
+                                            "id_str": {
+                                                "str": 68675
+                                            },
+                                            "indices": {
+                                                "list": 68675,
+                                                "children": {}
+                                            }
+                                        }
+                                    },
+                                    "symbols": {
+                                        "list": 147181,
+                                        "children": {
+                                            "text": {
+                                                "str": 174
+                                            },
+                                            "indices": {
+                                                "list": 174,
+                                                "children": {}
+                                            }
+                                        }
+                                    },
+                                    "media": {
+                                        "list": 95759,
+                                        "children": {
+                                            "id": {
+                                                "int": 123773
+                                            },
+                                            "id_str": {
+                                                "str": 123773
+                                            },
+                                            "indices": {
+                                                "list": 123773,
+                                                "children": {}
+                                            },
+                                            "media_url": {
+                                                "str": 123773
+                                            },
+                                            "media_url_https": {
+                                                "str": 123773
+                                            },
+                                            "url": {
+                                                "str": 123773
+                                            },
+                                            "display_url": {
+                                                "str": 123773
+                                            },
+                                            "expanded_url": {
+                                                "str": 123773
+                                            },
+                                            "type": {
+                                                "str": 123773
+                                            },
+                                            "sizes": {
+                                                "dict": 123773,
+                                                "children": {
+                                                    "thumb": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "medium": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "small": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "large": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "additional_media_info": {
+                                                "dict": 44412,
+                                                "children": {
+                                                    "monetizable": {
+                                                        "bool": 44412
+                                                    },
+                                                    "title": {
+                                                        "str": 4397
+                                                    },
+                                                    "description": {
+                                                        "str": 4364
+                                                    },
+                                                    "embeddable": {
+                                                        "bool": 4568
+                                                    }
+                                                }
+                                            },
+                                            "video_info": {
+                                                "dict": 44851,
+                                                "children": {
+                                                    "aspect_ratio": {
+                                                        "list": 44851,
+                                                        "children": {}
+                                                    },
+                                                    "duration_millis": {
+                                                        "int": 44404
+                                                    },
+                                                    "variants": {
+                                                        "list": 44851,
+                                                        "children": {
+                                                            "content_type": {
+                                                                "str": 171079
+                                                            },
+                                                            "url": {
+                                                                "str": 171079
+                                                            },
+                                                            "bitrate": {
+                                                                "int": 126675
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "source_status_id": {
+                                                "int": 9192
+                                            },
+                                            "source_status_id_str": {
+                                                "str": 9192
+                                            },
+                                            "source_user_id": {
+                                                "int": 9356
+                                            },
+                                            "source_user_id_str": {
+                                                "str": 9356
+                                            },
+                                            "description": {
+                                                "str": 644
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "extended_entities": {
+                                "dict": 95759,
+                                "children": {
+                                    "media": {
+                                        "list": 95759,
+                                        "children": {
+                                            "id": {
+                                                "int": 123773
+                                            },
+                                            "id_str": {
+                                                "str": 123773
+                                            },
+                                            "indices": {
+                                                "list": 123773,
+                                                "children": {}
+                                            },
+                                            "media_url": {
+                                                "str": 123773
+                                            },
+                                            "media_url_https": {
+                                                "str": 123773
+                                            },
+                                            "url": {
+                                                "str": 123773
+                                            },
+                                            "display_url": {
+                                                "str": 123773
+                                            },
+                                            "expanded_url": {
+                                                "str": 123773
+                                            },
+                                            "type": {
+                                                "str": 123773
+                                            },
+                                            "sizes": {
+                                                "dict": 123773,
+                                                "children": {
+                                                    "thumb": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "medium": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "small": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    },
+                                                    "large": {
+                                                        "dict": 123773,
+                                                        "children": {
+                                                            "w": {
+                                                                "int": 123773
+                                                            },
+                                                            "h": {
+                                                                "int": 123773
+                                                            },
+                                                            "resize": {
+                                                                "str": 123773
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "additional_media_info": {
+                                                "dict": 44412,
+                                                "children": {
+                                                    "monetizable": {
+                                                        "bool": 44412
+                                                    },
+                                                    "title": {
+                                                        "str": 4397
+                                                    },
+                                                    "description": {
+                                                        "str": 4364
+                                                    },
+                                                    "embeddable": {
+                                                        "bool": 4568
+                                                    }
+                                                }
+                                            },
+                                            "video_info": {
+                                                "dict": 44851,
+                                                "children": {
+                                                    "aspect_ratio": {
+                                                        "list": 44851,
+                                                        "children": {}
+                                                    },
+                                                    "duration_millis": {
+                                                        "int": 44404
+                                                    },
+                                                    "variants": {
+                                                        "list": 44851,
+                                                        "children": {
+                                                            "content_type": {
+                                                                "str": 171079
+                                                            },
+                                                            "url": {
+                                                                "str": 171079
+                                                            },
+                                                            "bitrate": {
+                                                                "int": 126675
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "source_status_id": {
+                                                "int": 9192
+                                            },
+                                            "source_status_id_str": {
+                                                "str": 9192
+                                            },
+                                            "source_user_id": {
+                                                "int": 9356
+                                            },
+                                            "source_user_id_str": {
+                                                "str": 9356
+                                            },
+                                            "description": {
+                                                "str": 644
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "quoted_status_id": {
+                        "int": 19627
+                    },
+                    "quoted_status_id_str": {
+                        "str": 19627
+                    },
+                    "withheld_in_countries": {
+                        "list": 46,
+                        "children": {}
+                    },
+                    "scopes": {
+                        "dict": 36,
+                        "children": {
+                            "followers": {
+                                "bool": 36
+                            }
+                        }
+                    }
+                }
+            },
+            "quoted_status_permalink": {
+                "dict": 371968,
+                "children": {
+                    "url": {
+                        "str": 371968
+                    },
+                    "expanded": {
+                        "str": 371968
+                    },
+                    "display": {
+                        "str": 371968
+                    }
+                }
+            },
+            "withheld_in_countries": {
+                "list": 276,
+                "children": {}
+            },
+            "scopes": {
+                "dict": 957,
+                "children": {
+                    "followers": {
+                        "bool": 957
+                    }
+                }
+            }
+        }
+    },
+    "is_quote_status": {
+        "bool": 5220246
+    },
+    "quote_count": {
+        "int": 5220246
+    },
+    "reply_count": {
+        "int": 5220246
+    },
+    "retweet_count": {
+        "int": 5220246
+    },
+    "favorite_count": {
+        "int": 5220246
+    },
+    "entities": {
+        "dict": 5220246,
+        "children": {
+            "hashtags": {
+                "list": 5220246,
+                "children": {
+                    "text": {
+                        "str": 1207286
+                    },
+                    "indices": {
+                        "list": 1207286,
+                        "children": {}
+                    }
+                }
+            },
+            "urls": {
+                "list": 5220246,
+                "children": {
+                    "url": {
+                        "str": 614008
+                    },
+                    "expanded_url": {
+                        "str": 614008
+                    },
+                    "display_url": {
+                        "str": 614008
+                    },
+                    "indices": {
+                        "list": 614008,
+                        "children": {}
+                    }
+                }
+            },
+            "user_mentions": {
+                "list": 5220246,
+                "children": {
+                    "screen_name": {
+                        "str": 5246979
+                    },
+                    "name": {
+                        "str": 5246950,
+                        "NoneType": 29
+                    },
+                    "id": {
+                        "int": 5246950,
+                        "NoneType": 29
+                    },
+                    "id_str": {
+                        "str": 5246950,
+                        "NoneType": 29
+                    },
+                    "indices": {
+                        "list": 5246979,
+                        "children": {}
+                    }
+                }
+            },
+            "symbols": {
+                "list": 5220246,
+                "children": {
+                    "text": {
+                        "str": 2625
+                    },
+                    "indices": {
+                        "list": 2625,
+                        "children": {}
+                    }
+                }
+            },
+            "media": {
+                "list": 1062672,
+                "children": {
+                    "id": {
+                        "int": 1062739
+                    },
+                    "id_str": {
+                        "str": 1062739
+                    },
+                    "indices": {
+                        "list": 1062739,
+                        "children": {}
+                    },
+                    "media_url": {
+                        "str": 1062739
+                    },
+                    "media_url_https": {
+                        "str": 1062739
+                    },
+                    "url": {
+                        "str": 1062739
+                    },
+                    "display_url": {
+                        "str": 1062739
+                    },
+                    "expanded_url": {
+                        "str": 1062739
+                    },
+                    "type": {
+                        "str": 1062739
+                    },
+                    "sizes": {
+                        "dict": 1062739,
+                        "children": {
+                            "thumb": {
+                                "dict": 1062739,
+                                "children": {
+                                    "w": {
+                                        "int": 1062739
+                                    },
+                                    "h": {
+                                        "int": 1062739
+                                    },
+                                    "resize": {
+                                        "str": 1062739
+                                    }
+                                }
+                            },
+                            "large": {
+                                "dict": 1062739,
+                                "children": {
+                                    "w": {
+                                        "int": 1062739
+                                    },
+                                    "h": {
+                                        "int": 1062739
+                                    },
+                                    "resize": {
+                                        "str": 1062739
+                                    }
+                                }
+                            },
+                            "medium": {
+                                "dict": 1062739,
+                                "children": {
+                                    "w": {
+                                        "int": 1062739
+                                    },
+                                    "h": {
+                                        "int": 1062739
+                                    },
+                                    "resize": {
+                                        "str": 1062739
+                                    }
+                                }
+                            },
+                            "small": {
+                                "dict": 1062739,
+                                "children": {
+                                    "w": {
+                                        "int": 1062739
+                                    },
+                                    "h": {
+                                        "int": 1062739
+                                    },
+                                    "resize": {
+                                        "str": 1062739
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "source_status_id": {
+                        "int": 846623
+                    },
+                    "source_status_id_str": {
+                        "str": 846623
+                    },
+                    "source_user_id": {
+                        "int": 846625
+                    },
+                    "source_user_id_str": {
+                        "str": 846625
+                    },
+                    "additional_media_info": {
+                        "dict": 269990,
+                        "children": {
+                            "monetizable": {
+                                "bool": 269990
+                            },
+                            "title": {
+                                "str": 12556
+                            },
+                            "description": {
+                                "str": 12489
+                            },
+                            "embeddable": {
+                                "bool": 12365
+                            }
+                        }
+                    },
+                    "description": {
+                        "str": 20871
+                    }
+                }
+            }
+        }
+    },
+    "favorited": {
+        "bool": 5220246
+    },
+    "retweeted": {
+        "bool": 5220246
+    },
+    "filter_level": {
+        "str": 5220246
+    },
+    "lang": {
+        "str": 5220246
+    },
+    "timestamp_ms": {
+        "str": 5220246
+    },
+    "extended_entities": {
+        "dict": 1062672,
+        "children": {
+            "media": {
+                "list": 1062672,
+                "children": {
+                    "id": {
+                        "int": 1513240
+                    },
+                    "id_str": {
+                        "str": 1513240
+                    },
+                    "indices": {
+                        "list": 1513240,
+                        "children": {}
+                    },
+                    "media_url": {
+                        "str": 1513240
+                    },
+                    "media_url_https": {
+                        "str": 1513240
+                    },
+                    "url": {
+                        "str": 1513240
+                    },
+                    "display_url": {
+                        "str": 1513240
+                    },
+                    "expanded_url": {
+                        "str": 1513240
+                    },
+                    "type": {
+                        "str": 1513240
+                    },
+                    "sizes": {
+                        "dict": 1513240,
+                        "children": {
+                            "thumb": {
+                                "dict": 1513240,
+                                "children": {
+                                    "w": {
+                                        "int": 1513240
+                                    },
+                                    "h": {
+                                        "int": 1513240
+                                    },
+                                    "resize": {
+                                        "str": 1513240
+                                    }
+                                }
+                            },
+                            "large": {
+                                "dict": 1513240,
+                                "children": {
+                                    "w": {
+                                        "int": 1513240
+                                    },
+                                    "h": {
+                                        "int": 1513240
+                                    },
+                                    "resize": {
+                                        "str": 1513240
+                                    }
+                                }
+                            },
+                            "medium": {
+                                "dict": 1513240,
+                                "children": {
+                                    "w": {
+                                        "int": 1513240
+                                    },
+                                    "h": {
+                                        "int": 1513240
+                                    },
+                                    "resize": {
+                                        "str": 1513240
+                                    }
+                                }
+                            },
+                            "small": {
+                                "dict": 1513240,
+                                "children": {
+                                    "w": {
+                                        "int": 1513240
+                                    },
+                                    "h": {
+                                        "int": 1513240
+                                    },
+                                    "resize": {
+                                        "str": 1513240
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "source_status_id": {
+                        "int": 1249095
+                    },
+                    "source_status_id_str": {
+                        "str": 1249095
+                    },
+                    "source_user_id": {
+                        "int": 1249097
+                    },
+                    "source_user_id_str": {
+                        "str": 1249097
+                    },
+                    "additional_media_info": {
+                        "dict": 269990,
+                        "children": {
+                            "monetizable": {
+                                "bool": 269990
+                            },
+                            "title": {
+                                "str": 12556
+                            },
+                            "description": {
+                                "str": 12489
+                            },
+                            "embeddable": {
+                                "bool": 12365
+                            }
+                        }
+                    },
+                    "video_info": {
+                        "dict": 307229,
+                        "children": {
+                            "aspect_ratio": {
+                                "list": 307229,
+                                "children": {}
+                            },
+                            "duration_millis": {
+                                "int": 269951
+                            },
+                            "variants": {
+                                "list": 307229,
+                                "children": {
+                                    "bitrate": {
+                                        "int": 777701
+                                    },
+                                    "content_type": {
+                                        "str": 1047652
+                                    },
+                                    "url": {
+                                        "str": 1047652
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "description": {
+                        "str": 21146
+                    }
+                }
+            }
+        }
+    },
+    "possibly_sensitive": {
+        "bool": 1405549
+    },
+    "display_text_range": {
+        "list": 1383125,
+        "children": {}
+    },
+    "extended_tweet": {
+        "dict": 310890,
+        "children": {
+            "full_text": {
+                "str": 310890
+            },
+            "display_text_range": {
+                "list": 310890,
+                "children": {}
+            },
+            "entities": {
+                "dict": 310890,
+                "children": {
+                    "hashtags": {
+                        "list": 310890,
+                        "children": {
+                            "text": {
+                                "str": 205792
+                            },
+                            "indices": {
+                                "list": 205792,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "urls": {
+                        "list": 310890,
+                        "children": {
+                            "url": {
+                                "str": 48923
+                            },
+                            "expanded_url": {
+                                "str": 48923
+                            },
+                            "display_url": {
+                                "str": 48923
+                            },
+                            "indices": {
+                                "list": 48923,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "user_mentions": {
+                        "list": 310890,
+                        "children": {
+                            "screen_name": {
+                                "str": 524688
+                            },
+                            "name": {
+                                "str": 524688
+                            },
+                            "id": {
+                                "int": 524688
+                            },
+                            "id_str": {
+                                "str": 524688
+                            },
+                            "indices": {
+                                "list": 524688,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "symbols": {
+                        "list": 310890,
+                        "children": {
+                            "text": {
+                                "str": 949
+                            },
+                            "indices": {
+                                "list": 949,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "media": {
+                        "list": 69835,
+                        "children": {
+                            "id": {
+                                "int": 86709
+                            },
+                            "id_str": {
+                                "str": 86709
+                            },
+                            "indices": {
+                                "list": 86709,
+                                "children": {}
+                            },
+                            "description": {
+                                "str": 2537
+                            },
+                            "media_url": {
+                                "str": 86709
+                            },
+                            "media_url_https": {
+                                "str": 86709
+                            },
+                            "url": {
+                                "str": 86709
+                            },
+                            "display_url": {
+                                "str": 86709
+                            },
+                            "expanded_url": {
+                                "str": 86709
+                            },
+                            "type": {
+                                "str": 86709
+                            },
+                            "sizes": {
+                                "dict": 86709,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "additional_media_info": {
+                                "dict": 7173,
+                                "children": {
+                                    "title": {
+                                        "str": 299
+                                    },
+                                    "description": {
+                                        "str": 289
+                                    },
+                                    "embeddable": {
+                                        "bool": 279
+                                    },
+                                    "monetizable": {
+                                        "bool": 7173
+                                    }
+                                }
+                            },
+                            "video_info": {
+                                "dict": 10497,
+                                "children": {
+                                    "aspect_ratio": {
+                                        "list": 10497,
+                                        "children": {}
+                                    },
+                                    "duration_millis": {
+                                        "int": 7172
+                                    },
+                                    "variants": {
+                                        "list": 10497,
+                                        "children": {
+                                            "content_type": {
+                                                "str": 29778
+                                            },
+                                            "url": {
+                                                "str": 29778
+                                            },
+                                            "bitrate": {
+                                                "int": 22606
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 3607
+                            },
+                            "source_status_id_str": {
+                                "str": 3607
+                            },
+                            "source_user_id": {
+                                "int": 3618
+                            },
+                            "source_user_id_str": {
+                                "str": 3618
+                            }
+                        }
+                    }
+                }
+            },
+            "extended_entities": {
+                "dict": 69835,
+                "children": {
+                    "media": {
+                        "list": 69835,
+                        "children": {
+                            "id": {
+                                "int": 86709
+                            },
+                            "id_str": {
+                                "str": 86709
+                            },
+                            "indices": {
+                                "list": 86709,
+                                "children": {}
+                            },
+                            "description": {
+                                "str": 2537
+                            },
+                            "media_url": {
+                                "str": 86709
+                            },
+                            "media_url_https": {
+                                "str": 86709
+                            },
+                            "url": {
+                                "str": 86709
+                            },
+                            "display_url": {
+                                "str": 86709
+                            },
+                            "expanded_url": {
+                                "str": 86709
+                            },
+                            "type": {
+                                "str": 86709
+                            },
+                            "sizes": {
+                                "dict": 86709,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 86709,
+                                        "children": {
+                                            "w": {
+                                                "int": 86709
+                                            },
+                                            "h": {
+                                                "int": 86709
+                                            },
+                                            "resize": {
+                                                "str": 86709
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "additional_media_info": {
+                                "dict": 7173,
+                                "children": {
+                                    "title": {
+                                        "str": 299
+                                    },
+                                    "description": {
+                                        "str": 289
+                                    },
+                                    "embeddable": {
+                                        "bool": 279
+                                    },
+                                    "monetizable": {
+                                        "bool": 7173
+                                    }
+                                }
+                            },
+                            "video_info": {
+                                "dict": 10497,
+                                "children": {
+                                    "aspect_ratio": {
+                                        "list": 10497,
+                                        "children": {}
+                                    },
+                                    "duration_millis": {
+                                        "int": 7172
+                                    },
+                                    "variants": {
+                                        "list": 10497,
+                                        "children": {
+                                            "content_type": {
+                                                "str": 29778
+                                            },
+                                            "url": {
+                                                "str": 29778
+                                            },
+                                            "bitrate": {
+                                                "int": 22606
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 3607
+                            },
+                            "source_status_id_str": {
+                                "str": 3607
+                            },
+                            "source_user_id": {
+                                "int": 3618
+                            },
+                            "source_user_id_str": {
+                                "str": 3618
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "quoted_status_id": {
+        "int": 586926
+    },
+    "quoted_status_id_str": {
+        "str": 586926
+    },
+    "quoted_status": {
+        "dict": 585068,
+        "children": {
+            "created_at": {
+                "str": 585068
+            },
+            "id": {
+                "int": 585068
+            },
+            "id_str": {
+                "str": 585068
+            },
+            "text": {
+                "str": 585068
+            },
+            "display_text_range": {
+                "list": 354040,
+                "children": {}
+            },
+            "source": {
+                "str": 585068
+            },
+            "truncated": {
+                "bool": 585068
+            },
+            "in_reply_to_status_id": {
+                "NoneType": 532959,
+                "int": 52109
+            },
+            "in_reply_to_status_id_str": {
+                "NoneType": 532959,
+                "str": 52109
+            },
+            "in_reply_to_user_id": {
+                "NoneType": 530037,
+                "int": 55031
+            },
+            "in_reply_to_user_id_str": {
+                "NoneType": 530037,
+                "str": 55031
+            },
+            "in_reply_to_screen_name": {
+                "NoneType": 530046,
+                "str": 55022
+            },
+            "user": {
+                "dict": 585068,
+                "children": {
+                    "id": {
+                        "int": 585068
+                    },
+                    "id_str": {
+                        "str": 585068
+                    },
+                    "name": {
+                        "str": 585068
+                    },
+                    "screen_name": {
+                        "str": 585068
+                    },
+                    "location": {
+                        "NoneType": 150297,
+                        "str": 434771
+                    },
+                    "url": {
+                        "NoneType": 227764,
+                        "str": 357304
+                    },
+                    "description": {
+                        "str": 554592,
+                        "NoneType": 30476
+                    },
+                    "translator_type": {
+                        "str": 585068
+                    },
+                    "protected": {
+                        "bool": 585068
+                    },
+                    "verified": {
+                        "bool": 585068
+                    },
+                    "followers_count": {
+                        "int": 585068
+                    },
+                    "friends_count": {
+                        "int": 585068
+                    },
+                    "listed_count": {
+                        "int": 585068
+                    },
+                    "favourites_count": {
+                        "int": 585068
+                    },
+                    "statuses_count": {
+                        "int": 585068
+                    },
+                    "created_at": {
+                        "str": 585068
+                    },
+                    "utc_offset": {
+                        "NoneType": 585068
+                    },
+                    "time_zone": {
+                        "NoneType": 585068
+                    },
+                    "geo_enabled": {
+                        "bool": 585068
+                    },
+                    "lang": {
+                        "NoneType": 585068
+                    },
+                    "contributors_enabled": {
+                        "bool": 585068
+                    },
+                    "is_translator": {
+                        "bool": 585068
+                    },
+                    "profile_background_color": {
+                        "str": 585068
+                    },
+                    "profile_background_image_url": {
+                        "str": 585068
+                    },
+                    "profile_background_image_url_https": {
+                        "str": 585068
+                    },
+                    "profile_background_tile": {
+                        "bool": 585068
+                    },
+                    "profile_link_color": {
+                        "str": 585068
+                    },
+                    "profile_sidebar_border_color": {
+                        "str": 585068
+                    },
+                    "profile_sidebar_fill_color": {
+                        "str": 585068
+                    },
+                    "profile_text_color": {
+                        "str": 585068
+                    },
+                    "profile_use_background_image": {
+                        "bool": 585068
+                    },
+                    "profile_image_url": {
+                        "str": 585068
+                    },
+                    "profile_image_url_https": {
+                        "str": 585068
+                    },
+                    "profile_banner_url": {
+                        "str": 557345
+                    },
+                    "default_profile": {
+                        "bool": 585068
+                    },
+                    "default_profile_image": {
+                        "bool": 585068
+                    },
+                    "following": {
+                        "NoneType": 585068
+                    },
+                    "follow_request_sent": {
+                        "NoneType": 585068
+                    },
+                    "notifications": {
+                        "NoneType": 585068
+                    }
+                }
+            },
+            "geo": {
+                "NoneType": 584983,
+                "dict": 85,
+                "children": {
+                    "type": {
+                        "str": 85
+                    },
+                    "coordinates": {
+                        "list": 85,
+                        "children": {}
+                    }
+                }
+            },
+            "coordinates": {
+                "NoneType": 584983,
+                "dict": 85,
+                "children": {
+                    "type": {
+                        "str": 85
+                    },
+                    "coordinates": {
+                        "list": 85,
+                        "children": {}
+                    }
+                }
+            },
+            "place": {
+                "NoneType": 570680,
+                "dict": 14388,
+                "children": {
+                    "id": {
+                        "str": 14388
+                    },
+                    "url": {
+                        "str": 14388
+                    },
+                    "place_type": {
+                        "str": 14388
+                    },
+                    "name": {
+                        "str": 14388
+                    },
+                    "full_name": {
+                        "str": 14388
+                    },
+                    "country_code": {
+                        "str": 14388
+                    },
+                    "country": {
+                        "str": 14388
+                    },
+                    "bounding_box": {
+                        "dict": 14387,
+                        "children": {
+                            "type": {
+                                "str": 14387
+                            },
+                            "coordinates": {
+                                "list": 14387,
+                                "children": {}
+                            }
+                        },
+                        "NoneType": 1
+                    },
+                    "attributes": {
+                        "dict": 14388,
+                        "children": {}
+                    }
+                }
+            },
+            "contributors": {
+                "NoneType": 585068
+            },
+            "is_quote_status": {
+                "bool": 585068
+            },
+            "quote_count": {
+                "int": 585068
+            },
+            "reply_count": {
+                "int": 585068
+            },
+            "retweet_count": {
+                "int": 585068
+            },
+            "favorite_count": {
+                "int": 585068
+            },
+            "entities": {
+                "dict": 585068,
+                "children": {
+                    "hashtags": {
+                        "list": 585068,
+                        "children": {
+                            "text": {
+                                "str": 120260
+                            },
+                            "indices": {
+                                "list": 120260,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "urls": {
+                        "list": 585068,
+                        "children": {
+                            "url": {
+                                "str": 261624
+                            },
+                            "expanded_url": {
+                                "str": 261624
+                            },
+                            "display_url": {
+                                "str": 261624
+                            },
+                            "indices": {
+                                "list": 261624,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "user_mentions": {
+                        "list": 585068,
+                        "children": {
+                            "screen_name": {
+                                "str": 103468
+                            },
+                            "name": {
+                                "str": 103468
+                            },
+                            "id": {
+                                "int": 103468
+                            },
+                            "id_str": {
+                                "str": 103468
+                            },
+                            "indices": {
+                                "list": 103468,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "symbols": {
+                        "list": 585068,
+                        "children": {
+                            "text": {
+                                "str": 290
+                            },
+                            "indices": {
+                                "list": 290,
+                                "children": {}
+                            }
+                        }
+                    },
+                    "media": {
+                        "list": 240387,
+                        "children": {
+                            "id": {
+                                "int": 240396
+                            },
+                            "id_str": {
+                                "str": 240396
+                            },
+                            "indices": {
+                                "list": 240396,
+                                "children": {}
+                            },
+                            "additional_media_info": {
+                                "dict": 110716,
+                                "children": {
+                                    "monetizable": {
+                                        "bool": 110716
+                                    },
+                                    "title": {
+                                        "str": 5388
+                                    },
+                                    "description": {
+                                        "str": 5369
+                                    },
+                                    "embeddable": {
+                                        "bool": 4469
+                                    }
+                                }
+                            },
+                            "media_url": {
+                                "str": 240396
+                            },
+                            "media_url_https": {
+                                "str": 240396
+                            },
+                            "url": {
+                                "str": 240396
+                            },
+                            "display_url": {
+                                "str": 240396
+                            },
+                            "expanded_url": {
+                                "str": 240396
+                            },
+                            "type": {
+                                "str": 240396
+                            },
+                            "sizes": {
+                                "dict": 240396,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 240396,
+                                        "children": {
+                                            "w": {
+                                                "int": 240396
+                                            },
+                                            "h": {
+                                                "int": 240396
+                                            },
+                                            "resize": {
+                                                "str": 240396
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 240396,
+                                        "children": {
+                                            "w": {
+                                                "int": 240396
+                                            },
+                                            "h": {
+                                                "int": 240396
+                                            },
+                                            "resize": {
+                                                "str": 240396
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 240396,
+                                        "children": {
+                                            "w": {
+                                                "int": 240396
+                                            },
+                                            "h": {
+                                                "int": 240396
+                                            },
+                                            "resize": {
+                                                "str": 240396
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 240396,
+                                        "children": {
+                                            "w": {
+                                                "int": 240396
+                                            },
+                                            "h": {
+                                                "int": 240396
+                                            },
+                                            "resize": {
+                                                "str": 240396
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 40110
+                            },
+                            "source_status_id_str": {
+                                "str": 40110
+                            },
+                            "source_user_id": {
+                                "int": 40156
+                            },
+                            "source_user_id_str": {
+                                "str": 40156
+                            },
+                            "description": {
+                                "str": 800
+                            }
+                        }
+                    }
+                }
+            },
+            "extended_entities": {
+                "dict": 240387,
+                "children": {
+                    "media": {
+                        "list": 240387,
+                        "children": {
+                            "id": {
+                                "int": 306944
+                            },
+                            "id_str": {
+                                "str": 306944
+                            },
+                            "indices": {
+                                "list": 306944,
+                                "children": {}
+                            },
+                            "additional_media_info": {
+                                "dict": 110716,
+                                "children": {
+                                    "monetizable": {
+                                        "bool": 110716
+                                    },
+                                    "title": {
+                                        "str": 5388
+                                    },
+                                    "description": {
+                                        "str": 5369
+                                    },
+                                    "embeddable": {
+                                        "bool": 4469
+                                    }
+                                }
+                            },
+                            "media_url": {
+                                "str": 306944
+                            },
+                            "media_url_https": {
+                                "str": 306944
+                            },
+                            "url": {
+                                "str": 306944
+                            },
+                            "display_url": {
+                                "str": 306944
+                            },
+                            "expanded_url": {
+                                "str": 306944
+                            },
+                            "type": {
+                                "str": 306944
+                            },
+                            "video_info": {
+                                "dict": 112887,
+                                "children": {
+                                    "aspect_ratio": {
+                                        "list": 112887,
+                                        "children": {}
+                                    },
+                                    "duration_millis": {
+                                        "int": 110709
+                                    },
+                                    "variants": {
+                                        "list": 112887,
+                                        "children": {
+                                            "content_type": {
+                                                "str": 423038
+                                            },
+                                            "url": {
+                                                "str": 423038
+                                            },
+                                            "bitrate": {
+                                                "int": 312329
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "sizes": {
+                                "dict": 306944,
+                                "children": {
+                                    "thumb": {
+                                        "dict": 306944,
+                                        "children": {
+                                            "w": {
+                                                "int": 306944
+                                            },
+                                            "h": {
+                                                "int": 306944
+                                            },
+                                            "resize": {
+                                                "str": 306944
+                                            }
+                                        }
+                                    },
+                                    "small": {
+                                        "dict": 306944,
+                                        "children": {
+                                            "w": {
+                                                "int": 306944
+                                            },
+                                            "h": {
+                                                "int": 306944
+                                            },
+                                            "resize": {
+                                                "str": 306944
+                                            }
+                                        }
+                                    },
+                                    "large": {
+                                        "dict": 306944,
+                                        "children": {
+                                            "w": {
+                                                "int": 306944
+                                            },
+                                            "h": {
+                                                "int": 306944
+                                            },
+                                            "resize": {
+                                                "str": 306944
+                                            }
+                                        }
+                                    },
+                                    "medium": {
+                                        "dict": 306944,
+                                        "children": {
+                                            "w": {
+                                                "int": 306944
+                                            },
+                                            "h": {
+                                                "int": 306944
+                                            },
+                                            "resize": {
+                                                "str": 306944
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "source_status_id": {
+                                "int": 40816
+                            },
+                            "source_status_id_str": {
+                                "str": 40816
+                            },
+                            "source_user_id": {
+                                "int": 40862
+                            },
+                            "source_user_id_str": {
+                                "str": 40862
+                            },
+                            "description": {
+                                "str": 872
+                            }
+                        }
+                    }
+                }
+            },
+            "favorited": {
+                "bool": 585068
+            },
+            "retweeted": {
+                "bool": 585068
+            },
+            "possibly_sensitive": {
+                "bool": 420555
+            },
+            "filter_level": {
+                "str": 585068
+            },
+            "lang": {
+                "str": 585068
+            },
+            "extended_tweet": {
+                "dict": 223202,
+                "children": {
+                    "full_text": {
+                        "str": 223202
+                    },
+                    "display_text_range": {
+                        "list": 223202,
+                        "children": {}
+                    },
+                    "entities": {
+                        "dict": 223202,
+                        "children": {
+                            "hashtags": {
+                                "list": 223202,
+                                "children": {
+                                    "text": {
+                                        "str": 152398
+                                    },
+                                    "indices": {
+                                        "list": 152398,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "urls": {
+                                "list": 223202,
+                                "children": {
+                                    "url": {
+                                        "str": 49053
+                                    },
+                                    "expanded_url": {
+                                        "str": 49053
+                                    },
+                                    "display_url": {
+                                        "str": 49053
+                                    },
+                                    "indices": {
+                                        "list": 49053,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "user_mentions": {
+                                "list": 223202,
+                                "children": {
+                                    "screen_name": {
+                                        "str": 109161
+                                    },
+                                    "name": {
+                                        "str": 109161
+                                    },
+                                    "id": {
+                                        "int": 109161
+                                    },
+                                    "id_str": {
+                                        "str": 109161
+                                    },
+                                    "indices": {
+                                        "list": 109161,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "symbols": {
+                                "list": 223202,
+                                "children": {
+                                    "text": {
+                                        "str": 406
+                                    },
+                                    "indices": {
+                                        "list": 406,
+                                        "children": {}
+                                    }
+                                }
+                            },
+                            "media": {
+                                "list": 134282,
+                                "children": {
+                                    "id": {
+                                        "int": 176554
+                                    },
+                                    "id_str": {
+                                        "str": 176554
+                                    },
+                                    "indices": {
+                                        "list": 176554,
+                                        "children": {}
+                                    },
+                                    "media_url": {
+                                        "str": 176554
+                                    },
+                                    "media_url_https": {
+                                        "str": 176554
+                                    },
+                                    "url": {
+                                        "str": 176554
+                                    },
+                                    "display_url": {
+                                        "str": 176554
+                                    },
+                                    "expanded_url": {
+                                        "str": 176554
+                                    },
+                                    "type": {
+                                        "str": 176554
+                                    },
+                                    "sizes": {
+                                        "dict": 176554,
+                                        "children": {
+                                            "thumb": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "medium": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 59006,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 59006
+                                            },
+                                            "title": {
+                                                "str": 6053
+                                            },
+                                            "description": {
+                                                "str": 6008
+                                            },
+                                            "embeddable": {
+                                                "bool": 6245
+                                            }
+                                        }
+                                    },
+                                    "video_info": {
+                                        "dict": 59974,
+                                        "children": {
+                                            "aspect_ratio": {
+                                                "list": 59974,
+                                                "children": {}
+                                            },
+                                            "duration_millis": {
+                                                "int": 58991
+                                            },
+                                            "variants": {
+                                                "list": 59974,
+                                                "children": {
+                                                    "content_type": {
+                                                        "str": 226302
+                                                    },
+                                                    "url": {
+                                                        "str": 226302
+                                                    },
+                                                    "bitrate": {
+                                                        "int": 167311
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 12664
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 12664
+                                    },
+                                    "source_user_id": {
+                                        "int": 12909
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 12909
+                                    },
+                                    "description": {
+                                        "str": 1013
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "extended_entities": {
+                        "dict": 134282,
+                        "children": {
+                            "media": {
+                                "list": 134282,
+                                "children": {
+                                    "id": {
+                                        "int": 176554
+                                    },
+                                    "id_str": {
+                                        "str": 176554
+                                    },
+                                    "indices": {
+                                        "list": 176554,
+                                        "children": {}
+                                    },
+                                    "media_url": {
+                                        "str": 176554
+                                    },
+                                    "media_url_https": {
+                                        "str": 176554
+                                    },
+                                    "url": {
+                                        "str": 176554
+                                    },
+                                    "display_url": {
+                                        "str": 176554
+                                    },
+                                    "expanded_url": {
+                                        "str": 176554
+                                    },
+                                    "type": {
+                                        "str": 176554
+                                    },
+                                    "sizes": {
+                                        "dict": 176554,
+                                        "children": {
+                                            "thumb": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "medium": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "small": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            },
+                                            "large": {
+                                                "dict": 176554,
+                                                "children": {
+                                                    "w": {
+                                                        "int": 176554
+                                                    },
+                                                    "h": {
+                                                        "int": 176554
+                                                    },
+                                                    "resize": {
+                                                        "str": 176554
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "additional_media_info": {
+                                        "dict": 59006,
+                                        "children": {
+                                            "monetizable": {
+                                                "bool": 59006
+                                            },
+                                            "title": {
+                                                "str": 6053
+                                            },
+                                            "description": {
+                                                "str": 6008
+                                            },
+                                            "embeddable": {
+                                                "bool": 6245
+                                            }
+                                        }
+                                    },
+                                    "video_info": {
+                                        "dict": 59974,
+                                        "children": {
+                                            "aspect_ratio": {
+                                                "list": 59974,
+                                                "children": {}
+                                            },
+                                            "duration_millis": {
+                                                "int": 58991
+                                            },
+                                            "variants": {
+                                                "list": 59974,
+                                                "children": {
+                                                    "content_type": {
+                                                        "str": 226302
+                                                    },
+                                                    "url": {
+                                                        "str": 226302
+                                                    },
+                                                    "bitrate": {
+                                                        "int": 167311
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "source_status_id": {
+                                        "int": 12664
+                                    },
+                                    "source_status_id_str": {
+                                        "str": 12664
+                                    },
+                                    "source_user_id": {
+                                        "int": 12909
+                                    },
+                                    "source_user_id_str": {
+                                        "str": 12909
+                                    },
+                                    "description": {
+                                        "str": 1013
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "quoted_status_id": {
+                "int": 40242
+            },
+            "quoted_status_id_str": {
+                "str": 40242
+            },
+            "withheld_in_countries": {
+                "list": 64,
+                "children": {}
+            },
+            "scopes": {
+                "dict": 138,
+                "children": {
+                    "followers": {
+                        "bool": 138
+                    }
+                }
+            }
+        }
+    },
+    "quoted_status_permalink": {
+        "dict": 585068,
+        "children": {
+            "url": {
+                "str": 585068
+            },
+            "expanded": {
+                "str": 585068
+            },
+            "display": {
+                "str": 585068
+            }
+        }
+    },
+    "delete": {
+        "dict": 1790291,
+        "children": {
+            "status": {
+                "dict": 1790291,
+                "children": {
+                    "id": {
+                        "int": 1790291
+                    },
+                    "id_str": {
+                        "str": 1790291
+                    },
+                    "user_id": {
+                        "int": 1790291
+                    },
+                    "user_id_str": {
+                        "str": 1790291
+                    }
+                }
+            },
+            "timestamp_ms": {
+                "str": 1790291
+            }
+        }
+    },
+    "withheld_in_countries": {
+        "list": 366,
+        "children": {}
+    }
+}

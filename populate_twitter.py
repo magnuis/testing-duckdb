@@ -5,11 +5,11 @@ import time
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-
+from datetime import datetime
 
 TOP_DIR = './data/twitter/06'
-RAW_DB_PATH = 'raw_yelp.db'
-MATERIALIZED_DB_PATH = 'materialized_yelp.db'
+RAW_DB_PATH = 'raw_twitter.db'
+MATERIALIZED_DB_PATH = 'materialized_twitter.db'
 RAW_PARQUET_FILE_PATH = './data/twitter/twitter_raw_json.parquet'
 MATERIALIZED_PARQUET_FILE_PATH = './data/twitter_materialized_json.parquet'
 
@@ -49,9 +49,7 @@ def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
         user_verified BOOLEAN,
         lang VARCHAR,
         retweeted_status_id_str VARCHAR,
-        hashtag_text VARCHAR,
-        hashtag_cooccurring_text VARCHAR,
-        tweet_volume INTEGER
+        hashtag_text VARCHAR
     );
     '''
     con.execute(create_twitter_table_query)
@@ -66,8 +64,8 @@ def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, file_path=str):
     # Insert Parquet data into DuckDB
     con.execute("BEGIN TRANSACTION")
     con.execute(
-        f"INSERT INTO users SELECT * FROM read_parquet('{file_path}')")
-    con.execute("COMMIT")
+        f"""INSERT INTO tweets SELECT * FROM read_parquet('{file_path}')""")
+    con.execute('COMMIT')
 
     end_time = time.perf_counter()  # End timing
     total_time = end_time - start_time
@@ -80,6 +78,7 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
 
     writer = None
     data_batch = []
+    total_rows = 0
 
     try:
         with open(file_path, 'r') as json_file:
@@ -115,8 +114,6 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
                     RAW_PARQUET_FILE_PATH, table_batch.schema)
             writer.write_table(table_batch)
             total_rows += len(data_batch)
-            print(f"""Final batch written. Total rows written to raw Parquet: {
-                  total_rows}""")
 
     finally:
         # Close the writer if it was initialized
@@ -129,6 +126,7 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
 def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
     writer = None
     data_batch = []
+    total_rows = 0
 
     try:
         with open(file_path, 'r') as json_file:
@@ -137,10 +135,11 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
                     # Parse the JSON document
                     json_obj = json.loads(line)
 
+
                     # Materialize JSON fields into separate columns
                     materialized_row = {
                         'id_str': json_obj.get('id_str'),
-                        'created_at': json_obj.get('created_at'),
+                        'created_at': datetime.strptime(json_obj.get('created_at'), '%a %b %d %H:%M:%S %z %Y'),
                         'text': json_obj.get('text'),
                         'source': json_obj.get('source'),
                         'in_reply_to_status_id_str': json_obj.get('in_reply_to_status_id_str'),
@@ -172,11 +171,11 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
                         writer.write_table(table_batch)
                         total_rows += len(data_batch)
                         data_batch = []  # Clear batch memory
-                        print(
-                            f"Written {total_rows} rows to materialized Parquet so far...")
 
                 except json.JSONDecodeError as e:
                     print(f"Error decoding JSON on line {line_number}: {e}")
+                except TypeError as e:
+                    continue
 
         # Write any remaining rows in the last batch
         if data_batch:
@@ -187,8 +186,8 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
                     MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
             writer.write_table(table_batch)
             total_rows += len(data_batch)
-            print(f"Final batch written. Total rows written to materialized Parquet: {
-                  total_rows}")
+            print(f"""Final batch written. Total rows written to materialized Parquet: {
+                  total_rows}""")
 
     finally:
         # Close the writer if it was initialized
@@ -211,10 +210,6 @@ for dirpath, _, files in os.walk(TOP_DIR):
             write_raw_json_to_parquet(file_path)
             write_materialized_json_to_parquet(file_path)
 
-            # print(f"Decompress: {file_path}")
-            os.remove(file_path)
-            decompressed_file_path = file_path[:-4]
-
         finished += 1
         print(f"Finished with {finished}/{total_files} files")
 
@@ -230,4 +225,4 @@ insert_parquet_into_db(
     con=raw_connection, file_path=RAW_PARQUET_FILE_PATH)
 
 insert_parquet_into_db(
-    con=raw_connection, file_path=RAW_PARQUET_FILE_PATH)
+    con=materialized_connection, file_path=MATERIALIZED_PARQUET_FILE_PATH)

@@ -105,7 +105,7 @@ def perform_tests(
 
         temp_df = pd.DataFrame([df_row])
 
-        results_df = pd.concat([results_df, temp_df], ignore_index=True)
+        results_df = pd.concat([results_df, temp_df], ignore_index=True).reset_index(drop=True)
         print(f"""Query {i} Average Execution Time (last 4 runs): {
               avg_time:.4f} seconds""")
     return results_df
@@ -144,18 +144,18 @@ def main():
         # Perform and log tests for raw data
         raw_results = perform_tests(
             con=raw_connection, queries=raw_queries, run_no=run_no, test_time=test_time)
-        raw_df = pd.concat([raw_df, raw_results], ignore_index=True)
-        raw_df.to_csv(raw_results_path)
-        raw_results.to_csv('last_' + raw_results_path)
+        raw_df = pd.concat([raw_df, raw_results], ignore_index=True).reset_index(drop=True)
+        raw_df.to_csv(raw_results_path, index=False)
+        raw_results.to_csv('last_' + raw_results_path, index=False)
 
         # Perform and log tests for materialized data
         materialized_results = perform_tests(
             con=materialized_connection, queries=materialized_queries, run_no=run_no, test_time=test_time)
         materialized_df = pd.concat(
-            [materialized_df, materialized_results], ignore_index=True)
-        materialized_df.to_csv(materialized_results_path)
+            [materialized_df, materialized_results], ignore_index=True).reset_index(drop=True)
+        materialized_df.to_csv(materialized_results_path, index=False)
         materialized_results.to_csv(
-            'last_' + materialized_results_path)
+            'last_' + materialized_results_path, index=False)
 
 
 if __name__ == "__main__":
