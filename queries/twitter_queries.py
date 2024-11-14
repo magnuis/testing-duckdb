@@ -1,302 +1,267 @@
 RAW_TWITTER_QUERIES = [
-    """
-    SELECT COUNT(*) AS tweet_count
-    FROM tweets
-    WHERE data->>'lang' = 'en';
-    """,
-    """
-    SELECT COUNT(*) AS tweet_count, data->>'source' AS source
-    FROM tweets
-    WHERE data->>'source' IS NOT NULL
-    GROUP BY data->>'source'
-    ORDER BY tweet_count DESC
-    LIMIT 5;
-    """,
-    """
-    SELECT COUNT(*) AS retweet_count, data1->>'user'->>'screen_name' AS original_user 
-    FROM tweets t1, tweets t2 
-    WHERE t1.data->>'retweeted_status'->>'id_str' = t2.data->>'id_str' 
-    GROUP BY original_user 
-    ORDER BY retweet_count 
-    DESC LIMIT 10;
-    """,
-    """
-    SELECT COUNT(*) AS reply_count, t1.data->>'in_reply_to_screen_name' AS replied_user 
-    FROM tweets t1, tweets t2, tweets t3 
-    WHERE t1.data->>'in_reply_to_status_id_str' = t2.data->>'id_str' 
-    AND t2.data->>'in_reply_to_status_id_str' = t3.data->>'id_str' 
-    GROUP BY replied_user 
-    ORDER BY reply_count 
-    DESC LIMIT 15;
-    """,
-    """
-    WITH user_tweets AS ( 
-        SELECT data->>'user'->>'id_str' AS user_id, COUNT(*) AS tweet_count 
-        FROM tweets 
-        GROUP BY user_id 
-    ) 
-    SELECT u.data->>'name' AS user_name, ut.tweet_count 
-    FROM users u, user_tweets ut, tweets t 
-    WHERE u.data->>'id_str' = ut.user_id 
-    AND u.data->>'followers_count' > 1000 
-    ORDER BY ut.tweet_count 
-    DESC LIMIT 10;
-    """,
-    """
-    WITH user_tweets AS ( 
-        SELECT data->>'user'->>'id_str' AS user_id, COUNT(*) AS tweet_count 
-        FROM tweets 
-        GROUP BY user_id 
-    ) 
-    SELECT u.data->>'name' AS user_name, ut.tweet_count 
-    FROM users u, user_tweets ut, tweets t 
-    WHERE u.data->>'id_str' = ut.user_id 
-    AND u.data->>'followers_count' > 1000 
-    ORDER BY ut.tweet_count 
-    DESC LIMIT 10;
-    """,
-    """
-    WITH HashtagCounts AS (
-        SELECT LOWER(h.data->>'text') AS hashtag, COUNT(*) AS hashtag_count
-        FROM tweets t, jsonb_array_elements(t.data->'entities'->'hashtags') AS h
-        GROUP BY LOWER(h.data->>'text')
-        ORDER BY hashtag_count DESC
-        LIMIT 10
-    ),
-    CooccurringHashtags AS (
-        SELECT 
-            LOWER(h1.data->>'text') AS primary_hashtag,
-            LOWER(h2.data->>'text') AS cooccurring_hashtag,
-            COUNT(*) AS cooccurrence_count
-        FROM tweets t,
-            jsonb_array_elements(t.data->'entities'->'hashtags') AS h1,
-            jsonb_array_elements(t.data->'entities'->'hashtags') AS h2
-        WHERE LOWER(h1.data->>'text') != LOWER(h2.data->>'text')
-        GROUP BY primary_hashtag, cooccurring_hashtag
-    )
-    SELECT hc.hashtag AS primary_hashtag, ch.cooccurring_hashtag, ch.cooccurrence_count
-    FROM HashtagCounts hc
-    JOIN CooccurringHashtags ch
-    ON hc.hashtag = ch.primary_hashtag
-    ORDER BY hc.hashtag, ch.cooccurrence_count DESC
-    LIMIT 50;
-    """,
-    """
-    WITH GagaLikers AS (
-        SELECT DISTINCT t.data->>'user'->>'id_str' AS user_id
-        FROM tweets t
-        WHERE LOWER(t.data->>'text') LIKE '%lady gaga%'
-        OR EXISTS (
-            SELECT 1
-            FROM jsonb_array_elements(t.data->'entities'->'hashtags') AS h
-            WHERE LOWER(h->>'text') = 'ladygaga'
-        )
-    ),
-    UserHashtags AS (
-        -- Collect hashtags used by those users
-        SELECT LOWER(h.data->>'text') AS hashtag
-        FROM tweets t, jsonb_array_elements(t.data->'entities'->'hashtags') AS h
-        WHERE t.data->>'user'->>'id_str' IN (SELECT user_id FROM GagaLikers)
-    )
-    SELECT hashtag, COUNT(*) AS usage_count
-    FROM UserHashtags
-    GROUP BY hashtag
-    ORDER BY usage_count DESC
+     """
+     SELECT COUNT(*) AS english_tweet_count
+     FROM tweets
+     WHERE data->>'lang' = 'en';
+         """,
+         """
+     SELECT data->>'source' AS source, COUNT(*) AS tweet_count
+     FROM tweets
+     GROUP BY data->>'source'
+     ORDER BY tweet_count DESC;
+     """,
+     """
+     SELECT 
+         data->'retweeted_status'->'user'->>'screen_name' AS user, 
+         SUM(CAST(data->'retweeted_status'->>'retweet_count' AS INTEGER)) AS total_retweets
+     FROM tweets
+     GROUP BY data->'retweeted_status'->'user'->>'screen_name'
+     ORDER BY total_retweets DESC
+     LIMIT 10;
 
-    LIMIT 10;
-    """,
-    """
-    WITH CovidLikers AS (
-    SELECT DISTINCT t.data->>'user'->>'id_str' AS user_id
-    FROM tweets t
-    WHERE LOWER(t.data->>'text') LIKE '%covid-19%'
-       OR EXISTS (
-           SELECT 1
-           FROM jsonb_array_elements(t.data->'entities'->'hashtags') AS h
-           WHERE LOWER(h->>'text') IN ('covid19', 'covid-19')
-       )
-    ),
-    TotalUsers AS (
-        SELECT COUNT(DISTINCT t.data->>'user'->>'id_str') AS total_user_count
-        FROM tweets t
-    ),
-    CovidUserCount AS (
-        -- Count the number of users who have liked a COVID-19-related tweet
-        SELECT COUNT(*) AS covid_user_count
-        FROM CovidLikers
-    )
-    SELECT (cuc.covid_user_count::FLOAT / tu.total_user_count::FLOAT) * 100 AS percentage
-    FROM CovidUserCount cuc, TotalUsers tu;
-    """,
-    """
-    SELECT 
-        t1.data->>'user'->>'screen_name' AS original_user,
-        t2.data->>'user'->>'screen_name' AS retweeting_user,
-        LOWER(h.data->>'text') AS common_hashtag,
-        t2.data->>'source' AS retweet_source
-    FROM 
-        tweets t1
-    JOIN 
-        tweets t2 ON t1.data->>'id_str' = t2.data->>'retweeted_status'->>'id_str'
-    JOIN 
-        jsonb_array_elements(t2.data->'entities'->'hashtags') AS h ON TRUE
-    JOIN 
-        users u1 ON t1.data->>'user'->>'id_str' = u1.data->>'id_str'
-    JOIN 
-        users u2 ON t2.data->>'user'->>'id_str' = u2.data->>'id_str'
-    WHERE 
-        t1.data->>'user'->>'screen_name' IS NOT NULL
-        AND t2.data->>'user'->>'screen_name' IS NOT NULL
-        AND h.data->>'text' IS NOT NULL
-    ORDER BY 
-        common_hashtag, retweet_source
-    LIMIT 20;
-    """
+     """,
+     """
+ SELECT CAST(data->>'in_reply_to_user_id' AS TEXT) AS user_id, COUNT(*) AS reply_count
+ FROM tweets
+ WHERE CAST(data->>'in_reply_to_user_id' AS TEXT) IS NOT NULL
+ GROUP BY user_id
+ ORDER BY reply_count DESC
+ LIMIT 15;
+
+     """,
+     """
+ SELECT data->'user'->>'screen_name' AS screen_name, 
+        COUNT(*) AS tweet_count
+ FROM tweets
+ WHERE CAST(data->'user'->>'followers_count' AS INTEGER) > 1000
+ GROUP BY data->'user'->>'screen_name'
+ ORDER BY tweet_count DESC
+ LIMIT 10;
+
+     """,
+     """
+ WITH Hashtags AS (
+     SELECT unnest(array_agg(lower(data->'entities'->'hashtags'->>'text'))) AS hashtag
+     FROM tweets
+ ), TopHashtags AS (
+     SELECT hashtag, COUNT(*) AS count
+     FROM Hashtags
+     GROUP BY hashtag
+     ORDER BY count DESC
+     LIMIT 10
+ )
+ SELECT th.hashtag AS main_hashtag, 
+        array_agg(ch.hashtag) AS co_occurring_hashtags
+ FROM TopHashtags th
+ JOIN Hashtags ch ON th.hashtag <> ch.hashtag
+ GROUP BY th.hashtag;
+     """,
+     """
+ SELECT LOWER(data->'entities'->'hashtags'->>'text') AS hashtag, COUNT(*) AS count
+ FROM tweets
+ WHERE LOWER(data->>'text') LIKE '%lady gaga%'
+ GROUP BY LOWER(data->'entities'->'hashtags'->>'text')
+ ORDER BY count DESC
+ LIMIT 10;
+
+     """,
+     """
+ SELECT ROUND(
+        100.0 * COUNT(DISTINCT data->'user'->>'id') / 
+        (SELECT COUNT(DISTINCT data->'user'->>'id') FROM tweets), 2) AS percentage
+ FROM tweets
+ WHERE LOWER(data->>'text') LIKE '%covid-19%';
+
+     """,
+     """SELECT 
+     initial_tweet.data->>'id_str' AS initial_tweet_id,
+     initial_tweet.data->'user'->>'screen_name' AS initial_author,
+     retweet1.data->'user'->>'screen_name' AS first_retweeter,
+     retweet2.data->'user'->>'screen_name' AS second_retweeter
+ FROM tweets AS initial_tweet
+ JOIN tweets AS retweet1 
+     ON retweet1.data->'retweeted_status'->>'id_str' = initial_tweet.data->>'id_str'
+ JOIN tweets AS retweet2 
+     ON retweet2.data->'retweeted_status'->>'id_str' = retweet1.data->>'id_str'
+ ORDER BY initial_tweet_id
+ LIMIT 20;
+ """,
+     """
+ SELECT 
+     ANY_VALUE(data->'retweeted_status'->'user'->>'screen_name') AS original_author,
+     ANY_VALUE(data->'user'->>'screen_name') AS retweeter,
+     (SELECT unnest.hashtag 
+      FROM UNNEST(array_agg(data->'entities'->'hashtags'->>'text')) AS unnest(hashtag)
+      GROUP BY unnest.hashtag 
+      ORDER BY COUNT(*) DESC 
+      LIMIT 1) AS common_hashtag,
+     ANY_VALUE(data->>'source') AS source_platform
+ FROM tweets;
+
+     """,
+     """
+     SELECT 
+     original_tweet.data->>'id_str' AS original_tweet_id,
+     original_tweet.data->'user'->>'screen_name' AS original_author,
+     retweet.data->'user'->>'screen_name' AS retweeter,
+     CAST(original_tweet.data->>'retweet_count' AS INTEGER) AS original_retweet_count,
+     CAST(retweet.data->>'retweet_count' AS INTEGER) AS retweet_retweet_count
+ FROM tweets AS retweet
+ JOIN tweets AS original_tweet 
+     ON retweet.data->'retweeted_status'->>'id_str' = original_tweet.data->>'id_str'
+ ORDER BY original_retweet_count DESC
+ LIMIT 10;
+ """,
+ """
+ SELECT 
+     user_info.data->>'screen_name' AS screen_name,
+     CAST(user_info.data->>'followers_count' AS INTEGER) AS followers_count,
+     COUNT(DISTINCT retweet.data->>'id_str') AS retweet_count,
+     COUNT(DISTINCT reply.data->>'id_str') AS reply_count
+ FROM tweets AS user_info
+ LEFT JOIN tweets AS retweet 
+     ON retweet.data->'retweeted_status'->'user'->>'id_str' = user_info.data->>'id_str'
+ LEFT JOIN tweets AS reply 
+     ON reply.data->>'in_reply_to_user_id' = user_info.data->>'id_str'
+ WHERE CAST(user_info.data->>'followers_count' AS INTEGER) > 1000
+ GROUP BY user_info.data->>'screen_name', user_info.data->>'followers_count'
+ ORDER BY followers_count DESC, (retweet_count + reply_count) DESC
+ LIMIT 15;
+ """
 ]
 
 MATERIALIZED_TWITTER_QUERIES = [
-    """
-    SELECT COUNT(*) AS tweet_count
-    FROM tweets
-    WHERE lang = 'en';
+     """
+ SELECT COUNT(*) AS english_tweet_count
+ FROM tweets
+ WHERE lang = 'en';
+
+     """,
+     """
+ SELECT source, COUNT(*) AS tweet_count
+ FROM tweets
+ GROUP BY source
+ ORDER BY tweet_count DESC;
+
+     """,
+     """
+ SELECT 
+     user_screen_name AS user, 
+     COUNT(*) AS total_retweets
+ FROM tweets
+ WHERE retweeted_status_id_str IS NOT NULL
+ GROUP BY user_screen_name
+ ORDER BY total_retweets DESC
+ LIMIT 10;
+
+     """,
+     """
+ SELECT in_reply_to_user_id_str AS user_id, COUNT(*) AS reply_count
+ FROM tweets
+ WHERE in_reply_to_user_id_str IS NOT NULL
+ GROUP BY in_reply_to_user_id_str
+ ORDER BY reply_count DESC
+ LIMIT 15;
+
+     """,
+     """
+ SELECT user_screen_name, COUNT(*) AS tweet_count
+ FROM tweets
+ WHERE CAST(user_followers_count AS INTEGER) > 1000
+ GROUP BY user_screen_name
+ ORDER BY tweet_count DESC
+ LIMIT 10;
+
+     """,
+     """
+ WITH Hashtags AS (
+     SELECT unnest(array_agg(lower(hashtag_text))) AS hashtag
+     FROM tweets
+ ), TopHashtags AS (
+     SELECT hashtag, COUNT(*) AS count
+     FROM Hashtags
+     GROUP BY hashtag
+     ORDER BY count DESC
+     LIMIT 10
+ )
+ SELECT th.hashtag AS main_hashtag, 
+        array_agg(ch.hashtag) AS co_occurring_hashtags
+ FROM TopHashtags th
+ JOIN Hashtags ch ON th.hashtag <> ch.hashtag
+ GROUP BY th.hashtag;
+
+     """,
+     """
+ SELECT LOWER(hashtag_text) AS hashtag, COUNT(*) AS count
+ FROM tweets
+ WHERE LOWER(text) LIKE '%lady gaga%'
+ GROUP BY LOWER(hashtag_text)
+ ORDER BY count DESC
+ LIMIT 10;
+
+     """,
+     """
+ SELECT ROUND(
+        100.0 * COUNT(DISTINCT user_id_str) / 
+        (SELECT COUNT(DISTINCT user_id_str) FROM tweets), 2) AS percentage
+ FROM tweets
+ WHERE lower(text) LIKE '%covid-19%';
+
+     """,
+     """
+ SELECT 
+     initial_tweet.id_str AS initial_tweet_id,
+     initial_tweet.user_screen_name AS initial_author,
+     retweet1.user_screen_name AS first_retweeter,
+     retweet2.user_screen_name AS second_retweeter
+ FROM tweets AS initial_tweet
+ JOIN tweets AS retweet1 
+     ON retweet1.retweeted_status_id_str = initial_tweet.id_str
+ JOIN tweets AS retweet2 
+     ON retweet2.retweeted_status_id_str = retweet1.id_str
+ ORDER BY initial_tweet_id
+ LIMIT 20;
+
     """,
     """
-    SELECT COUNT(*) AS tweet_count, source
-    FROM tweets
-    WHERE source IS NOT NULL
-    GROUP BY source
-    ORDER BY tweet_count DESC
-    LIMIT 5;
-    """,
-    """
-    SELECT COUNT(*) AS retweet_count, t1.screen_name AS original_user
-    FROM tweets t1
-    JOIN tweets t2 ON t1.retweeted_status_id = t2.id
-    GROUP BY original_user
-    ORDER BY retweet_count DESC
-    LIMIT 10;
-    """,
-    """
-    SELECT COUNT(*) AS reply_count, t1.in_reply_to_screen_name AS replied_user
-    FROM tweets t1
-    JOIN tweets t2 ON t1.in_reply_to_status_id = t2.id
-    JOIN tweets t3 ON t2.in_reply_to_status_id = t3.id
-    GROUP BY replied_user
-    ORDER BY reply_count DESC
-    LIMIT 15;
-    """,
-    """
-    WITH user_tweets AS (
-        SELECT user_id, COUNT(*) AS tweet_count
-        FROM tweets
-        GROUP BY user_id
-    )
-    SELECT u.name AS user_name, ut.tweet_count
-    FROM users u
-    JOIN user_tweets ut ON u.id = ut.user_id
-    WHERE u.followers_count > 1000
-    ORDER BY ut.tweet_count DESC
-    LIMIT 10;
-    """,
-    """
-    WITH user_tweets AS (
-        SELECT user_id, COUNT(*) AS tweet_count
-        FROM tweets
-        GROUP BY user_id
-    )
-    SELECT u.name AS user_name, ut.tweet_count
-    FROM users u
-    JOIN user_tweets ut ON u.id = ut.user_id
-    WHERE u.followers_count > 1000
-    ORDER BY ut.tweet_count DESC
-    LIMIT 10;
-    """,
-    """
-    WITH HashtagCounts AS (
-        SELECT LOWER(h.text) AS hashtag, COUNT(*) AS hashtag_count
-        FROM tweets t
-        JOIN UNNEST(t.hashtags) AS h
-        GROUP BY LOWER(h.text)
-        ORDER BY hashtag_count DESC
-        LIMIT 10
-    ),
-    CooccurringHashtags AS (
-        SELECT 
-            LOWER(h1.text) AS primary_hashtag,
-            LOWER(h2.text) AS cooccurring_hashtag,
-            COUNT(*) AS cooccurrence_count
-        FROM tweets t
-        JOIN UNNEST(t.hashtags) AS h1
-        JOIN UNNEST(t.hashtags) AS h2
-        WHERE LOWER(h1.text) != LOWER(h2.text)
-        GROUP BY primary_hashtag, cooccurring_hashtag
-    )
-    SELECT hc.hashtag AS primary_hashtag, ch.cooccurring_hashtag, ch.cooccurrence_count
-    FROM HashtagCounts hc
-    JOIN CooccurringHashtags ch ON hc.hashtag = ch.primary_hashtag
-    ORDER BY hc.hashtag, ch.cooccurrence_count DESC
-    LIMIT 50;
-    """,
-    """
-    WITH GagaLikers AS (
-        SELECT DISTINCT user_id
-        FROM tweets
-        WHERE LOWER(text) LIKE '%lady gaga%'
-        OR EXISTS (
-            SELECT 1
-            FROM UNNEST(hashtags) AS h
-            WHERE LOWER(h) = 'ladygaga'
-        )
-    ),
-    UserHashtags AS (
-        SELECT LOWER(h.text) AS hashtag
-        FROM tweets
-        JOIN UNNEST(hashtags) AS h
-        WHERE user_id IN (SELECT user_id FROM GagaLikers)
-    )
-    SELECT hashtag, COUNT(*) AS usage_count
-    FROM UserHashtags
-    GROUP BY hashtag
-    ORDER BY usage_count DESC
-    LIMIT 10;
-    """,
-    """
-    WITH CovidLikers AS (
-        SELECT DISTINCT user_id
-        FROM tweets
-        WHERE LOWER(text) LIKE '%covid-19%'
-        OR EXISTS (
-            SELECT 1
-            FROM UNNEST(hashtags) AS h
-            WHERE LOWER(h) IN ('covid19', 'covid-19')
-        )
-    ),
-    TotalUsers AS (
-        SELECT COUNT(DISTINCT user_id) AS total_user_count
-        FROM tweets
-    ),
-    CovidUserCount AS (
-        SELECT COUNT(*) AS covid_user_count
-        FROM CovidLikers
-    )
-    SELECT (cuc.covid_user_count::FLOAT / tu.total_user_count::FLOAT) * 100 AS percentage
-    FROM CovidUserCount cuc, TotalUsers tu;
-    """,
-    """
-    SELECT 
-        t1.screen_name AS original_user,
-        t2.screen_name AS retweeting_user,
-        LOWER(h.text) AS common_hashtag,
-        t2.source AS retweet_source
-    FROM tweets t1
-    JOIN tweets t2 ON t1.id = t2.retweeted_status_id
-    JOIN UNNEST(t2.hashtags) AS h
-    JOIN users u1 ON t1.user_id = u1.id
-    JOIN users u2 ON t2.user_id = u2.id
-    WHERE t1.screen_name IS NOT NULL
-    AND t2.screen_name IS NOT NULL
-    AND h.text IS NOT NULL
-    ORDER BY common_hashtag, retweet_source
-    LIMIT 20;
-    """
+SELECT 
+    ANY_VALUE(retweeted_status_id_str) AS original_tweet_id,
+    ANY_VALUE(user_screen_name) AS retweeter,
+    (SELECT unnest.hashtag 
+     FROM UNNEST(string_to_array(ANY_VALUE(hashtag_text), ',')) AS unnest(hashtag)
+     GROUP BY unnest.hashtag 
+     ORDER BY COUNT(*) DESC 
+     LIMIT 1) AS common_hashtag,
+    ANY_VALUE(source) AS source_platform
+FROM tweets
+WHERE retweeted_status_id_str IS NOT NULL;
+
+""",
+ """
+ SELECT 
+     original_tweet.id_str AS original_tweet_id,
+     original_tweet.user_screen_name AS original_author,
+     retweet.user_screen_name AS retweeter,
+     COUNT(*) AS retweet_count
+ FROM tweets AS retweet
+ JOIN tweets AS original_tweet 
+     ON retweet.retweeted_status_id_str = original_tweet.id_str
+ GROUP BY original_tweet.id_str, original_tweet.user_screen_name, retweet.user_screen_name
+ ORDER BY retweet_count DESC
+ LIMIT 10;
+
+ """,
+ """
+ SELECT 
+     user_screen_name,
+     CAST(user_followers_count AS INTEGER) AS followers_count,
+     COUNT(CASE WHEN retweeted_status_id_str IS NOT NULL THEN 1 ELSE NULL END) AS retweet_count,
+     COUNT(CASE WHEN in_reply_to_user_id_str IS NOT NULL THEN 1 ELSE NULL END) AS reply_count
+ FROM tweets
+ WHERE CAST(user_followers_count AS INTEGER) > 1000
+ GROUP BY user_screen_name, user_followers_count
+ ORDER BY followers_count DESC, (retweet_count + reply_count) DESC
+ LIMIT 15;
+
+ """
 ]

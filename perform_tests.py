@@ -112,7 +112,7 @@ def perform_tests(
 
         temp_df = pd.DataFrame([df_row])
 
-        results_df = pd.concat([results_df, temp_df], ignore_index=True)
+        results_df = pd.concat([results_df, temp_df], ignore_index=True).reset_index(drop=True)
         print(f"""Query {i} Average Execution Time (last 4 runs): {
               avg_time:.4f} seconds""")
     return results_df
