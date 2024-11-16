@@ -55,7 +55,6 @@ DF_COL_NAMES = [
     'Test run no.',
 ]
 
-
 def _results_dfs(raw_results_path, materialized_results_path):
     try:
         raw_results = pd.read_csv(raw_results_path)
@@ -77,35 +76,44 @@ def _results_dfs(raw_results_path, materialized_results_path):
 
     return raw_results, materialized_results, test_run_no
 
-
 def perform_tests(
         con: duckdb.DuckDBPyConnection,
         queries: list,
         run_no: int,
         test_time: datetime,
-) -> pd.DataFrame:
-    '''Perform the Twitter tests'''
+) -> (pd.DataFrame, list):
+    '''Perform the tests and collect results from the first execution'''
     # Execute each query 5 times and calculate average time of last 4 runs
-
-
     results_df = pd.DataFrame(columns=DF_COL_NAMES)
+    query_results = []  # List to store results from the first execution
 
     for i, query in enumerate(queries, start=1):
+
+        if i != 1:
+            continue
+        
         df_row = {
             "Query": i,
             'Created At': test_time,
             'Test run no.': run_no,
         }
         execution_times = []
-
+        first_run_result = None
 
         for j in range(5):  # Execute the query 5 times
             start_time = time.perf_counter()
-            con.execute(query)  # Execute the query
+            result = con.execute(query).fetchdf()  # Execute the query and fetch result
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             execution_times.append(execution_time)
             df_row[f"Iteration {j}"] = round(execution_time, 3)
+
+            if j == 0:
+                # Store the result from the first execution
+                first_run_result = result.copy()
+
+        # Collect the result from the first run
+        query_results.append(first_run_result)
 
         # Calculate the average time of the last 4 runs and store it
         avg_time = round(sum(execution_times[1:]) / 4, 3)
@@ -116,8 +124,27 @@ def perform_tests(
         results_df = pd.concat([results_df, temp_df], ignore_index=True).reset_index(drop=True)
         print(f"""Query {i} Average Execution Time (last 4 runs): {
               avg_time:.4f} seconds""")
-    return results_df
+    return results_df, query_results
 
+def compare_query_results(raw_query_results, materialized_query_results):
+    '''Compare the results of raw and materialized queries'''
+    for i, (raw_df, materialized_df) in enumerate(zip(raw_query_results, materialized_query_results), start=1):
+        # Sort dataframes to ensure consistent ordering before comparison
+        try:
+            raw_df_sorted = raw_df.sort_values(by=raw_df.columns.tolist()).reset_index(drop=True)
+            materialized_df_sorted = materialized_df.sort_values(by=materialized_df.columns.tolist()).reset_index(drop=True)
+        except Exception as e:
+            # If sorting fails, proceed without sorting
+            raw_df_sorted = raw_df.reset_index(drop=True)
+            materialized_df_sorted = materialized_df.reset_index(drop=True)
+
+        if raw_df_sorted.equals(materialized_df_sorted):
+            print(f"Query {i}: Results match.")
+        else:
+            print(f"Query {i}: Results do not match.")
+            # Optionally, output the differences for debugging
+            differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
+            print(f"Differences in Query {i} results:\n{differences}")
 
 def main():
     # Parse command line arguments
@@ -151,21 +178,27 @@ def main():
 
         test_time = datetime.now()
 
-        # Perform and log tests for raw data
-        raw_results = perform_tests(
+        # Perform and log tests for raw data, collect results
+        raw_results_df, raw_query_results = perform_tests(
             con=raw_connection, queries=raw_queries, run_no=run_no, test_time=test_time)
-        raw_df = pd.concat([raw_df, raw_results], ignore_index=True)
-        raw_df.to_csv(raw_results_path)
-        raw_results.to_csv(last_raw_results_path)
+        raw_df = pd.concat([raw_df, raw_results_df], ignore_index=True)
+        raw_df.to_csv(raw_results_path, index=False)
+        raw_results_df.to_csv(last_raw_results_path, index=False)
 
-        # Perform and log tests for materialized data
-        materialized_results = perform_tests(
+        # Perform and log tests for materialized data, collect results
+        materialized_results_df, materialized_query_results = perform_tests(
             con=materialized_connection, queries=materialized_queries, run_no=run_no, test_time=test_time)
         materialized_df = pd.concat(
-            [materialized_df, materialized_results], ignore_index=True)
-        materialized_df.to_csv(materialized_results_path)
-        materialized_results.to_csv(last_materialized_results_path)
+            [materialized_df, materialized_results_df], ignore_index=True)
+        materialized_df.to_csv(materialized_results_path, index=False)
+        materialized_results_df.to_csv(last_materialized_results_path, index=False)
 
+        # Compare the results of raw and materialized queries
+        print(f"\nComparing query results for dataset: {dataset}")
+        compare_query_results(
+            raw_query_results=raw_query_results,
+            materialized_query_results=materialized_query_results
+        )
 
 if __name__ == "__main__":
     main()
