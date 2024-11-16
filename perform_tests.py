@@ -29,7 +29,7 @@ DATASETS = {
         "materialized_results_path": "yelp_materialized_results.csv",
         "last_materialized_results_path": "last_yelp_materialized_results.csv",
         "raw_queries": RAW_YELP_QUERIES,
-        "materialized_queries": RAW_YELP_QUERIES,
+        "materialized_queries": MATERIALIZED_YELP_QUERIES,
     },
     "tpc-h": {
         "raw_db_path": "./tpch/db/raw_tpch.db",
@@ -87,6 +87,8 @@ def perform_tests(
     '''Perform the Twitter tests'''
     # Execute each query 5 times and calculate average time of last 4 runs
 
+    print_first = True
+
     results_df = pd.DataFrame(columns=DF_COL_NAMES)
 
     for i, query in enumerate(queries, start=1):
@@ -100,11 +102,14 @@ def perform_tests(
 
         for j in range(5):  # Execute the query 5 times
             start_time = time.perf_counter()
-            con.execute(query)  # Execute the query
+            res = con.execute(query)  # Execute the query
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             execution_times.append(execution_time)
             df_row[f"Iteration {j}"] = round(execution_time, 3)
+            if print_first:
+                print(res.fetchdf())
+                print_first = False
 
         # Calculate the average time of the last 4 runs and store it
         avg_time = round(sum(execution_times[1:]) / 4, 3)
