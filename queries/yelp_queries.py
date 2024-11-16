@@ -1,7 +1,7 @@
 
 RAW_YELP_QUERIES = [
     """
-    SELECT COUNT(CAST(u.data->>'user_id' AS BIGINT)) AS cnt, CAST(u.data->>'user_id' AS BIGINT) AS uid, u.data->>'name', CAST(u.data->>'average_stars' AS FLOAT) AS avg_stars
+    SELECT COUNT(CAST(u.data->>'user_id' AS BIGINT)) AS cnt, CAST(u.data->>'user_id' AS BIGINT) AS uid, u.data->>'name' as name, CAST(u.data->>'average_stars' AS FLOAT) AS avg_stars
     FROM users u, users r
     WHERE CAST(r.data->>'user_id' AS BIGINT) = CAST(u.data->>'user_id' AS BIGINT)
       AND u.data->>'name' IS NOT NULL
