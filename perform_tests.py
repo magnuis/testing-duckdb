@@ -87,7 +87,6 @@ def perform_tests(
     '''Perform the Twitter tests'''
     # Execute each query 5 times and calculate average time of last 4 runs
 
-    print_first = True
 
     results_df = pd.DataFrame(columns=DF_COL_NAMES)
 
@@ -102,14 +101,11 @@ def perform_tests(
 
         for j in range(5):  # Execute the query 5 times
             start_time = time.perf_counter()
-            res = con.execute(query)  # Execute the query
+            con.execute(query)  # Execute the query
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             execution_times.append(execution_time)
             df_row[f"Iteration {j}"] = round(execution_time, 3)
-            if print_first:
-                print(res.fetchdf())
-                print_first = False
 
         # Calculate the average time of the last 4 runs and store it
         avg_time = round(sum(execution_times[1:]) / 4, 3)
