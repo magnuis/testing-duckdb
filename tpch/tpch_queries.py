@@ -1,7 +1,7 @@
 RAW_TPCH_QUERIES = [# Query 1: Summarizes data with aggregates like sum or avg
 """select
-        cast(l.data->>'l_returnflag' as char(1)),
-        cast(l.data->>'l_linestatus' as char(1)),
+        cast(l.data->>'l_returnflag' as char(1)) as l_returnflag,
+        cast(l.data->>'l_linestatus' as char(1)) as l_linestatus,
         sum(cast(l.data->>'l_quantity' as Integer)) as sum_qty,
         sum(cast(l.data->>'l_extendedprice' as decimal(12,2))) as sum_base_price,
         sum(cast(l.data->>'l_extendedprice' as decimal(12,2)) * (1 - cast(l.data->>'l_discount' as decimal(12,2)))) as sum_disc_price,

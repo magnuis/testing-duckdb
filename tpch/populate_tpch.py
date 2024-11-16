@@ -64,15 +64,7 @@ materialized_columns = [
     's_address', 's_comment', 's_name', 's_nationkey', 's_phone', 's_suppkey', 'data'
 ]
 
-# Parse command-line arguments for metadata logging
-def add_cmd_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Track JSON data insert times.")
-    parser.add_argument('--environment', type=str, required=True,
-                        help="The environment in which the test is run (e.g., 'VM', 'Local').")
-    parser.add_argument('--tester', type=str, required=True,
-                        help="Name of the person running the test.")
-    return parser.parse_args()
+
 
 
 
@@ -283,7 +275,6 @@ def clean_up():
 
 
 if __name__ == '__main__':
-    args = add_cmd_args()
 
     # Connect to or create the DuckDB instances
     raw_connection = duckdb.connect(RAW_DB_PATH)
@@ -299,8 +290,6 @@ if __name__ == '__main__':
     # Create materialized data db after parsing to get all columns and types
     create_materialized_data_db(con=materialized_connection, column_types=column_types)
 
-    env = args.environment
-    tester = args.tester
 
     # Insert parquet into db and log results for raw data
     insert_time_raw = insert_parquet_into_db(
