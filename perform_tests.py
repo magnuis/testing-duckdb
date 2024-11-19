@@ -164,7 +164,7 @@ def compare_query_results(raw_query_results, materialized_query_results):
             differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
             # print(f"Differences in Query {i} results:\n{differences}")
 
-            # Output reults for both queries so I can compaere them
+                        # Output reults for both queries so I can compaere them
             print(f"Raw Query {i} results:\n{raw_df_sorted}")
             print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
             # print('---')
