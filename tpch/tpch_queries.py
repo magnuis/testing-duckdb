@@ -294,7 +294,7 @@ where
         and cast(c.data->>'c_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
 group by
         cast(c.data->>'c_custkey' as int),
-       ( c.data->>'c_name'),
+        (c.data->>'c_name'),
         cast(c.data->>'c_acctbal' as decimal(12,2)),
         (c.data->>'c_phone'),
         (n.data->>'n_name'),
