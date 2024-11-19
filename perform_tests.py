@@ -81,7 +81,7 @@ def perform_tests(
         queries: list,
         run_no: int,
         test_time: datetime,
-) -> (pd.DataFrame, list):
+) -> tuple[pd.DataFrame, list]:
     '''Perform the tests and collect results from the first execution'''
     # Execute each query 5 times and calculate average time of last 4 runs
     results_df = pd.DataFrame(columns=DF_COL_NAMES)
@@ -89,8 +89,8 @@ def perform_tests(
 
     for i, query in enumerate(queries, start=1):
 
-        if i != 4:
-            continue
+        # if i != 5:
+        #     continue
 
         
         df_row = {
@@ -101,7 +101,9 @@ def perform_tests(
         execution_times = []
         first_run_result = None
 
-        for j in range(1):  # Execute the query 5 times
+        iterations = 5
+
+        for j in range(iterations):  # Execute the query 5 times
             start_time = time.perf_counter()
             result = con.execute(query).fetchdf()  # Execute the query and fetch result
             end_time = time.perf_counter()
@@ -111,13 +113,22 @@ def perform_tests(
 
             if j == 0:
                 # Store the result from the first execution
+                # print(result)
                 first_run_result = result.copy()
+            # if j==1:
+            #     print(query)
+            #     print(first_run_result)
+            #     print(result)
+            #     print('---')
+      
+
 
         # Collect the result from the first run
         query_results.append(first_run_result)
 
         # Calculate the average time of the last 4 runs and store it
-        avg_time = 0
+        # avg_time = -1
+        avg_time = sum(execution_times[1:]) / (iterations - 1)
         df_row['Avg (last 4 runs)'] = avg_time
 
         temp_df = pd.DataFrame([df_row])
@@ -143,19 +154,23 @@ def compare_query_results(raw_query_results, materialized_query_results):
             print(f"Query {i}: Results match.")
 
             # Output reults for both queries so I can compaere them
-            print(f"Raw Query {i} results:\n{raw_df_sorted}")
-            print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
+            # print(f"Raw Query {i} results:\n{raw_df_sorted}")
+            # print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
 
 
         else:
             print(f"Query {i}: Results do not match.")
             # Optionally, output the differences for debugging
             differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
-            print(f"Differences in Query {i} results:\n{differences}")
+            # print(f"Differences in Query {i} results:\n{differences}")
 
             # Output reults for both queries so I can compaere them
             print(f"Raw Query {i} results:\n{raw_df_sorted}")
             print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
+            # print('---')
+            # print(raw_df_sorted.describe())
+            # print('---')
+            # print(materialized_df_sorted.describe())
 
 def main():
     # Parse command line arguments
@@ -206,10 +221,10 @@ def main():
 
         # Compare the results of raw and materialized queries
         print(f"\nComparing query results for dataset: {dataset}")
-        compare_query_results(
-            raw_query_results=raw_query_results,
-            materialized_query_results=materialized_query_results
-        )
+        # compare_query_results(
+        #     raw_query_results=raw_query_results,
+        #     materialized_query_results=materialized_query_results
+        # )
 
 if __name__ == "__main__":
     main()
