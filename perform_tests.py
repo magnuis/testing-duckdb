@@ -89,8 +89,7 @@ def perform_tests(
     query_results = []  # List to store results from the first execution
 
     for i, query in enumerate(queries, start=1):
-
-        if i != 1:
+        if (i == 8) or (i == 9):
             continue
 
         
@@ -139,6 +138,33 @@ def perform_tests(
               avg_time:.4f} seconds""")
     return results_df, query_results
 
+def compare_dataframes(raw_df, materialized_df):
+    """Compare two dataframes column by column."""
+
+    for raw_col, mat_col in zip(raw_df.columns, materialized_df.columns):
+        raw_values = raw_df[raw_col]
+        mat_values = materialized_df[mat_col]
+
+                # Standardize integer types for comparison
+        if np.issubdtype(raw_values.dtype, np.integer) and np.issubdtype(mat_values.dtype, np.integer):
+            raw_values = raw_values.astype('int64')
+            mat_values = mat_values.astype('int64')
+
+        if raw_values.dtype != mat_values.dtype:
+            print(f"Column type mismatch: {raw_col} ({raw_values.dtype}) vs {mat_col} ({mat_values.dtype})")
+            return False
+
+        if raw_values.dtype == np.float64:
+            if not np.all(np.isclose(raw_values, mat_values)):
+                print(f"Mismatch in column '{raw_col}' (float64):")
+                return False
+        else:
+            if not raw_values.equals(mat_values):
+                print(f"Mismatch in column '{raw_col}':")
+                return False
+
+    return True
+
 def compare_query_results(raw_query_results, materialized_query_results):
     '''Compare the results of raw and materialized queries'''
     for i, (raw_df, materialized_df) in enumerate(zip(raw_query_results, materialized_query_results), start=1):
@@ -151,57 +177,12 @@ def compare_query_results(raw_query_results, materialized_query_results):
             raw_df_sorted = raw_df.reset_index(drop=True)
             materialized_df_sorted = materialized_df.reset_index(drop=True)
         
-        equals = True
-        for r_col, m_col in zip(raw_df_sorted.columns, materialized_df_sorted.columns):
-            raw = raw_df_sorted[r_col]
-            materialized = materialized_df_sorted[m_col]
-
-
-            print(f"dtype: {raw.dtype}")
-
-            if raw.dtype == np.float64:
-                if not np.all(np.isclose(raw, materialized)):
-                    print("NOT EQUAL float64 ROWS")
-                    print(raw)
-                    print(materialized)
-                    equals = False
-                    
-                    break                    
-
-
-            else:
-                if not raw.equals(materialized):
-                    print("NOT EQUAL non-float ROWS")
-                    print(raw)
-                    print(materialized)
-                    equals = False
-                    
-                    break
-
-
-
-        if equals:
+        if compare_dataframes(raw_df_sorted, materialized_df_sorted):
             print(f"Query {i}: Results match.")
-
-            # Output reults for both queries so I can compaere them
-            # print(f"Raw Query {i} results:\n{raw_df_sorted}")
-            # print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
-
-
         else:
             print(f"Query {i}: Results do not match.")
-            # Optionally, output the differences for debugging
-            differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
-            # print(f"Differences in Query {i} results:\n{differences}")
-
-                        # Output reults for both queries so I can compaere them
-            print(f"Raw Query {i} results:\n{raw_df_sorted}")
-            print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
-            print('---')
-            print(raw_df_sorted.info())
-            print('---')
-            print(materialized_df_sorted.info())
-            print('---')
+            print(f"Raw query result:\n{raw_df_sorted}")
+            print(f"Materialized query result:\n{materialized_df_sorted}")
 
 def main():
     # Parse command line arguments
