@@ -723,7 +723,7 @@ WHERE
     p.p_partkey = ps.ps_partkey
     AND s.s_suppkey = ps.ps_suppkey
     AND p.p_size = 15
-    AND p.p_type LIKE 'BRASS'
+    AND p.p_type LIKE '%BRASS'
     AND s.s_nationkey = n.n_nationkey
     AND n.n_regionkey = r.r_regionkey
     AND r.r_name = 'EUROPE'
