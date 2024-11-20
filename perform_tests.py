@@ -89,8 +89,6 @@ def perform_tests(
     query_results = []  # List to store results from the first execution
 
     for i, query in enumerate(queries, start=1):
-        if (i == 8) or (i == 9):
-            continue
 
         
         df_row = {
