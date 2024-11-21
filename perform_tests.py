@@ -102,7 +102,7 @@ def perform_tests(
         execution_times = []
         first_run_result = None
 
-        iterations = 2
+        iterations = 5
 
         for j in range(iterations):  # Execute the query 5 times
             start_time = time.perf_counter()
