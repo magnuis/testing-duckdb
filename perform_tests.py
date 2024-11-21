@@ -90,7 +90,7 @@ def perform_tests(
 
     for i, query in enumerate(queries, start=1):
 
-        if i != 1:
+        if i == 11:
             continue
 
         
@@ -102,7 +102,7 @@ def perform_tests(
         execution_times = []
         first_run_result = None
 
-        iterations = 1
+        iterations = 2
 
         for j in range(iterations):  # Execute the query 5 times
             start_time = time.perf_counter()
@@ -113,9 +113,13 @@ def perform_tests(
             df_row[f"Iteration {j}"] = round(execution_time, 3)
 
             if j == 0:
+                # print(f"TIME: {execution_time}")
                 # Store the result from the first execution
                 # print(result)
                 first_run_result = result.copy()
+                
+                # for col in result.columns:
+                #     print(result[col])
             # if j==1:
             #     print(query)
             #     print(first_run_result)
@@ -128,8 +132,8 @@ def perform_tests(
         query_results.append(first_run_result)
 
         # Calculate the average time of the last 4 runs and store it
-        avg_time = -1
-        # avg_time = sum(execution_times[1:]) / (iterations - 1)
+        # avg_time = -1
+        avg_time = sum(execution_times[1:]) / (iterations - 1)
         df_row['Avg (last 4 runs)'] = avg_time
 
         temp_df = pd.DataFrame([df_row])
@@ -161,9 +165,9 @@ def compare_query_results(raw_query_results, materialized_query_results):
 
             if raw.dtype == np.float64:
                 if not np.all(np.isclose(raw, materialized)):
-                    print("NOT EQUAL float64 ROWS")
-                    print(raw)
-                    print(materialized)
+                    # print("NOT EQUAL float64 ROWS")
+                    # print(raw)
+                    # print(materialized)
                     equals = False
                     
                     break                    
@@ -171,9 +175,9 @@ def compare_query_results(raw_query_results, materialized_query_results):
 
             else:
                 if not raw.equals(materialized):
-                    print("NOT EQUAL non-float ROWS")
-                    print(raw)
-                    print(materialized)
+                    # print("NOT EQUAL non-float ROWS")
+                    # print(raw)
+                    # print(materialized)
                     equals = False
                     
                     break
@@ -191,17 +195,17 @@ def compare_query_results(raw_query_results, materialized_query_results):
         else:
             print(f"Query {i}: Results do not match.")
             # Optionally, output the differences for debugging
-            differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
+            # differences = pd.concat([raw_df_sorted, materialized_df_sorted]).drop_duplicates(keep=False)
             # print(f"Differences in Query {i} results:\n{differences}")
 
                         # Output reults for both queries so I can compaere them
-            print(f"Raw Query {i} results:\n{raw_df_sorted}")
-            print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
-            print('---')
-            print(raw_df_sorted.info())
-            print('---')
-            print(materialized_df_sorted.info())
-            print('---')
+            # print(f"Raw Query {i} results:\n{raw_df_sorted}")
+            # print(f"Materialized Query {i} results:\n{materialized_df_sorted}")
+            # print('---')
+            # print(raw_df_sorted.info())
+            # print('---')
+            # print(materialized_df_sorted.info())
+            # print('---')
 
 def main():
     # Parse command line arguments
@@ -256,6 +260,7 @@ def main():
             raw_query_results=raw_query_results,
             materialized_query_results=materialized_query_results
         )
+        print('-------')
 
 if __name__ == "__main__":
     main()

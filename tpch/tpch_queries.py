@@ -22,30 +22,94 @@ order by
         cast(l.data->>'l_linestatus' as char(1));""",
 
 # Query 2: Sorts data based on specific columns
-"""select
+# """select
+#         cast(s.data->>'s_acctbal' as decimal(12,2)) as s_acctbal,
+#         s.data->>'s_name' as s_name,
+#         n.data->>'n_name' as n_name,
+#         cast(p.data->>'p_partkey' as int) as p_partkey,
+#         p.data->>'p_mfgr' as p_mfgr,
+#         s.data->>'s_address' as s_address,
+#         s.data->>'s_phone' as s_phone,
+#         s.data->>'s_comment' as s_comment
+# from
+#         tpch p,
+#         tpch s,
+#         tpch ps,
+#         tpch n,
+#         tpch r
+# where
+#         cast(p.data->>'p_partkey' as int) = cast(ps.data->>'ps_partkey' as int)
+#         and cast(s.data->>'s_suppkey' as int) = cast(ps.data->>'ps_suppkey' as int)
+#         and cast(p.data->>'p_size' as int) = 15
+#         and (p.data->>'p_type') like '%BRASS'
+#         and cast(s.data->>'s_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
+#         and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
+#         and (r.data->>'r_name') = 'EUROPE'
+#         and cast(ps.data->>'ps_supplycost' as decimal(12,2)) = (
+#                 select
+#                         min(cast(ps.data->>'ps_supplycost' as decimal(12,2)))
+#                 from
+#                         tpch s,
+#                         tpch ps,
+#                         tpch n,
+#                         tpch r
+#                 where
+#                         cast(p.data->>'p_partkey' as int) = cast(ps.data->>'ps_partkey' as int)
+#                         and cast(s.data->>'s_suppkey' as int) = cast(ps.data->>'ps_suppkey' as int)
+#                         and cast(s.data->>'s_nationkey' as int)= cast(n.data->>'n_nationkey' as int)
+#                         and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
+#                         and (r.data->>'r_name') = 'EUROPE'
+
+#         )
+# order by
+#         cast(s.data->>'s_acctbal' as decimal(12,2)) desc,
+#         n.data->>'n_name',
+#         s.data->>'s_name',
+#         cast(p.data->>'p_partkey' as int)
+# limit
+#         100;""",
+"""
+select
         cast(s.data->>'s_acctbal' as decimal(12,2)) as s_acctbal,
         s.data->>'s_name' as s_name,
-        n.data->>'n_name' as n_name,
-        cast(p.data->>'p_partkey' as int) as p_partkey,
-        p.data->>'p_mfgr' as p_mfgr,
+        r_n_joined.n_name,
+        p_ps_joined.p_partkey,
+        p_ps_joined.p_mfgr,
         s.data->>'s_address' as s_address,
         s.data->>'s_phone' as s_phone,
         s.data->>'s_comment' as s_comment
 from
-        tpch p,
-        tpch s,
-        tpch ps,
-        tpch n,
-        tpch r
+        (
+                select
+                        cast(ps.data->>'ps_suppkey' as int) as ps_suppkey,
+                        cast(ps.data->>'ps_supplycost' as decimal(12,2)) as ps_supplycost,
+                        cast(p.data->>'p_partkey' as int) as p_partkey,
+                        (p.data->>'p_mfgr') as p_mfgr
+                from
+                        tpch p,
+                        tpch ps
+                where
+                        cast(p.data->>'p_size' as int) = 15
+                        and (p.data->>'p_type') like '%BRASS'
+                        and cast(p.data->>'p_partkey' as int) = cast(ps.data->>'ps_partkey' as int)
+        ) as p_ps_joined,
+        (
+                select
+                        cast(n.data->>'n_nationkey' as int) as n_nationkey,
+                        (n.data->>'n_name') as n_name
+                from
+                        tpch r,
+                        tpch n
+                where
+                        (r.data->>'r_name') = 'EUROPE'
+                        and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
+        ) as r_n_joined,
+        tpch s
 where
-        cast(p.data->>'p_partkey' as int) = cast(ps.data->>'ps_partkey' as int)
-        and cast(s.data->>'s_suppkey' as int) = cast(ps.data->>'ps_suppkey' as int)
-        and cast(p.data->>'p_size' as int) = 15
-        and (p.data->>'p_type') like '%BRASS'
-        and cast(s.data->>'s_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
-        and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
-        and (r.data->>'r_name') = 'EUROPE'
-        and cast(ps.data->>'ps_supplycost' as decimal(12,2)) = (
+        
+        cast(s.data->>'s_suppkey' as int) = p_ps_joined.ps_suppkey
+        and cast(s.data->>'s_nationkey' as int) = r_n_joined.n_nationkey
+        and p_ps_joined.ps_supplycost = (
                 select
                         min(cast(ps.data->>'ps_supplycost' as decimal(12,2)))
                 from
@@ -54,7 +118,7 @@ where
                         tpch n,
                         tpch r
                 where
-                        cast(p.data->>'p_partkey' as int) = cast(ps.data->>'ps_partkey' as int)
+                        p_ps_joined.p_partkey = cast(ps.data->>'ps_partkey' as int)
                         and cast(s.data->>'s_suppkey' as int) = cast(ps.data->>'ps_suppkey' as int)
                         and cast(s.data->>'s_nationkey' as int)= cast(n.data->>'n_nationkey' as int)
                         and cast(n.data->>'n_regionkey' as int) = cast(r.data->>'r_regionkey' as int)
@@ -63,12 +127,11 @@ where
         )
 order by
         cast(s.data->>'s_acctbal' as decimal(12,2)) desc,
-        n.data->>'n_name',
+        r_n_joined.n_name,
         s.data->>'s_name',
-        cast(p.data->>'p_partkey' as int)
+        p_ps_joined.p_partkey
 limit
         100;""",
-
 # Query 3: Summarizes data with aggregates like sum or avg
 """select
         cast(l.data->>'l_orderkey' as int) as l_orderkey,
@@ -156,7 +219,9 @@ where
         and cast(l.data->>'l_quantity' as int) < 24;""",
 
 # Query 7: Summarizes data with aggregates like sum or avg
-"""select
+"""
+explain analyze
+select
         supp_nation,
         cust_nation,
         l_year,
@@ -198,6 +263,44 @@ order by
         l_year;""",
 
 # Query 8: Summarizes data with aggregates like sum or avg
+# """select
+#         o_year,
+#         sum(case
+#                 when nation = 'BRAZIL' then volume
+#                 else 0
+#         end) / sum(volume) as mkt_share
+# from
+#         (
+#                 select
+#                         extract(year from cast(o.data->>'o_orderdate' as date)) as o_year,
+#                         cast(l.data->>'l_extendedprice' as decimal(12,2)) * (1 - cast(l.data->>'l_discount' as decimal(12,2))) as volume,
+#                         (n2.data->>'n_name') as nation
+#                 from
+#                         tpch p,
+#                         tpch s,
+#                         tpch l,
+#                         tpch o,
+#                         tpch c,
+#                         tpch n1,
+#                         tpch n2,
+#                         tpch r
+#                 where
+#                         cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
+#                         and cast(s.data->>'s_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
+#                         and cast(l.data->>'l_orderkey' as int) = cast(o.data->>'o_orderkey' as int)
+#                         and cast(o.data->>'o_custkey' as int) = cast(c.data->>'c_custkey' as int)
+#                         and cast(r.data->>'r_regionkey' as int) = cast(n1.data->>'n_regionkey' as int)
+#                         and cast(c.data->>'c_nationkey' as int) = cast(n1.data->>'n_nationkey' as int)
+#                         and (r.data->>'r_name') = 'AMERICA'
+#                         and cast(s.data->>'s_nationkey' as int) = cast(n2.data->>'n_nationkey' as int)
+#                         and cast(o.data->>'o_orderdate' as date) between date '1995-01-01' and date '1996-12-31'
+#                         and (p.data->>'p_type') = 'ECONOMY ANODIZED STEEL'
+#         ) as all_nations
+# group by
+#         o_year
+# order by
+#         o_year;""",
+
 """select
         o_year,
         sum(case
@@ -208,35 +311,93 @@ from
         (
                 select
                         extract(year from cast(o.data->>'o_orderdate' as date)) as o_year,
-                        cast(l.data->>'l_extendedprice' as decimal(12,2)) * (1 - cast(l.data->>'l_discount' as decimal(12,2))) as volume,
+                        p_l_joined.l_extendedprice * (1  - p_l_joined.l_discount) as volume,
                         (n2.data->>'n_name') as nation
                 from
-                        tpch p,
-                        tpch s,
-                        tpch l,
+                        (
+                                select
+                                        cast(p.data->>'p_partkey' as int) as p_partkey,
+                                        cast(l.data->>'l_extendedprice' as decimal(12,2)) as l_extendedprice,
+                                        cast(l.data->>'l_discount' as decimal(12,2)) as l_discount,
+                                        cast(l.data->>'l_orderkey' as int) as l_orderkey,
+                                        cast(l.data->>'l_partkey' as int) as l_partkey,
+                                        cast(l.data->>'l_suppkey' as int) as l_suppkey
+                                from 
+                                        tpch p,
+                                        tpch l
+                                where
+                                        (p.data->>'p_type') = 'ECONOMY ANODIZED STEEL'
+                                        and cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
+
+                        ) as p_l_joined,
+                        (
+                                select
+                                        cast(r.data->>'r_regionkey' as int) as r_regionkey,
+                                        cast(n1.data->>'n_nationkey' as int) as n_nationkey,
+                                        cast(n1.data->>'n_regionkey' as int) as n_regionkey
+
+                                from
+                                        tpch r,
+                                        tpch n1
+                                where
+                                        (r.data->>'r_name') = 'AMERICA'
+                                        and cast(r.data->>'r_regionkey' as int) = cast(n1.data->>'n_regionkey' as int)
+                        ) as r_n1_joined,
+
                         tpch o,
                         tpch c,
-                        tpch n1,
-                        tpch n2,
-                        tpch r
+                        tpch s,
+                        tpch n2
                 where
-                        cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                        and cast(s.data->>'s_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
-                        and cast(l.data->>'l_orderkey' as int) = cast(o.data->>'o_orderkey' as int)
+
+                        cast(s.data->>'s_suppkey' as int) = p_l_joined.l_suppkey
+                        and p_l_joined.l_orderkey = cast(o.data->>'o_orderkey' as int)
                         and cast(o.data->>'o_custkey' as int) = cast(c.data->>'c_custkey' as int)
-                        and cast(r.data->>'r_regionkey' as int) = cast(n1.data->>'n_regionkey' as int)
-                        and cast(c.data->>'c_nationkey' as int) = cast(n1.data->>'n_nationkey' as int)
-                        and (r.data->>'r_name') = 'AMERICA'
+                        and cast(c.data->>'c_nationkey' as int) = r_n1_joined.n_nationkey
                         and cast(s.data->>'s_nationkey' as int) = cast(n2.data->>'n_nationkey' as int)
                         and cast(o.data->>'o_orderdate' as date) between date '1995-01-01' and date '1996-12-31'
-                        and (p.data->>'p_type') = 'ECONOMY ANODIZED STEEL'
         ) as all_nations
 group by
         o_year
 order by
         o_year;""",
 
+
+
 # Query 9: Summarizes data with aggregates like sum or avg
+# """select
+#         nation,
+#         o_year,
+#         sum(amount) as sum_profit
+# from
+#         (
+#                 select
+#                         (n.data->>'n_name') as nation,
+#                         extract(year from cast(o.data->>'o_orderdate' as date)) as o_year,
+#                         cast(l.data->>'l_extendedprice' as decimal(12,2)) * (1 - cast(l.data->>'l_discount' as decimal(12,2))) - cast(ps.data->>'ps_supplycost' as decimal(12,2)) * cast(l.data->>'l_discount' as decimal(12,2)) as amount
+#                 from
+#                         tpch p,
+#                         tpch s,
+#                         tpch l,
+#                         tpch ps,
+#                         tpch o,
+#                         tpch n
+#                 where
+#                         cast(s.data->>'s_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
+#                         and cast(ps.data->>'ps_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
+#                         and cast(ps.data->>'ps_partkey' as int) = cast(l.data->>'l_partkey' as int)
+#                         and cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
+#                         and cast(o.data->>'o_orderkey' as int) = cast(l.data->>'l_orderkey' as int)
+#                         and cast(s.data->>'s_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
+#                         and (p.data->>'p_name') like '%green%'
+#         ) as profit
+# group by
+#         nation,
+#         o_year
+# order by
+#         nation,
+#         o_year desc;""",
+
 """select
         nation,
         o_year,
@@ -246,22 +407,34 @@ from
                 select
                         (n.data->>'n_name') as nation,
                         extract(year from cast(o.data->>'o_orderdate' as date)) as o_year,
-                        cast(l.data->>'l_extendedprice' as decimal(12,2)) * (1 - cast(l.data->>'l_discount' as decimal(12,2))) - cast(ps.data->>'ps_supplycost' as decimal(12,2)) * cast(l.data->>'l_discount' as decimal(12,2)) as amount
+                        lp_joined.l_extendedprice * (1 - lp_joined.l_discount) - cast(ps.data->>'ps_supplycost' as decimal(12,2)) * lp_joined.l_discount as amount
                 from
-                        tpch p,
+                        (
+                                select 
+                                        cast(p.data->>'p_partkey' as int) as p_partkey,
+                                        cast(l.data->>'l_suppkey' as int) as l_suppkey,
+                                        cast(l.data->>'l_partkey' as int) as l_partkey,
+                                        cast(l.data->>'l_orderkey' as int) as l_orderkey,
+                                        cast(l.data->>'l_extendedprice' as decimal(12,2)) as l_extendedprice,
+                                        cast(l.data->>'l_discount' as decimal(12,2)) as l_discount
+
+                                from
+                                        tpch p,
+                                        tpch l
+                                where
+                                        (p.data->>'p_name') like '%green%'
+                                        and cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
+                        ) as lp_joined,
                         tpch s,
-                        tpch l,
                         tpch ps,
                         tpch o,
                         tpch n
                 where
-                        cast(s.data->>'s_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
-                        and cast(ps.data->>'ps_suppkey' as int) = cast(l.data->>'l_suppkey' as int)
-                        and cast(ps.data->>'ps_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                        and cast(p.data->>'p_partkey' as int) = cast(l.data->>'l_partkey' as int)
-                        and cast(o.data->>'o_orderkey' as int) = cast(l.data->>'l_orderkey' as int)
+                        cast(s.data->>'s_suppkey' as int) = lp_joined.l_suppkey
+                        and cast(ps.data->>'ps_suppkey' as int) = lp_joined.l_suppkey
+                        and cast(ps.data->>'ps_partkey' as int) = lp_joined.l_partkey
+                        and cast(o.data->>'o_orderkey' as int) = lp_joined.l_orderkey
                         and cast(s.data->>'s_nationkey' as int) = cast(n.data->>'n_nationkey' as int)
-                        and (p.data->>'p_name') like '%green%'
         ) as profit
 group by
         nation,
@@ -723,7 +896,7 @@ WHERE
     p.p_partkey = ps.ps_partkey
     AND s.s_suppkey = ps.ps_suppkey
     AND p.p_size = 15
-    AND p.p_type LIKE 'BRASS'
+    AND p.p_type LIKE '%BRASS'
     AND s.s_nationkey = n.n_nationkey
     AND n.n_regionkey = r.r_regionkey
     AND r.r_name = 'EUROPE'
