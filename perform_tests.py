@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import duckdb
 import argparse
+import tracemalloc
 
 # from queries.twitter_queries import
 from queries.yelp_queries import RAW_YELP_QUERIES, MATERIALIZED_YELP_QUERIES
@@ -103,20 +104,29 @@ def perform_tests(
         first_run_result = None
 
         iterations = 5
+        mallocs = []
 
         for j in range(iterations):  # Execute the query 5 times
+            tracemalloc.start()
             start_time = time.perf_counter()
             result = con.execute(query).fetchdf()  # Execute the query and fetch result
             end_time = time.perf_counter()
             execution_time = end_time - start_time
+            malloc = tracemalloc.get_traced_memory()[1]
             execution_times.append(execution_time)
+            mallocs = malloc
             df_row[f"Iteration {j}"] = execution_time
 
             if j == 0:
 
                 first_run_result = result.copy()
+
+
+            
                 
 
+        for j in range(iterations):
+            df_row[f"malloc {j}"] = malloc
 
         # Collect the result from the first run
         query_results.append(first_run_result)
