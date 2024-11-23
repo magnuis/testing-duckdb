@@ -47,7 +47,7 @@ table_column_types = {
     's_suppkey': 'BIGINT', 's_name': 'VARCHAR', 's_address': 'VARCHAR',
     's_nationkey': 'BIGINT', 's_phone': 'VARCHAR', 's_acctbal': 'DOUBLE', 's_comment': 'VARCHAR',
     
-    'data': 'VARCHAR'  # Added as the JSON string data column
+    'data': 'JSON'  # Added as the JSON string data column
 }
 
 # List of columns to materialize

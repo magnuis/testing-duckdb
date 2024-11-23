@@ -163,6 +163,7 @@ cython_debug/
 
 # All data folders
 data/
+data copy/
 
 # Databases
 *.db*

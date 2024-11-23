@@ -35,21 +35,21 @@ def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
     # Create the tweets table with individual columns for the materialized fields
     create_twitter_table_query = '''
     CREATE TABLE tweets (
-        id_str VARCHAR,
-        created_at TIMESTAMP,
+        idStr VARCHAR,
         text VARCHAR,
         source VARCHAR,
-        in_reply_to_status_id_str VARCHAR,
-        in_reply_to_user_id_str VARCHAR,
-        in_reply_to_screen_name VARCHAR,
-        user_id_str VARCHAR,
-        user_name VARCHAR,
-        user_screen_name VARCHAR,
-        user_followers_count INTEGER,
-        user_verified BOOLEAN,
+        in_reply_to_status_idStr VARCHAR,
+        inReplyToUserIdStr VARCHAR,
+        user_idStr VARCHAR,
+        user_screenName VARCHAR,
+        retweetedStatus_user_screenName VARCHAR,
+        retweetedStatus_user_idStr VARCHAR,
+        retweetedStatus_idStr VARCHAR,
+        user_followersCount INTEGER,
+        retweetedStatus_retweetCount INTEGER,
         lang VARCHAR,
-        retweeted_status_id_str VARCHAR,
-        hashtag_text VARCHAR
+        entities_hashtags_text VARCHAR,
+        data JSON
     );
     '''
     con.execute(create_twitter_table_query)
@@ -58,8 +58,6 @@ def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
 
 def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, file_path=str):
 
-    print("Starting to insert raw JSON Parquet data into DuckDB...")
-    start_time = time.perf_counter()  # Start timing
 
     # Insert Parquet data into DuckDB
     con.execute("BEGIN TRANSACTION")
@@ -67,20 +65,17 @@ def insert_parquet_into_db(con: duckdb.DuckDBPyConnection, file_path=str):
         f"""INSERT INTO tweets SELECT * FROM read_parquet('{file_path}')""")
     con.execute('COMMIT')
 
-    end_time = time.perf_counter()  # End timing
-    total_time = end_time - start_time
-
-    print(f"""Inserted JSON data into DuckDB in {
-          total_time} seconds.""")
 
 
-def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
+
+def write_raw_json_to_parquet(file_path, con: duckdb.DuckDBPyConnection, batch_size=50000) -> int:
 
     writer = None
     data_batch = []
     total_rows = 0
 
     try:
+    
         with open(file_path, 'r') as json_file:
             for line_number, line in enumerate(json_file, start=1):
                 try:
@@ -98,10 +93,12 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
 
                         # Write the current batch to Parquet
                         writer.write_table(table_batch)
+                        writer.close()
+                        insert_parquet_into_db(con=con, file_path=RAW_PARQUET_FILE_PATH)
                         total_rows += len(data_batch)
                         data_batch = []  # Clear batch memory
-                        print(
-                            f"Written {total_rows} rows to raw Parquet so far...")
+                        # print(
+                        #     f"Written {total_rows} rows to raw Parquet so far...")
                 except json.JSONDecodeError as e:
                     print(f"Error decoding JSON on line {line_number}: {e}")
 
@@ -113,7 +110,11 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
                 writer = pq.ParquetWriter(
                     RAW_PARQUET_FILE_PATH, table_batch.schema)
             writer.write_table(table_batch)
+            writer.close()
+            insert_parquet_into_db(con=con, file_path=RAW_PARQUET_FILE_PATH)
             total_rows += len(data_batch)
+            # print(
+            #                 f"Written {total_rows} rows to raw Parquet so far...")
 
     finally:
         # Close the writer if it was initialized
@@ -123,7 +124,7 @@ def write_raw_json_to_parquet(file_path, batch_size=50000) -> int:
     return total_rows
 
 
-def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
+def write_materialized_json_to_parquet(file_path, con: duckdb.DuckDBPyConnection, batch_size=50000) -> int:
     writer = None
     data_batch = []
     total_rows = 0
@@ -138,23 +139,30 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
 
                     # Materialize JSON fields into separate columns
                     materialized_row = {
-                        'id_str': json_obj.get('id_str'),
-                        'created_at': datetime.strptime(json_obj.get('created_at'), '%a %b %d %H:%M:%S %z %Y'),
+                        'idStr': json_obj.get('id_str'),
+                        # 'created_at': datetime.strptime(json_obj.get('created_at'), '%a %b %d %H:%M:%S %z %Y'),
                         'text': json_obj.get('text'),
                         'source': json_obj.get('source'),
-                        'in_reply_to_status_id_str': json_obj.get('in_reply_to_status_id_str'),
-                        'in_reply_to_user_id_str': json_obj.get('in_reply_to_user_id_str'),
-                        'in_reply_to_screen_name': json_obj.get('in_reply_to_screen_name'),
-                        'user_id_str': json_obj.get('user', {}).get('id_str'),
-                        'user_name': json_obj.get('user', {}).get('name'),
-                        'user_screen_name': json_obj.get('user', {}).get('screen_name'),
-                        'user_followers_count': json_obj.get('user', {}).get('followers_count'),
-                        'user_verified': json_obj.get('user', {}).get('verified'),
+                        'in_reply_to_status_idStr': json_obj.get('in_reply_to_status_id_str'),
+                        'inReplyToUserIdStr': json_obj.get('in_reply_to_user_id_str'),
+                        # 'in_reply_to_screen_name': json_obj.get('in_reply_to_screen_name'),
+                        'user_idStr': json_obj.get('user', {}).get('id_str'),
+                        # 'user_name': json_obj.get('user', {}).get('name'),
+                        'user_screenName': json_obj.get('user', {}).get('screen_name'),
+                        'retweetedStatus_user_screenName': json_obj.get('retweeted_status', {}).get('user', {}).get('screen_name'),
+                        'retweetedStatus_user_idStr': json_obj.get('retweeted_status', {}).get('user', {}).get('id_str'),
+                        'retweetedStatus_idStr': json_obj.get('retweeted_status', {}).get('id_str'),
+                        'user_followersCount': json_obj.get('user', {}).get('followers_count'),
+                        'retweetedStatus_retweetCount': json_obj.get('retweeted_status', {}).get('retweet_count'),
+                        # 'user_verified': json_obj.get('user', {}).get('verified'),
                         'lang': json_obj.get('lang'),
-                        'retweeted_status_id_str': json_obj.get('retweeted_status', {}).get('id_str'),
                         # Handle hashtags as a single string of comma-separated values
-                        'hashtag_text': ','.join([h.get('text', '') for h in json_obj.get('entities', {}).get('hashtags', [])]),
+                        'entities_hashtags_text': ','.join([h.get('text', '') for h in json_obj.get('entities', {}).get('hashtags', [])]),
+                        'data': json.dumps(json_obj)  # Include the raw JSON data
                     }
+
+                    if '1267329159761666049' in str(materialized_row):
+                        print(materialized_row)
 
                     data_batch.append(materialized_row)
 
@@ -169,6 +177,8 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
 
                         # Write the current batch to Parquet
                         writer.write_table(table_batch)
+                        writer.close()
+                        insert_parquet_into_db(con=con, file_path=MATERIALIZED_PARQUET_FILE_PATH)
                         total_rows += len(data_batch)
                         data_batch = []  # Clear batch memory
 
@@ -185,9 +195,9 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
                 writer = pq.ParquetWriter(
                     MATERIALIZED_PARQUET_FILE_PATH, table_batch.schema)
             writer.write_table(table_batch)
+            writer.close()
+            insert_parquet_into_db(con=con, file_path=MATERIALIZED_PARQUET_FILE_PATH)
             total_rows += len(data_batch)
-            print(f"""Final batch written. Total rows written to materialized Parquet: {
-                  total_rows}""")
 
     finally:
         # Close the writer if it was initialized
@@ -196,6 +206,21 @@ def write_materialized_json_to_parquet(file_path, batch_size=50000) -> int:
 
     return total_rows
 
+def clean_up():
+    for file_path in [RAW_PARQUET_FILE_PATH, MATERIALIZED_PARQUET_FILE_PATH]:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            print(f"Deleted file {file_path}")
+    print("Clean-up completed.")
+
+
+
+
+raw_connection = duckdb.connect(RAW_DB_PATH)
+create_raw_data_db(con=raw_connection)
+
+materialized_connection = duckdb.connect(MATERIALIZED_DB_PATH)
+create_materialized_data_db(con=materialized_connection)
 
 total_files = sum(
     len([file for file in files if file.endswith('json')])
@@ -207,22 +232,22 @@ for dirpath, _, files in os.walk(TOP_DIR):
     for file_name in files:
         if file_name.endswith('json'):
             file_path = os.path.join(dirpath, file_name)
-            write_raw_json_to_parquet(file_path)
-            write_materialized_json_to_parquet(file_path)
+            write_raw_json_to_parquet(file_path, con=raw_connection)
+
+            write_materialized_json_to_parquet(file_path, con=materialized_connection)
 
         finished += 1
         print(f"Finished with {finished}/{total_files} files")
 
+print(f"raw size: {os.path.getsize(RAW_DB_PATH)}")
 
-raw_connection = duckdb.connect(RAW_DB_PATH)
-materialized_connection = duckdb.connect(MATERIALIZED_DB_PATH)
+print(f"materialized size: {os.path.getsize(MATERIALIZED_DB_PATH)}")
 
-# Clear and create required tables
-create_raw_data_db(con=raw_connection)
-create_materialized_data_db(con=materialized_connection)
 
-insert_parquet_into_db(
-    con=raw_connection, file_path=RAW_PARQUET_FILE_PATH)
+# insert_parquet_into_db(
+#     con=raw_connection, file_path=RAW_PARQUET_FILE_PATH)
 
-insert_parquet_into_db(
-    con=materialized_connection, file_path=MATERIALIZED_PARQUET_FILE_PATH)
+# insert_parquet_into_db(
+#     con=materialized_connection, file_path=MATERIALIZED_PARQUET_FILE_PATH)
+
+clean_up()

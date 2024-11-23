@@ -90,7 +90,7 @@ def perform_tests(
 
     for i, query in enumerate(queries, start=1):
 
-        # if i != 1:
+        # if i != 4:
         #     continue
 
         
@@ -110,22 +110,12 @@ def perform_tests(
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             execution_times.append(execution_time)
-            df_row[f"Iteration {j}"] = round(execution_time, 3)
+            df_row[f"Iteration {j}"] = execution_time
 
             if j == 0:
-                # print(f"TIME: {execution_time}")
-                # Store the result from the first execution
-                # print(result)
+
                 first_run_result = result.copy()
                 
-                # for col in result.columns:
-                #     print(result[col])
-            # if j==1:
-            #     print(query)
-            #     print(first_run_result)
-            #     print(result)
-            #     print('---')
-      
 
 
         # Collect the result from the first run

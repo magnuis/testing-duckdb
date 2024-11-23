@@ -42,7 +42,7 @@ def create_materialized_data_db(con: duckdb.DuckDBPyConnection):
         city VARCHAR,
         date VARCHAR,
         stars FLOAT,
-        data VARCHAR
+        data JSON
     );
     '''
     con.execute(create_users_table_query)
