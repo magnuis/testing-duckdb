@@ -57,6 +57,7 @@ DF_COL_NAMES = [
     'Test run no.',
 ]
 
+
 def _results_dfs(raw_results_path, materialized_results_path):
     try:
         raw_results = pd.read_csv(raw_results_path)
@@ -78,6 +79,7 @@ def _results_dfs(raw_results_path, materialized_results_path):
 
     return raw_results, materialized_results, test_run_no
 
+
 def perform_tests(
         con: duckdb.DuckDBPyConnection,
         queries: list,
@@ -94,7 +96,6 @@ def perform_tests(
         # if i != 4:
         #     continue
 
-        
         df_row = {
             "Query": i,
             'Created At': test_time,
@@ -109,24 +110,22 @@ def perform_tests(
         for j in range(iterations):  # Execute the query 5 times
             tracemalloc.start()
             start_time = time.perf_counter()
-            result = con.execute(query).fetchdf()  # Execute the query and fetch result
+            # Execute the query and fetch result
+            result = con.execute(query).fetchdf()
             end_time = time.perf_counter()
             execution_time = end_time - start_time
             malloc = tracemalloc.get_traced_memory()[1]
+            tracemalloc.stop()
             execution_times.append(execution_time)
-            mallocs = malloc
+            mallocs.append(malloc)
             df_row[f"Iteration {j}"] = execution_time
 
             if j == 0:
 
                 first_run_result = result.copy()
 
-
-            
-                
-
         for j in range(iterations):
-            df_row[f"malloc {j}"] = malloc
+            df_row[f"malloc {j}"] = mallocs[j]
 
         # Collect the result from the first run
         query_results.append(first_run_result)
@@ -138,10 +137,12 @@ def perform_tests(
 
         temp_df = pd.DataFrame([df_row])
 
-        results_df = pd.concat([results_df, temp_df], ignore_index=True).reset_index(drop=True)
+        results_df = pd.concat([results_df, temp_df],
+                               ignore_index=True).reset_index(drop=True)
         print(f"""Query {i} Average Execution Time (last 4 runs): {
               avg_time:.4f} seconds""")
     return results_df, query_results
+
 
 def compare_dataframes(raw_df, materialized_df):
     """Compare two dataframes column by column."""
@@ -150,13 +151,14 @@ def compare_dataframes(raw_df, materialized_df):
         raw_values = raw_df[raw_col]
         mat_values = materialized_df[mat_col]
 
-                # Standardize integer types for comparison
+        # Standardize integer types for comparison
         if np.issubdtype(raw_values.dtype, np.integer) and np.issubdtype(mat_values.dtype, np.integer):
             raw_values = raw_values.astype('int64')
             mat_values = mat_values.astype('int64')
 
         if raw_values.dtype != mat_values.dtype:
-            print(f"Column type mismatch: {raw_col} ({raw_values.dtype}) vs {mat_col} ({mat_values.dtype})")
+            print(f"""Column type mismatch: {raw_col} ({raw_values.dtype}) vs {
+                  mat_col} ({mat_values.dtype})""")
             return False
 
         if raw_values.dtype == np.float64:
@@ -170,24 +172,28 @@ def compare_dataframes(raw_df, materialized_df):
 
     return True
 
+
 def compare_query_results(raw_query_results, materialized_query_results):
     '''Compare the results of raw and materialized queries'''
     for i, (raw_df, materialized_df) in enumerate(zip(raw_query_results, materialized_query_results), start=1):
         # Sort dataframes to ensure consistent ordering before comparison
         try:
-            raw_df_sorted = raw_df.sort_values(by=raw_df.columns.tolist()).reset_index(drop=True)
-            materialized_df_sorted = materialized_df.sort_values(by=materialized_df.columns.tolist()).reset_index(drop=True)
+            raw_df_sorted = raw_df.sort_values(
+                by=raw_df.columns.tolist()).reset_index(drop=True)
+            materialized_df_sorted = materialized_df.sort_values(
+                by=materialized_df.columns.tolist()).reset_index(drop=True)
         except Exception as e:
             # If sorting fails, proceed without sorting
             raw_df_sorted = raw_df.reset_index(drop=True)
             materialized_df_sorted = materialized_df.reset_index(drop=True)
-        
+
         if compare_dataframes(raw_df_sorted, materialized_df_sorted):
             print(f"Query {i}: Results match.")
         else:
             print(f"Query {i}: Results do not match.")
             print(f"Raw query result:\n{raw_df_sorted}")
             print(f"Materialized query result:\n{materialized_df_sorted}")
+
 
 def main():
     # Parse command line arguments
@@ -225,16 +231,17 @@ def main():
         raw_results_df, raw_query_results = perform_tests(
             con=raw_connection, queries=raw_queries, run_no=run_no, test_time=test_time)
         raw_df = pd.concat([raw_df, raw_results_df], ignore_index=True)
-        raw_df.to_csv(raw_results_path, index=False)
-        raw_results_df.to_csv(last_raw_results_path, index=False)
+        # raw_df.to_csv(raw_results_path, index=False)
+        # raw_results_df.to_csv(last_raw_results_path, index=False)
 
         # Perform and log tests for materialized data, collect results
         materialized_results_df, materialized_query_results = perform_tests(
             con=materialized_connection, queries=materialized_queries, run_no=run_no, test_time=test_time)
         materialized_df = pd.concat(
             [materialized_df, materialized_results_df], ignore_index=True)
-        materialized_df.to_csv(materialized_results_path, index=False)
-        materialized_results_df.to_csv(last_materialized_results_path, index=False)
+        # materialized_df.to_csv(materialized_results_path, index=False)
+        # materialized_results_df.to_csv(
+        #     last_materialized_results_path, index=False)
 
         # Compare the results of raw and materialized queries
         print(f"\nComparing query results for dataset: {dataset}")
@@ -243,6 +250,7 @@ def main():
             materialized_query_results=materialized_query_results
         )
         print('-------')
+
 
 if __name__ == "__main__":
     main()
