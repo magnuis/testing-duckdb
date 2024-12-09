@@ -75,13 +75,14 @@ def write_raw_json_to_parquet(file_path, con: duckdb.DuckDBPyConnection, batch_s
     total_rows = 0
 
     try:
-    
         with open(file_path, 'r') as json_file:
             for line_number, line in enumerate(json_file, start=1):
                 try:
                     # Parse the JSON document and store as a single string
                     json_obj = json.loads(line)
                     data_batch.append({'data': json.dumps(json_obj)})
+                    
+                    # Once the batch reaches batch_size, write to Parquet
                     if len(data_batch) >= batch_size:
                         df_batch = pd.DataFrame(data_batch)
                         table_batch = pa.Table.from_pandas(df_batch)
@@ -161,11 +162,9 @@ def write_materialized_json_to_parquet(file_path, con: duckdb.DuckDBPyConnection
                         'data': json.dumps(json_obj)  # Include the raw JSON data
                     }
 
-                    if '1267329159761666049' in str(materialized_row):
-                        print(materialized_row)
-
                     data_batch.append(materialized_row)
-
+                    
+                    # Once the batch reaches the specified batch size, write to Parquet
                     if len(data_batch) >= batch_size:
                         df_batch = pd.DataFrame(data_batch)
                         table_batch = pa.Table.from_pandas(df_batch)
